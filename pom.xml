@@ -26,5 +26,10 @@
     	<artifactId>asterix-aql</artifactId>
     	<version>0.8.7-SNAPSHOT</version>
     </dependency>
+    <dependency>
+    	<groupId>com.cedarsoftware</groupId>
+    	<artifactId>json-io</artifactId>
+    	<version>2.7.3</version>
+    </dependency>
   </dependencies>
 </project>
