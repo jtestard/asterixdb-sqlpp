@@ -1,51 +1,0 @@
-/**
- * JavaCC template file created by SF JavaCC plugin 1.5.17+ wizard for JavaCC 1.5.0+
- */options{  static = false;}PARSER_BEGIN(SQLPP)package edu.uci.ics.asterix.sqlpp.parser;
-
-public class SQLPP {
-    public static void main(String[] args) throws Exception {
-        Exp result = new SQLPP(new java.io.StringReader(args[0])).S();
-        System.out.println(result);
-    }
-}
-
-// Classes defining the Abstract Syntax Tree
-abstract class Exp {}
-class Num extends Exp {
-    int value;
-    Num(int v) {value = v;}
-    public String toString() {return value + "";}
-}
-class BinaryExp extends Exp {
-    String op;
-    Exp left, right;
-    BinaryExp(String o, Exp l, Exp r) {op = o; left = l; right = r;}
-    public String toString() {return "(" + op + " " + left + " " + right + ")";}
-}
-
-PARSER_END(SQLPP)
-
-SKIP:  { " " | "\t" | "\n" | "\r"                    }
-TOKEN: { "(" | ")" | "+" | "*" | <NUM: (["0"-"9"])+> }
-
-Exp S(): {Exp e;}
-{
-  e=E() <EOF> {return e;}
-}
-
-Exp E(): {Exp e1; Exp e2;}
-{
-  e1=T() ("+" e2=T() {e1 = new BinaryExp("+", e1, e2);} )* {return e1;}
-}
-
-Exp T(): {Exp e1; Exp e2;}
-{
-  e1=F() ("*" e2=F() {e1 = new BinaryExp("*", e1, e2);} )* {return e1;}
-}
-
-Exp F(): {Exp e; Token n;}
-{
-  n=<NUM> {return new Num(Integer.parseInt(n.image));}
-|
-  "(" e=E() ")" {return e;}
-}

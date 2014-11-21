@@ -28,6 +28,7 @@ public interface SQLPPConstants {
     "\"+\"",
     "\"*\"",
     "<NUM>",
+    "\";\"",
   };
 
 }

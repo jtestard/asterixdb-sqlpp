@@ -17,8 +17,8 @@ A SQL++ query can be any legal SQL++ expression.
 
 ```python
 SQLPPExpression ::=     SFWExpression
-                |        SQLPPOperatorExpr
-                |        SQLPPQuantifiedExpression
+                |       SQLPPOperatorExpr
+                |       SQLPPQuantifiedExpression
 ```
 
 The `SQLPPQuantifiedExpression` expression specification will be deferred to a later date, given that existential/universal quantification is not fully supported in tbe SQL++ implementation as of this moment (in particular the `IN, EXISTS, ANY, ALL` keywords from the SQL++ language are currently not supported).
@@ -26,10 +26,10 @@ The `SQLPPQuantifiedExpression` expression specification will be deferred to a l
 ### SQL++ Operator Expression
 
 ```python
-SQLPPOperatorExpr   ::= SQLPPAndExpr ( "or" AndExpr )*
-SQLPPAndExpr        ::= SQLPPRelExpr ( "and" RelExpr )*
+SQLPPOperatorExpr   ::= SQLPPAndExpr ( "or" SQLPPAndExpr )*
+SQLPPAndExpr        ::= SQLPPRelExpr ( "and" SQLPPRelExpr )*
 SQLPPRelExpr        ::= SQLPPAddExpr ( ( "<" | ">" | "<=" | 
-                    ">=" | "=" | "!=" | "~=" ) AddExpr )?
+                    ">=" | "=" | "!=" | "~=" ) SQLPPAddExpr )?
 SQLPPAddExpr        ::= SQLPPMultExpr ( ( "+" | "-" ) SQLPPMultExpr )*
 SQLPPMultExpr       ::= SQLPPUnaryExpr ( ( "*" | "/" | "%" |
                         "^"| "idiv" ) SQLPPUnaryExpr )*
@@ -49,7 +49,7 @@ The operator expression structure is inherited from AQL.
                     |    SQLPPFunctionCallExpr
 ```
                     
-#### SQL++ Value
+#### SQL++ Values
 
 ```python
 SQLPPValue          ::= SQLPPDefinedValue
@@ -62,21 +62,22 @@ SQLPPComplexValue    ::= SQLPPTupleValue
                     |    SQLPPMapValue
 SQLPPScalarValue    ::= SQLPPPrimitveValue
                     |    SQLPPEnrichedValue
-SQLPPPrimitveValue  ::= StringLiteral*
+SQLPPPrimitveValue  ::= SQLPPStringLiteral
                     |    SQLPPNumberValue
                     |    "true"
                     |    "false"
                     |    "null"
-SQLPPNumberValue    ::= IntegerLiteral*
-                    |    FloatLiteral*
-                    |    DoubleLiteral*
-SQLPPEnrichedValue  ::= TypeName "(" SQLPPPrimitiveValue 
+SQLPPNumberValue    ::= SQLPPIntegerLiteral
+                    |   SQLPPFloatLiteral
+                    |   SQLPPDoubleLiteral
+SQLPPEnrichedValue  ::= SQLPPIdentifier "(" SQLPPPrimitiveValue 
                     ( "," SQLPPPrimitiveValue ) ? ")"
-SQLPPTupleValue     ::= RecordConstructor*
-SQLPPBagValue       ::= UnorderedListConstructor*
-SQLPPArrayValue     ::= OrderedListConstructor*
+SQLPPTupleValue     ::= "{" ( SQLPPFieldBinding ( "," SQLPPFieldBinding )* )?  "}"
+SQLPPBagValue       ::= "{{" ( SQLPPOperatorExpr ( "," SQLPPOperatorExpr )* )?  "}}"
+SQLPPArrayValue     ::= "[" ( SQLPPOperatorExpr ( "," SQLPPOperatorExpr )* )?  "]"
 SQLPPMapValue       ::= "map" "(" SQLPPValue ":" SQLPPDefinedValue 
                         ( "," SQLPPValue ":" SQLPPDefinedValue ) ")"
+SQLPPFieldBinding   ::= SQLPPStringLiteral ":" SQLPPOperatorExpr
 ```
     
 This section is inspired by the SQL++ Value BNF presented in [1]. However, some features from the BNF are not included. For example,
@@ -88,16 +89,10 @@ the `id::` field for defined values is absent from this specification. In order 
 SQLPPParenthesizedExpression ::= "(" SFWExpression ")"
 ```
     
-#### SQL++ Variable Ref
-
-```python
-SQLPPVariableRef     ::= VariableRef*
-```
-    
 #### SQL++ PathStep
 
 ```python
-SQLPPPathstep   ::= SQLPPOperatorExpr "." Identifier*
+SQLPPPathstep   ::= SQLPPOperatorExpr "." SQLPPIdentifier
                 |    SQLPPOperatorExpr "[" SQLPPValueExpr "]"
                 |    SQLPPOperatorExpr "->" SQLPPValueExpr
 ```
@@ -106,7 +101,7 @@ Notice that SQL++ does not have the "I am lucky" array navigation AQL has (the "
 #### SQL++ Named Value
 
 ```python
-SQLPPNamedValue ::= QualifiedName*
+
 ```
 
 #### SQL++ Function Call Expression
@@ -136,7 +131,7 @@ SQLPPSFWExpression ::=    "SELECT"  ["DISTINCT"] SQLPPSelectClause
 ```python
 SQLPPSelectClause   ::= ["TUPLE"] SQLPPSelectItem
 #                   |    "ELEMENT" SQLPPOperatorExpr
-SQLPPSelectItem     ::= SQLPPOperatorExpr [ "AS" Identifier* ]
+SQLPPSelectItem     ::= SQLPPOperatorExpr [ "AS" SQLPPIdentifier ]
 ```
 
 #### SQL++ From Clause
@@ -145,7 +140,7 @@ SQLPPSelectItem     ::= SQLPPOperatorExpr [ "AS" Identifier* ]
 SQLPPFromItem           ::= SQLPPFromSingle
                         |    SQLPPFromJoin
 #                        |    SQLPPFromFlatten
-SQLPPFromSingle         ::=     SQLPPOperatorExpr "AS" VariableRef* ["AT" SQLPPOperatorExpr ]
+SQLPPFromSingle         ::=     SQLPPOperatorExpr "AS" SQLPPVariableRef ["AT" SQLPPOperatorExpr ]
 SQLPPFromJoin           ::=     SQLPPFromInnerJoin
 #                       |       SQLPPFromOuterJoin
 SQLPPFromInnerJoin      ::= "JOIN" SQLPPFromItem "ON" SQLPPOperatorExpr
@@ -154,11 +149,11 @@ SQLPPFromInnerJoin      ::= "JOIN" SQLPPFromItem "ON" SQLPPOperatorExpr
 # SQLPPFromFlatten      ::= SQLPPFromInFlatten
 #                       |   SQLPPFromOutFlatten
 # SQLPPFromInFlatten    ::= "FLATTEN" "("
-#                           SQLPPOpertorExpr "AS" VariableRef* ","
-#                           SQLPPOpertorExpr "AS" VariableRef* ")"
+#                           SQLPPOpertorExpr "AS" SQLPPVariableRef ","
+#                           SQLPPOpertorExpr "AS" SQLPPVariableRef ")"
 # SQLPPFromOutFlatten   ::= "FLATTEN" "("
-#                           SQLPPOpertorExpr "AS" VariableRef* ","
-#                           SQLPPOpertorExpr "AS" VariableRef* ")"
+#                           SQLPPOpertorExpr "AS" SQLPPVariableRef ","
+#                           SQLPPOpertorExpr "AS" SQLPPVariableRef ")"
 ```
 
 #### SQL++ GROUP BY Clause
@@ -176,6 +171,23 @@ SQLPPFromInnerJoin      ::= "JOIN" SQLPPFromItem "ON" SQLPPOperatorExpr
 ## SQL++ Configuration Parameters
 
 UCSD SQL++ configuration parameters are implicitely defined in Asterix SQL++, and cannot be modified. They have been set to Asterix default behaviour.
+
+## SQLPP to AQL Mappings
+
+```python
+    SQLPPStringLiteral      =>        StringLiteral
+    SQLPPIntegerLiteral     =>        IntegerLiteral
+    SQLPPFloatLiteral       =>        FloatLiteral
+    SQLPPDoubleLiteral      =>        DoubleLiteral
+    SQLPPTupleValue         =>        RecordConstructor
+    SQLPPArrayValue         =>        OrderedListConstructor
+    SQLPPBagValue           =>        UnorderedListConstructor
+    SQLPPIdentifier         =>        Identifier
+    SQLPPVariableRef        =>        VariableRef
+    SQLPPNamedValue         =>        QualifiedName
+```
+
+This is tentative corresponding of SQL++ tokens to AQL tokens.
 
 ## Notes
 

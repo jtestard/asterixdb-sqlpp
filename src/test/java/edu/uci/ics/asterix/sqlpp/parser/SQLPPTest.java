@@ -37,7 +37,7 @@ public class SQLPPTest {
 		InputStream stringStream = new java.io.ByteArrayInputStream(string.getBytes());
 		try {
 			SQLPP parser = new SQLPP(stringStream);
-			Exp result = parser.S();
+			SQLPPExp result = parser.S();
 			System.out.println(result);
 		} catch (ParseException e) {
 	        System.out.println(e.getMessage());
