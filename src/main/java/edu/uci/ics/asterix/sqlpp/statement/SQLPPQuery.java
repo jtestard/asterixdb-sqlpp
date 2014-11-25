@@ -26,7 +26,6 @@ public class SQLPPQuery extends AbstractStatement {
 	 * @see edu.uci.ics.asterix.sqlpp.base.Statement#getKind()
 	 */
 	public Kind getKind() {
-		// TODO Auto-generated method stub
 		return Kind.Query;
 	}
 

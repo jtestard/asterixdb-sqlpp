@@ -1,40 +1,210 @@
 /**
  * JavaCC template file created by SF JavaCC plugin 1.5.17+ wizard for JavaCC 1.5.0+
- */options{  static = false;}PARSER_BEGIN(SQLPP)package edu.uci.ics.asterix.sqlpp.parser;
+ */options{  static = false;}
+/**
+ * Parser
+ */PARSER_BEGIN(SQLPP)package edu.uci.ics.asterix.sqlpp.parser;
+
+import java.util.List;
+import java.util.ArrayList;
+import edu.uci.ics.asterix.sqlpp.base.AbstractStatement;
+import edu.uci.ics.asterix.sqlpp.statement.SQLPPQuery;
 
 public class SQLPP {
     public static void main(String[] args) throws Exception {
-        SQLPPExp result = new SQLPP(new java.io.StringReader(args[0])).S();
-        System.out.println(result);
+        List<AbstractStatement> result = new SQLPP(new java.io.StringReader(args[0])).Statements();
+        for (AbstractStatement stmt : result) {
+            SQLPPQuery q = (SQLPPQuery) stmt; 
+            System.out.println(q);	
+        }
     }
 }
 
 
 // Classes defining the Abstract Syntax Tree
+//class SQLPPQuery extends AbstractStatement {
+//	SQLPPExp body;
+//	SQLPPQuery() {}
+//	SQLPPQuery(SQLPPExp e) {body = e;}
+//	public String toString() {return "SQLPPQuery = {" + body + "}";}
+//	@Override
+//	public Kind getKind() {
+//		return Kind.Query;
+//	}
+//}
 abstract class SQLPPExp {}
 class SQLPPNumberValue extends SQLPPExp {
     int value;
     SQLPPNumberValue(int v) {value = v;}
-    public String toString() {return this.getClass().toString() + value + "";}
+    public String toString() {return "SQLPPNumberValue " + value + "";}
 }
 class BinarySQLPPExp extends SQLPPExp {
     String op;
     SQLPPExp left, right;
     BinarySQLPPExp(String o, SQLPPExp l, SQLPPExp r) {op = o; left = l; right = r;}
-    public String toString() {return "(" + op + " " + left + " " + right + ")";}
+    public String toString() {return "(" + left + " " + op + " " + right + ")";}
 }
 
 PARSER_END(SQLPP)
 
-SKIP:  { " " | "\t" | "\n" | "\r"                    }
-TOKEN: { 
-	"(" | ")" | "+" | "*" | <NUM: (["0"-"9"])+> | 
-	";"
+/**
+ * Tokens
+ */
+//SKIP:  { " " | "\t" | "\n" | "\r" }
+//TOKEN: { 
+//	"(" | ")" | "+" | "*" | <NUM: (["0"-"9"])+> | ";"
+//}
+
+
+<DEFAULT> TOKEN : {
+<CARET: "^">
 }
 
-SQLPPExp S(): {SQLPPExp e;}
+   
+//<DEFAULT> TOKEN : {
+//<DATASET: "dataset">
+//}
+
+   
+<DEFAULT> TOKEN : {
+<LEFTPAREN: "(">
+}
+
+   
+<DEFAULT> TOKEN : {
+<RIGHTPAREN: ")">
+}
+
+   
+<DEFAULT> TOKEN : {
+<INTEGER_LITERAL: (<DIGIT>)+>
+}
+
+   
+<DEFAULT> TOKEN : {
+<NULL: "null">
+}
+
+   
+<DEFAULT> TOKEN : {
+<TRUE: "true">
+}
+
+   
+<DEFAULT> TOKEN : {
+<FALSE: "false">
+}
+
+   
+<DEFAULT> TOKEN : {
+<#DIGIT: ["0"-"9"]>
+}
+
+   
+<DEFAULT> TOKEN : {
+<DOUBLE_LITERAL: <INTEGER> | <INTEGER> ("." <INTEGER>)? | "." <INTEGER>>
+| <FLOAT_LITERAL: <INTEGER> ("f" | "F") | <INTEGER> ("." <INTEGER> ("f" | "F"))? | "." <INTEGER> ("f" | "F")>
+| <INTEGER: (<DIGIT>)+>
+}
+
+   
+<DEFAULT> TOKEN : {
+<#LETTER: ["A"-"Z","a"-"z"]>
+}
+
+   
+<DEFAULT> TOKEN : {
+<SPECIALCHARS: ["$","_","-"]>
+}
+
+   
+<DEFAULT> TOKEN : {
+<STRING_LITERAL: "\"" (<EscapeQuot> | ~["\""])* "\"" | "\'" (<EscapeApos> | ~["\'"])* "\'">
+| <#EscapeQuot: "\\\"">
+| <#EscapeApos: "\\\'">
+}
+
+   
+<DEFAULT> TOKEN : {
+<IDENTIFIER: (<LETTER>)+ (<LETTER> | <DIGIT> | <SPECIALCHARS>)*>
+}
+
+   
+//<DEFAULT> TOKEN : {
+//<VARIABLE: "$" <IDENTIFIER>>
+//}
+
+   
+<DEFAULT> SKIP : {
+" "
+| "\t"
+| "\r"
+| "\n"
+}
+
+   
+<DEFAULT> SKIP : {
+<"//" (~["\n"])* "\n">
+}
+
+   
+<DEFAULT> SKIP : {
+<"//" (~["\n","\r"])* ("\n" | "\r" | "\r\n")?>
+}
+
+   
+<DEFAULT> SKIP : {
+"/*" : INSIDE_COMMENT
+}
+
+   
+<INSIDE_COMMENT> SPECIAL : {
+<"+" (" ")* (~["*"])*>
+}
+
+   
+<INSIDE_COMMENT> SKIP : {
+"/*" : {
+}
+
+   
+<INSIDE_COMMENT> SKIP : {
+"*/" : {
+| <~[]>
+}
+
+/**
+ * Rules
+ */
+//TODO: Fix the multiple statement initiation.
+List<AbstractStatement> Statements(): {
+	List<AbstractStatement> statements = new ArrayList<AbstractStatement>();
+	AbstractStatement statement;
+}
 {
-  e=E() <EOF> {return e;}
+	( statement = SingleStatement() 
+		{
+			statements.add(statement);
+		} (";") ?
+	)*
+	<EOF>
+	{
+		return statements;  
+	}
+}
+
+AbstractStatement SingleStatement(): {
+	AbstractStatement stmt;
+} {
+	stmt = Query() { return stmt; }
+}
+
+SQLPPQuery Query(): { SQLPPQuery q = new SQLPPQuery(); AbstractExpression e;}
+{
+e = E() <EOF> {
+	q.setBody(e);
+	return q;
+	}
 }
 
 SQLPPExp E(): {SQLPPExp e1; SQLPPExp e2;}
@@ -52,4 +222,227 @@ SQLPPExp F(): {SQLPPExp e; Token n;}
   n=<NUM> {return new SQLPPNumberValue(Integer.parseInt(n.image));}
 |
   "(" e=E() ")" {return e;}
+}
+
+AbstractExpression SQLPPOperatorExpression() throws ParseException:
+{
+  SQLPPOperatorExpr op = null;
+  AbstractExpression operand = null;
+}
+{
+	operand = AndExpr()
+	(
+	  <OR>
+  	{
+  	  if (op == null) {
+  	    op = new OperatorExpr();
+  	    op.addOperand(operand);      	     
+  	  }  
+      op.addOperator(token.image);
+	}
+
+	operand = AndExpr()
+	{
+	  op.addOperand(operand);
+	}
+
+	)*
+	
+	{
+	  return op==null? operand: op;
+	}
+}
+
+AbstractExpression AndExpr()throws ParseException:
+{
+  SQLPPOperatorExpr op = null;
+  AbstractExpression operand = null;
+}
+{
+	operand = RelExpr()
+	(
+	
+	  <AND>
+  	{
+  	  if (op == null) {
+  	    op = new OperatorExpr();
+  	    op.addOperand(operand);	      	     
+  	  }  
+      op.addOperator(token.image);
+	}
+
+	operand = RelExpr()
+	{
+	  op.addOperand(operand);
+	}
+
+	)*
+	
+	{
+	  return op==null? operand: op;
+	}
+}
+
+
+
+AbstractExpression RelExpr()throws ParseException:
+{
+  SQLPPOperatorExpr op = null;
+  AbstractExpression operand = null;
+}
+{
+    operand = AddExpr()
+
+    (
+      LOOKAHEAD(2)( <LT> | <GT> | <LE> | <GE> | <EQ> | <NE> |<SIMILAR>)
+  	  {
+  	    if (op == null) {
+  	      op = new OperatorExpr();
+  	      op.addOperand(operand);
+          broadcast = false;
+  	    }
+        op.addOperator(token.image);
+	  }
+	  
+ 	  operand = AddExpr()
+	  {
+         op.addOperand(operand, broadcast);
+      } 
+    )?
+ 	
+ 	{
+ 	  return op==null? operand: op;
+ 	}
+}
+
+Expression AddExpr()throws ParseException:
+{
+  OperatorExpr op = null;
+  Expression operand = null;  
+}
+{
+	operand = MultExpr()
+
+	( (<PLUS> | <MINUS>)
+  	{
+  	  if (op == null) {
+  	    op = new OperatorExpr();
+        op.addOperand(operand);  	    
+        op.setCurrentop(true);        
+  	  }
+	  ((OperatorExpr)op).addOperator(token.image);
+	}
+
+	operand = MultExpr()
+	{
+	  op.addOperand(operand);
+	}
+	)*
+	
+	{
+ 	  return op==null? operand: op;
+ 	}
+}
+
+Expression MultExpr()throws ParseException:
+{
+  OperatorExpr op = null;
+  Expression operand = null;
+}
+{
+	operand = UnionExpr()
+
+	(( <MUL> | <DIV> | <MOD> | <CARET> | <IDIV>)
+  	{
+  	  if (op == null) {
+  	    op = new OperatorExpr();
+        op.addOperand(operand);
+        op.setCurrentop(true);          	    
+  	  }
+	  op.addOperator(token.image);
+	}
+	operand = UnionExpr()
+	{
+	   op.addOperand(operand);
+	}
+	)*
+	
+ 	{
+ 	  return op==null?operand:op;
+ 	}	
+}
+
+Expression UnionExpr() throws ParseException:
+{
+    UnionExpr union = null;
+    Expression operand1 = null;
+    Expression operand2 = null;
+}
+{
+   operand1 = UnaryExpr() 
+   (<UNION> 
+       (operand2 = UnaryExpr()) {
+          if (union == null) {
+             union = new UnionExpr();
+             union.addExpr(operand1); 
+          }
+          union.addExpr(operand2);   
+       } )*
+   {
+     return (union == null)? operand1: union;
+   }
+}
+
+Expression UnaryExpr() throws ParseException:
+{
+	Expression uexpr = null;
+	Expression expr = null;
+}
+{
+	( (<PLUS> | <MINUS>) 
+	{
+	  	uexpr = new UnaryExpr();
+		if("+".equals(token.image))
+			((UnaryExpr)uexpr).setSign(Sign.POSITIVE);
+		else if("-".equals(token.image))
+			((UnaryExpr)uexpr).setSign(Sign.NEGATIVE);
+		else 
+			throw new ParseException();
+	}
+	)?
+	
+	expr = ValueExpr()
+	{
+		if(uexpr!=null){
+			((UnaryExpr)uexpr).setExpr(expr);
+			return uexpr;
+		}
+		else{
+			return expr;
+		}
+	}
+}
+
+Expression ValueExpr()throws ParseException:
+{
+  Expression expr = null;
+  Identifier ident = null;
+  AbstractAccessor fa = null;
+  Expression indexExpr = null;
+}
+{
+  expr = PrimaryExpr() ( ident = Field()
+	{
+	  fa = (fa == null ? new FieldAccessor(expr, ident) 
+                       : new FieldAccessor(fa, ident));
+    }
+  | indexExpr = Index()
+    {
+      fa = (fa == null ? new IndexAccessor(expr, indexExpr)
+                       : new IndexAccessor(fa, indexExpr));
+     }
+  )*
+    {
+      return fa == null ? expr : fa;
+    }
 }
