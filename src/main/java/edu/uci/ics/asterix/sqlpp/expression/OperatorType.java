@@ -14,6 +14,13 @@
  */
 package edu.uci.ics.asterix.sqlpp.expression;
 
+/**
+ * Operators used in SQL++. Ordinal positions of the operators are mentionned
+ * in the generated Abstract Syntax Tree (AST).
+ * 
+ * @author julestestard
+ *
+ */
 public enum OperatorType {
     OR,
     AND,

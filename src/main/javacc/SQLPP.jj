@@ -112,7 +112,10 @@ TOKEN :
   | <OR : "or">
 }
 
-//<DEFAULT> Tuple value type not added yet.
+/**
+ * Tuple value type not added yet.
+ */
+//<DEFAULT> 
 //TOKEN :
 //{
 //    <LEFTBRACE : "{"> { pushState(); } : DEFAULT
