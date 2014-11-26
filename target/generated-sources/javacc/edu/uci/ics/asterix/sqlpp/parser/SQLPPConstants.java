@@ -11,7 +11,149 @@ public interface SQLPPConstants {
   /** End of File. */
   int EOF = 0;
   /** RegularExpression Id. */
-  int NUM = 9;
+  int ASC = 1;
+  /** RegularExpression Id. */
+  int AT = 2;
+  /** RegularExpression Id. */
+  int BY = 3;
+  /** RegularExpression Id. */
+  int DATASET = 4;
+  /** RegularExpression Id. */
+  int DECOR = 5;
+  /** RegularExpression Id. */
+  int DESC = 6;
+  /** RegularExpression Id. */
+  int DISTINCT = 7;
+  /** RegularExpression Id. */
+  int ELSE = 8;
+  /** RegularExpression Id. */
+  int EVERY = 9;
+  /** RegularExpression Id. */
+  int FOR = 10;
+  /** RegularExpression Id. */
+  int GROUP = 11;
+  /** RegularExpression Id. */
+  int IF = 12;
+  /** RegularExpression Id. */
+  int IN = 13;
+  /** RegularExpression Id. */
+  int LET = 14;
+  /** RegularExpression Id. */
+  int LIMIT = 15;
+  /** RegularExpression Id. */
+  int OFFSET = 16;
+  /** RegularExpression Id. */
+  int ORDER = 17;
+  /** RegularExpression Id. */
+  int RETURN = 18;
+  /** RegularExpression Id. */
+  int SATISFIES = 19;
+  /** RegularExpression Id. */
+  int SOME = 20;
+  /** RegularExpression Id. */
+  int THEN = 21;
+  /** RegularExpression Id. */
+  int UNION = 22;
+  /** RegularExpression Id. */
+  int WHERE = 23;
+  /** RegularExpression Id. */
+  int WITH = 24;
+  /** RegularExpression Id. */
+  int CARET = 25;
+  /** RegularExpression Id. */
+  int DIV = 26;
+  /** RegularExpression Id. */
+  int IDIV = 27;
+  /** RegularExpression Id. */
+  int MINUS = 28;
+  /** RegularExpression Id. */
+  int MOD = 29;
+  /** RegularExpression Id. */
+  int MUL = 30;
+  /** RegularExpression Id. */
+  int PLUS = 31;
+  /** RegularExpression Id. */
+  int LEFTPAREN = 32;
+  /** RegularExpression Id. */
+  int RIGHTPAREN = 33;
+  /** RegularExpression Id. */
+  int LEFTBRACKET = 34;
+  /** RegularExpression Id. */
+  int RIGHTBRACKET = 35;
+  /** RegularExpression Id. */
+  int COLON = 36;
+  /** RegularExpression Id. */
+  int COMMA = 37;
+  /** RegularExpression Id. */
+  int DOT = 38;
+  /** RegularExpression Id. */
+  int QUES = 39;
+  /** RegularExpression Id. */
+  int LT = 40;
+  /** RegularExpression Id. */
+  int GT = 41;
+  /** RegularExpression Id. */
+  int LE = 42;
+  /** RegularExpression Id. */
+  int GE = 43;
+  /** RegularExpression Id. */
+  int EQ = 44;
+  /** RegularExpression Id. */
+  int NE = 45;
+  /** RegularExpression Id. */
+  int SIMILAR = 46;
+  /** RegularExpression Id. */
+  int ASSIGN = 47;
+  /** RegularExpression Id. */
+  int AND = 48;
+  /** RegularExpression Id. */
+  int OR = 49;
+  /** RegularExpression Id. */
+  int INTEGER_LITERAL = 50;
+  /** RegularExpression Id. */
+  int NULL = 51;
+  /** RegularExpression Id. */
+  int TRUE = 52;
+  /** RegularExpression Id. */
+  int FALSE = 53;
+  /** RegularExpression Id. */
+  int MISSING = 54;
+  /** RegularExpression Id. */
+  int DIGIT = 55;
+  /** RegularExpression Id. */
+  int DOUBLE_LITERAL = 56;
+  /** RegularExpression Id. */
+  int FLOAT_LITERAL = 57;
+  /** RegularExpression Id. */
+  int DIGITS = 58;
+  /** RegularExpression Id. */
+  int LETTER = 59;
+  /** RegularExpression Id. */
+  int SPECIALCHARS = 60;
+  /** RegularExpression Id. */
+  int STRING_LITERAL = 61;
+  /** RegularExpression Id. */
+  int EscapeQuot = 62;
+  /** RegularExpression Id. */
+  int EscapeApos = 63;
+  /** RegularExpression Id. */
+  int EscapeBslash = 64;
+  /** RegularExpression Id. */
+  int EscapeSlash = 65;
+  /** RegularExpression Id. */
+  int EscapeBspace = 66;
+  /** RegularExpression Id. */
+  int EscapeFormf = 67;
+  /** RegularExpression Id. */
+  int EscapeNl = 68;
+  /** RegularExpression Id. */
+  int EscapeCr = 69;
+  /** RegularExpression Id. */
+  int EscapeTab = 70;
+  /** RegularExpression Id. */
+  int IDENTIFIER = 71;
+  /** RegularExpression Id. */
+  int VARIABLE = 72;
 
   /** Lexical state. */
   int DEFAULT = 0;
@@ -19,15 +161,84 @@ public interface SQLPPConstants {
   /** Literal token values. */
   String[] tokenImage = {
     "<EOF>",
-    "\" \"",
-    "\"\\t\"",
-    "\"\\n\"",
-    "\"\\r\"",
+    "\"asc\"",
+    "\"at\"",
+    "\"by\"",
+    "\"dataset\"",
+    "\"decor\"",
+    "\"desc\"",
+    "\"distinct\"",
+    "\"else\"",
+    "\"every\"",
+    "\"for\"",
+    "\"group\"",
+    "\"if\"",
+    "\"in\"",
+    "\"let\"",
+    "\"limit\"",
+    "\"offset\"",
+    "\"order\"",
+    "\"return\"",
+    "\"satisfies\"",
+    "\"some\"",
+    "\"then\"",
+    "\"union\"",
+    "\"where\"",
+    "\"with\"",
+    "\"^\"",
+    "\"/\"",
+    "\"idiv\"",
+    "\"-\"",
+    "\"%\"",
+    "\"*\"",
+    "\"+\"",
     "\"(\"",
     "\")\"",
-    "\"+\"",
-    "\"*\"",
-    "<NUM>",
+    "\"[\"",
+    "\"]\"",
+    "\":\"",
+    "\",\"",
+    "\".\"",
+    "\"?\"",
+    "\"<\"",
+    "\">\"",
+    "\"<=\"",
+    "\">=\"",
+    "\"=\"",
+    "\"!=\"",
+    "\"~=\"",
+    "\":=\"",
+    "\"and\"",
+    "\"or\"",
+    "<INTEGER_LITERAL>",
+    "\"null\"",
+    "\"true\"",
+    "\"false\"",
+    "\"missing\"",
+    "<DIGIT>",
+    "<DOUBLE_LITERAL>",
+    "<FLOAT_LITERAL>",
+    "<DIGITS>",
+    "<LETTER>",
+    "<SPECIALCHARS>",
+    "<STRING_LITERAL>",
+    "\"\\\\\\\"\"",
+    "\"\\\\\\\'\"",
+    "\"\\\\\\\\\"",
+    "\"\\\\/\"",
+    "\"\\\\b\"",
+    "\"\\\\f\"",
+    "\"\\\\n\"",
+    "\"\\\\r\"",
+    "\"\\\\t\"",
+    "<IDENTIFIER>",
+    "<VARIABLE>",
+    "\" \"",
+    "\"\\t\"",
+    "\"\\r\"",
+    "\"\\n\"",
+    "<token of kind 77>",
+    "<token of kind 78>",
     "\";\"",
   };
 

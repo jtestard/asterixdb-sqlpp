@@ -1,14 +1,37 @@
 /**
  * JavaCC template file created by SF JavaCC plugin 1.5.17+ wizard for JavaCC 1.5.0+
- */options{  static = false;}
+ * 
+ */
+options {
+    static = false;
+}
+
 /**
  * Parser
- */PARSER_BEGIN(SQLPP)package edu.uci.ics.asterix.sqlpp.parser;
+ */
+ PARSER_BEGIN(SQLPP)
+ package edu.uci.ics.asterix.sqlpp.parser;
 
 import java.util.List;
 import java.util.ArrayList;
 import edu.uci.ics.asterix.sqlpp.base.AbstractStatement;
 import edu.uci.ics.asterix.sqlpp.statement.SQLPPQuery;
+import edu.uci.ics.asterix.sqlpp.base.AbstractExpression;
+import edu.uci.ics.asterix.sqlpp.expression.SQLPPOperatorExpr;
+import edu.uci.ics.asterix.sqlpp.expression.SQLPPUnaryExpr;
+import edu.uci.ics.asterix.sqlpp.expression.SQLPPUnaryExpr.Sign;
+import edu.uci.ics.asterix.sqlpp.expression.SQLPPValueExpression;
+import edu.uci.ics.asterix.sqlpp.base.AbstractValue;
+import edu.uci.ics.asterix.sqlpp.value.DoubleValue;
+import edu.uci.ics.asterix.sqlpp.value.FalseValue;
+import edu.uci.ics.asterix.sqlpp.value.FloatValue;
+import edu.uci.ics.asterix.sqlpp.value.IntegerValue;
+import edu.uci.ics.asterix.sqlpp.value.LongValue;
+import edu.uci.ics.asterix.sqlpp.value.MissingValue;
+import edu.uci.ics.asterix.sqlpp.value.StringValue;
+import edu.uci.ics.asterix.sqlpp.value.NullValue;
+import edu.uci.ics.asterix.sqlpp.value.TrueValue;
+
 
 public class SQLPP {
     public static void main(String[] args) throws Exception {
@@ -19,159 +42,221 @@ public class SQLPP {
         }
     }
 }
-
-
-// Classes defining the Abstract Syntax Tree
-//class SQLPPQuery extends AbstractStatement {
-//	SQLPPExp body;
-//	SQLPPQuery() {}
-//	SQLPPQuery(SQLPPExp e) {body = e;}
-//	public String toString() {return "SQLPPQuery = {" + body + "}";}
-//	@Override
-//	public Kind getKind() {
-//		return Kind.Query;
-//	}
-//}
-abstract class SQLPPExp {}
-class SQLPPNumberValue extends SQLPPExp {
-    int value;
-    SQLPPNumberValue(int v) {value = v;}
-    public String toString() {return "SQLPPNumberValue " + value + "";}
-}
-class BinarySQLPPExp extends SQLPPExp {
-    String op;
-    SQLPPExp left, right;
-    BinarySQLPPExp(String o, SQLPPExp l, SQLPPExp r) {op = o; left = l; right = r;}
-    public String toString() {return "(" + left + " " + op + " " + right + ")";}
-}
-
 PARSER_END(SQLPP)
+
 
 /**
  * Tokens
  */
-//SKIP:  { " " | "\t" | "\n" | "\r" }
-//TOKEN: { 
-//	"(" | ")" | "+" | "*" | <NUM: (["0"-"9"])+> | ";"
+<DEFAULT>
+TOKEN :
+{
+    <ASC : "asc">
+  | <AT : "at">
+  | <BY : "by">
+  | <DATASET : "dataset">
+  | <DECOR : "decor">
+  | <DESC : "desc">
+  | <DISTINCT : "distinct">
+  | <ELSE : "else">
+  | <EVERY : "every">
+  | <FOR : "for">
+  | <GROUP : "group">
+  | <IF : "if">
+  | <IN : "in">
+  | <LET : "let">
+  | <LIMIT : "limit">
+  | <OFFSET : "offset">
+  | <ORDER : "order">
+  | <RETURN : "return">
+  | <SATISFIES : "satisfies">
+  | <SOME : "some">
+  | <THEN : "then">
+  | <UNION : "union">
+  | <WHERE : "where">
+  | <WITH : "with">
+}
+
+<DEFAULT>
+TOKEN :
+{
+    <CARET : "^">
+  | <DIV : "/">
+  | <IDIV : "idiv">
+  | <MINUS : "-">
+  | <MOD : "%">
+  | <MUL : "*">
+  | <PLUS : "+">
+
+  | <LEFTPAREN : "(">
+  | <RIGHTPAREN : ")">
+  | <LEFTBRACKET : "[">
+  | <RIGHTBRACKET : "]">
+
+  | <COLON : ":">
+  | <COMMA : ",">
+  | <DOT : ".">
+  | <QUES : "?">
+
+  | <LT : "<">
+  | <GT : ">">
+  | <LE : "<=">
+  | <GE : ">=">
+  | <EQ : "=">
+  | <NE : "!=">
+  | <SIMILAR : "~=">
+  | <ASSIGN : ":=">
+
+  | <AND : "and">
+  | <OR : "or">
+}
+
+//<DEFAULT> Tuple value type not added yet.
+//TOKEN :
+//{
+//    <LEFTBRACE : "{"> { pushState(); } : DEFAULT
+//}
+//
+//<DEFAULT>
+//TOKEN :
+//{
+//    <RIGHTBRACE : "}"> { popState("}"); }
 //}
 
-
-<DEFAULT> TOKEN : {
-<CARET: "^">
+<DEFAULT>
+TOKEN :
+{
+    <INTEGER_LITERAL : (<DIGIT>)+ >
 }
 
-   
-//<DEFAULT> TOKEN : {
-//<DATASET: "dataset">
+<DEFAULT>
+TOKEN :
+{
+    <NULL : "null">
+  | <TRUE : "true">
+  | <FALSE : "false">
+  | <MISSING : "missing">
+}
+
+<DEFAULT>
+TOKEN :
+{
+    <#DIGIT : ["0" - "9"]>
+}
+
+<DEFAULT>
+TOKEN:
+{
+    < DOUBLE_LITERAL: <DIGITS>
+        | <DIGITS> ( "." <DIGITS> )?
+        | "." <DIGITS>
+    >
+  | < FLOAT_LITERAL: <DIGITS> ( "f" | "F" )
+        | <DIGITS> ( "." <DIGITS> ( "f" | "F" ) )?
+        | "." <DIGITS> ( "f" | "F" )
+    >
+  | <DIGITS : (<DIGIT>)+ >
+}
+
+<DEFAULT>
+TOKEN :
+{
+    <#LETTER : ["A" - "Z", "a" - "z"]>
+  | <SPECIALCHARS : ["$", "_", "-"]>
+}
+
+<DEFAULT>
+TOKEN :
+{
+    // backslash u + 4 hex digits escapes are handled in the underlying JavaCharStream
+    <STRING_LITERAL : ("\"" (
+          <EscapeQuot>
+        | <EscapeBslash>
+        | <EscapeSlash>
+        | <EscapeBspace>
+        | <EscapeFormf>
+        | <EscapeNl>
+        | <EscapeCr>
+        | <EscapeTab>
+        | ~["\"","\\"])* "\"")
+      | ("\'"(
+          <EscapeApos>
+        | <EscapeBslash>
+        | <EscapeSlash>
+        | <EscapeBspace>
+        | <EscapeFormf>
+        | <EscapeNl>
+        | <EscapeCr>
+        | <EscapeTab>
+        | ~["\'","\\"])* "\'")>
+  | < #EscapeQuot: "\\\"" >
+  | < #EscapeApos: "\\\'" >
+  | < #EscapeBslash: "\\\\" >
+  | < #EscapeSlash: "\\/" >
+  | < #EscapeBspace: "\\b" >
+  | < #EscapeFormf: "\\f" >
+  | < #EscapeNl: "\\n" >
+  | < #EscapeCr: "\\r" >
+  | < #EscapeTab: "\\t" >
+}
+
+<DEFAULT>
+TOKEN :
+{
+    <IDENTIFIER : <LETTER> (<LETTER> | <DIGIT> | <SPECIALCHARS>)*>
+}
+
+<DEFAULT>
+TOKEN :
+{
+    <VARIABLE : "$" <LETTER> (<LETTER> | <DIGIT> | "_")*>
+}
+
+<DEFAULT>
+SKIP:
+{
+    " "
+  | "\t"
+  | "\r"
+  | "\n"
+}
+
+<DEFAULT>
+SKIP:
+{
+    <"//" (~["\n"])* "\n">
+}
+
+<DEFAULT>
+SKIP:
+{
+    <"//" (~["\n","\r"])* ("\n"|"\r"|"\r\n")?> 
+}
+
+  
+/**
+ * Comments are ignored, nothing about what is inside comments is done.
+ */
+//<DEFAULT>
+//SKIP:
+//{
+//    <"/*"> { pushState(); } : INSIDE_COMMENT
 //}
-
-   
-<DEFAULT> TOKEN : {
-<LEFTPAREN: "(">
-}
-
-   
-<DEFAULT> TOKEN : {
-<RIGHTPAREN: ")">
-}
-
-   
-<DEFAULT> TOKEN : {
-<INTEGER_LITERAL: (<DIGIT>)+>
-}
-
-   
-<DEFAULT> TOKEN : {
-<NULL: "null">
-}
-
-   
-<DEFAULT> TOKEN : {
-<TRUE: "true">
-}
-
-   
-<DEFAULT> TOKEN : {
-<FALSE: "false">
-}
-
-   
-<DEFAULT> TOKEN : {
-<#DIGIT: ["0"-"9"]>
-}
-
-   
-<DEFAULT> TOKEN : {
-<DOUBLE_LITERAL: <INTEGER> | <INTEGER> ("." <INTEGER>)? | "." <INTEGER>>
-| <FLOAT_LITERAL: <INTEGER> ("f" | "F") | <INTEGER> ("." <INTEGER> ("f" | "F"))? | "." <INTEGER> ("f" | "F")>
-| <INTEGER: (<DIGIT>)+>
-}
-
-   
-<DEFAULT> TOKEN : {
-<#LETTER: ["A"-"Z","a"-"z"]>
-}
-
-   
-<DEFAULT> TOKEN : {
-<SPECIALCHARS: ["$","_","-"]>
-}
-
-   
-<DEFAULT> TOKEN : {
-<STRING_LITERAL: "\"" (<EscapeQuot> | ~["\""])* "\"" | "\'" (<EscapeApos> | ~["\'"])* "\'">
-| <#EscapeQuot: "\\\"">
-| <#EscapeApos: "\\\'">
-}
-
-   
-<DEFAULT> TOKEN : {
-<IDENTIFIER: (<LETTER>)+ (<LETTER> | <DIGIT> | <SPECIALCHARS>)*>
-}
-
-   
-//<DEFAULT> TOKEN : {
-//<VARIABLE: "$" <IDENTIFIER>>
+//
+//<INSIDE_COMMENT> SPECIAL : {
+//<"+" (" ")* (~["*"])*>
 //}
-
-   
-<DEFAULT> SKIP : {
-" "
-| "\t"
-| "\r"
-| "\n"
-}
-
-   
-<DEFAULT> SKIP : {
-<"//" (~["\n"])* "\n">
-}
-
-   
-<DEFAULT> SKIP : {
-<"//" (~["\n","\r"])* ("\n" | "\r" | "\r\n")?>
-}
-
-   
-<DEFAULT> SKIP : {
-"/*" : INSIDE_COMMENT
-}
-
-   
-<INSIDE_COMMENT> SPECIAL : {
-<"+" (" ")* (~["*"])*>
-}
-
-   
-<INSIDE_COMMENT> SKIP : {
-"/*" : {
-}
-
-   
-<INSIDE_COMMENT> SKIP : {
-"*/" : {
-| <~[]>
-}
+//
+//   
+//<INSIDE_COMMENT> SKIP : {
+//"/*" : {
+//}
+//
+//   
+//<INSIDE_COMMENT> SKIP : {
+//"*/" : {
+//| <~[]>
+//}
 
 /**
  * Rules
@@ -201,27 +286,11 @@ AbstractStatement SingleStatement(): {
 
 SQLPPQuery Query(): { SQLPPQuery q = new SQLPPQuery(); AbstractExpression e;}
 {
-e = E() <EOF> {
-	q.setBody(e);
-	return q;
+	e = SQLPPOperatorExpression() <EOF> 
+	{
+		q.setBody(e);
+		return q;
 	}
-}
-
-SQLPPExp E(): {SQLPPExp e1; SQLPPExp e2;}
-{
-  e1=T() ("+" e2=T() {e1 = new BinarySQLPPExp("+", e1, e2);} )* {return e1;}
-}
-
-SQLPPExp T(): {SQLPPExp e1; SQLPPExp e2;}
-{
-  e1=F() ("*" e2=F() {e1 = new BinarySQLPPExp("*", e1, e2);} )* {return e1;}
-}
-
-SQLPPExp F(): {SQLPPExp e; Token n;}
-{
-  n=<NUM> {return new SQLPPNumberValue(Integer.parseInt(n.image));}
-|
-  "(" e=E() ")" {return e;}
 }
 
 AbstractExpression SQLPPOperatorExpression() throws ParseException:
@@ -235,7 +304,7 @@ AbstractExpression SQLPPOperatorExpression() throws ParseException:
 	  <OR>
   	{
   	  if (op == null) {
-  	    op = new OperatorExpr();
+  	    op = new SQLPPOperatorExpr();
   	    op.addOperand(operand);      	     
   	  }  
       op.addOperator(token.image);
@@ -265,7 +334,7 @@ AbstractExpression AndExpr()throws ParseException:
 	  <AND>
   	{
   	  if (op == null) {
-  	    op = new OperatorExpr();
+  	    op = new SQLPPOperatorExpr();
   	    op.addOperand(operand);	      	     
   	  }  
       op.addOperator(token.image);
@@ -297,16 +366,15 @@ AbstractExpression RelExpr()throws ParseException:
       LOOKAHEAD(2)( <LT> | <GT> | <LE> | <GE> | <EQ> | <NE> |<SIMILAR>)
   	  {
   	    if (op == null) {
-  	      op = new OperatorExpr();
+  	      op = new SQLPPOperatorExpr();
   	      op.addOperand(operand);
-          broadcast = false;
   	    }
         op.addOperator(token.image);
 	  }
 	  
  	  operand = AddExpr()
 	  {
-         op.addOperand(operand, broadcast);
+         op.addOperand(operand);
       } 
     )?
  	
@@ -315,10 +383,10 @@ AbstractExpression RelExpr()throws ParseException:
  	}
 }
 
-Expression AddExpr()throws ParseException:
+AbstractExpression AddExpr() throws ParseException:
 {
-  OperatorExpr op = null;
-  Expression operand = null;  
+  SQLPPOperatorExpr op = null;
+  AbstractExpression operand = null;  
 }
 {
 	operand = MultExpr()
@@ -326,11 +394,10 @@ Expression AddExpr()throws ParseException:
 	( (<PLUS> | <MINUS>)
   	{
   	  if (op == null) {
-  	    op = new OperatorExpr();
-        op.addOperand(operand);  	    
-        op.setCurrentop(true);        
+  	    op = new SQLPPOperatorExpr();
+        op.addOperand(operand);
   	  }
-	  ((OperatorExpr)op).addOperator(token.image);
+	  op.addOperator(token.image);
 	}
 
 	operand = MultExpr()
@@ -344,24 +411,23 @@ Expression AddExpr()throws ParseException:
  	}
 }
 
-Expression MultExpr()throws ParseException:
+AbstractExpression MultExpr() throws ParseException:
 {
-  OperatorExpr op = null;
-  Expression operand = null;
+  SQLPPOperatorExpr op = null;
+  AbstractExpression operand = null;
 }
 {
-	operand = UnionExpr()
+	operand = UnaryExpr()
 
 	(( <MUL> | <DIV> | <MOD> | <CARET> | <IDIV>)
   	{
   	  if (op == null) {
-  	    op = new OperatorExpr();
-        op.addOperand(operand);
-        op.setCurrentop(true);          	    
+  	    op = new SQLPPOperatorExpr();
+        op.addOperand(operand);          	    
   	  }
 	  op.addOperator(token.image);
 	}
-	operand = UnionExpr()
+	operand = UnaryExpr()
 	{
 	   op.addOperand(operand);
 	}
@@ -372,40 +438,19 @@ Expression MultExpr()throws ParseException:
  	}	
 }
 
-Expression UnionExpr() throws ParseException:
+AbstractExpression UnaryExpr() throws ParseException:
 {
-    UnionExpr union = null;
-    Expression operand1 = null;
-    Expression operand2 = null;
-}
-{
-   operand1 = UnaryExpr() 
-   (<UNION> 
-       (operand2 = UnaryExpr()) {
-          if (union == null) {
-             union = new UnionExpr();
-             union.addExpr(operand1); 
-          }
-          union.addExpr(operand2);   
-       } )*
-   {
-     return (union == null)? operand1: union;
-   }
-}
-
-Expression UnaryExpr() throws ParseException:
-{
-	Expression uexpr = null;
-	Expression expr = null;
+	SQLPPUnaryExpr uexpr = null;
+	AbstractExpression expr = null;
 }
 {
 	( (<PLUS> | <MINUS>) 
 	{
-	  	uexpr = new UnaryExpr();
+	  	uexpr = new SQLPPUnaryExpr();
 		if("+".equals(token.image))
-			((UnaryExpr)uexpr).setSign(Sign.POSITIVE);
+			uexpr.setSign(Sign.POSITIVE);
 		else if("-".equals(token.image))
-			((UnaryExpr)uexpr).setSign(Sign.NEGATIVE);
+			uexpr.setSign(Sign.NEGATIVE);
 		else 
 			throw new ParseException();
 	}
@@ -414,7 +459,7 @@ Expression UnaryExpr() throws ParseException:
 	expr = ValueExpr()
 	{
 		if(uexpr!=null){
-			((UnaryExpr)uexpr).setExpr(expr);
+			uexpr.setExpr(expr);
 			return uexpr;
 		}
 		else{
@@ -423,26 +468,67 @@ Expression UnaryExpr() throws ParseException:
 	}
 }
 
-Expression ValueExpr()throws ParseException:
+AbstractExpression ValueExpr()throws ParseException:
 {
-  Expression expr = null;
-  Identifier ident = null;
-  AbstractAccessor fa = null;
-  Expression indexExpr = null;
+  AbstractExpression expr = null;
 }
 {
-  expr = PrimaryExpr() ( ident = Field()
-	{
-	  fa = (fa == null ? new FieldAccessor(expr, ident) 
-                       : new FieldAccessor(fa, ident));
+    expr = Value()
+    {
+      return expr;
     }
-  | indexExpr = Index()
+}
+
+AbstractExpression Value() throws ParseException:
+{
+  SQLPPValueExpression expr = new SQLPPValueExpression();
+  String str = null;
+}
+{
+  (
+//    str = StringLiteral() //not sure how StringLiteral() works
+//    {
+//      expr.setValue(new StringValue(str));
+//    }
+	<STRING_LITERAL>
+	{
+	   expr.setValue(new StringValue(new String(token.image)));
+	}
+  |
+	<INTEGER_LITERAL>
     {
-      fa = (fa == null ? new IndexAccessor(expr, indexExpr)
-                       : new IndexAccessor(fa, indexExpr));
-     }
-  )*
+    	try { 
+    		expr.setValue(new IntegerValue(new Integer(token.image)));
+    	} catch (NumberFormatException e) {
+    		expr.setValue(new LongValue(new Long(token.image)));
+    	}
+    }
+  | <FLOAT_LITERAL>
     {
-      return fa == null ? expr : fa;
+    	expr.setValue(new FloatValue(new Integer(token.image)));
+    }
+  | <DOUBLE_LITERAL>
+    {
+    	expr.setValue(new DoubleValue(new Double(token.image)));
+    }
+  | <NULL>
+    {
+      	expr.setValue(new NullValue());
+    }
+  | <TRUE>
+    {
+	  	expr.setValue(new TrueValue());
+    }      
+  | <FALSE>
+    {
+      	expr.setValue(new FalseValue());
+    }
+  | <MISSING>
+  	{
+	  	expr.setValue(new MissingValue());
+  	}
+  )
+    {
+      return expr;
     }
 }

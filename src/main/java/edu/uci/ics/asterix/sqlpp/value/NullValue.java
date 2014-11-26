@@ -22,7 +22,6 @@ public class NullValue extends AbstractValue implements DefinedValue {
 	 */
 	@Override
 	public Object getValue() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 

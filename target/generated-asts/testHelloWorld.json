@@ -1,0 +1,10 @@
+{
+  "@type":"edu.uci.ics.asterix.sqlpp.statement.SQLPPQuery",
+  "body":{
+    "@type":"edu.uci.ics.asterix.sqlpp.expression.SQLPPValueExpression",
+    "value":{
+      "@type":"edu.uci.ics.asterix.sqlpp.value.StringValue",
+      "value":"\"Hello World!\""
+    }
+  }
+}
