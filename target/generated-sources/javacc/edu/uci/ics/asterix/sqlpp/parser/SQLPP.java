@@ -21,9 +21,10 @@ import edu.uci.ics.asterix.sqlpp.value.MissingValue;
 import edu.uci.ics.asterix.sqlpp.value.StringValue;
 import edu.uci.ics.asterix.sqlpp.value.NullValue;
 import edu.uci.ics.asterix.sqlpp.value.TrueValue;
+import edu.uci.ics.asterix.sqlpp.parser.AbstractParser;
 
 
-public class SQLPP implements SQLPPConstants {
+public class SQLPP extends AbstractParser implements SQLPPConstants {
     public static void main(String[] args) throws Exception {
         List<AbstractStatement> result = new SQLPP(new java.io.StringReader(args[0])).Statements();
         for (AbstractStatement stmt : result) {
@@ -370,7 +371,7 @@ if(uexpr!=null){
     switch ((jj_ntk==-1)?jj_ntk_f():jj_ntk) {
     case STRING_LITERAL:{
       jj_consume_token(STRING_LITERAL);
-expr.setValue(new StringValue(new String(token.image)));
+expr.setValue(new StringValue(removeQuotesAndEscapes(token.image)));
       break;
       }
     case INTEGER_LITERAL:{

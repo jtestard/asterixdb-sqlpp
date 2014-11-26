@@ -20,6 +20,7 @@ import edu.uci.ics.asterix.sqlpp.value.MissingValue;
 import edu.uci.ics.asterix.sqlpp.value.StringValue;
 import edu.uci.ics.asterix.sqlpp.value.NullValue;
 import edu.uci.ics.asterix.sqlpp.value.TrueValue;
+import edu.uci.ics.asterix.sqlpp.parser.AbstractParser;
 
 /** Token Manager. */
 @SuppressWarnings("unused")public class SQLPPTokenManager implements SQLPPConstants {

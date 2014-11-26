@@ -31,9 +31,10 @@ import edu.uci.ics.asterix.sqlpp.value.MissingValue;
 import edu.uci.ics.asterix.sqlpp.value.StringValue;
 import edu.uci.ics.asterix.sqlpp.value.NullValue;
 import edu.uci.ics.asterix.sqlpp.value.TrueValue;
+import edu.uci.ics.asterix.sqlpp.parser.AbstractParser;
 
 
-public class SQLPP {
+public class SQLPP extends AbstractParser {
     public static void main(String[] args) throws Exception {
         List<AbstractStatement> result = new SQLPP(new java.io.StringReader(args[0])).Statements();
         for (AbstractStatement stmt : result) {
@@ -492,7 +493,7 @@ AbstractExpression Value() throws ParseException:
 //    }
 	<STRING_LITERAL>
 	{
-	   expr.setValue(new StringValue(new String(token.image)));
+	   expr.setValue(new StringValue(removeQuotesAndEscapes(token.image)));
 	}
   |
 	<INTEGER_LITERAL>
