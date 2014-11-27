@@ -1,2 +1,5 @@
 *.class
 target/classes
+target/generated-asts
+target/generated-sources
+target/test-classes

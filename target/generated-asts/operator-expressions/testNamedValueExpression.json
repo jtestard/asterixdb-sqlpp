@@ -1,9 +1,0 @@
-{
-  "@type":"edu.uci.ics.asterix.sqlpp.statement.SQLPPQuery",
-  "body":{
-    "@type":"edu.uci.ics.asterix.sqlpp.expression.SQLPPNamedValueExpression",
-    "name":{
-      "identifier":"person"
-    }
-  }
-}
