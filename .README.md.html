@@ -1,0 +1,627 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Strict//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>/Users/julestestard/Development/eclipse-luna/workspace/asterixdb/asterix-sqlpp/.README.md.html</title>
+
+
+<style type="text/css">
+body {
+	color: #333;
+	font: 13px/1.4 Helvetica,arial,freesans,clean,sans-serif;
+	font-family: sans-serif;
+}
+
+.markdown-body {
+    border: 1px solid #CACACA;
+    padding: 30px;
+    font-size: 15px;
+    line-height: 1.7;
+    word-wrap: break-word;
+}
+.markdown-body > *:first-child {
+    margin-top: 0 !important;
+}
+.markdown-body > *:last-child {
+    margin-bottom: 0 !important;
+}
+.markdown-body a.absent {
+    color: #C00;
+}
+.markdown-body a.anchor {
+    bottom: 0;
+    cursor: pointer;
+    display: block;
+    left: 0;
+    margin-left: -30px;
+    padding-left: 30px;
+    padding-right: 6px;
+    position: absolute;
+    top: 0;
+}
+.markdown-body a.anchor:focus {
+    outline: medium none;
+}
+.markdown-body h1, .markdown-body h2, .markdown-body h3, .markdown-body h4, .markdown-body h5, .markdown-body h6 {
+    cursor: text;
+    font-weight: bold;
+    line-height: 1.7;
+    margin: 1em 0 15px;
+    padding: 0;
+    position: relative;
+}
+
+.markdown-body h1 .octicon-link, .markdown-body h2 .octicon-link, .markdown-body h3 .octicon-link, .markdown-body h4 .octicon-link, .markdown-body h5 .octicon-link, .markdown-body h6 .octicon-link {
+    color: #000;
+    display: none;
+}
+.markdown-body h1:hover a.anchor, .markdown-body h2:hover a.anchor, .markdown-body h3:hover a.anchor, .markdown-body h4:hover a.anchor, .markdown-body h5:hover a.anchor, .markdown-body h6:hover a.anchor {
+    line-height: 1;
+    margin-left: -22px;
+    padding-left: 0;
+    text-decoration: none;
+    top: 15%;
+}
+.markdown-body h1:hover a.anchor .octicon-link, .markdown-body h2:hover a.anchor .octicon-link, .markdown-body h3:hover a.anchor .octicon-link, .markdown-body h4:hover a.anchor .octicon-link, .markdown-body h5:hover a.anchor .octicon-link, .markdown-body h6:hover a.anchor .octicon-link {
+    display: inline-block;
+}
+.markdown-body h1 tt, .markdown-body h1 code, .markdown-body h2 tt, .markdown-body h2 code, .markdown-body h3 tt, .markdown-body h3 code, .markdown-body h4 tt, .markdown-body h4 code, .markdown-body h5 tt, .markdown-body h5 code, .markdown-body h6 tt, .markdown-body h6 code {
+    font-size: inherit;
+}
+.markdown-body h1 {
+    border-bottom: 1px solid #DDD;
+    font-size: 2.5em;
+}
+.markdown-body h2 {
+    border-bottom: 1px solid #EEE;
+    font-size: 2em;
+}
+.markdown-body h3 {
+    font-size: 1.5em;
+}
+.markdown-body h4 {
+    font-size: 1.2em;
+}
+.markdown-body h5 {
+    font-size: 1em;
+}
+.markdown-body h6 {
+    color: #777;
+    font-size: 1em;
+}
+.markdown-body p, .markdown-body blockquote, .markdown-body ul, .markdown-body ol, .markdown-body dl, .markdown-body table, .markdown-body pre {
+    margin: 15px 0;
+}
+.markdown-body hr {
+    background: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAYAAAAECAYAAACtBE5DAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAyJpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMC1jMDYwIDYxLjEzNDc3NywgMjAxMC8wMi8xMi0xNzozMjowMCAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RSZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZVJlZiMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENTNSBNYWNpbnRvc2giIHhtcE1NOkluc3RhbmNlSUQ9InhtcC5paWQ6OENDRjNBN0E2NTZBMTFFMEI3QjRBODM4NzJDMjlGNDgiIHhtcE1NOkRvY3VtZW50SUQ9InhtcC5kaWQ6OENDRjNBN0I2NTZBMTFFMEI3QjRBODM4NzJDMjlGNDgiPiA8eG1wTU06RGVyaXZlZEZyb20gc3RSZWY6aW5zdGFuY2VJRD0ieG1wLmlpZDo4Q0NGM0E3ODY1NkExMUUwQjdCNEE4Mzg3MkMyOUY0OCIgc3RSZWY6ZG9jdW1lbnRJRD0ieG1wLmRpZDo4Q0NGM0E3OTY1NkExMUUwQjdCNEE4Mzg3MkMyOUY0OCIvPiA8L3JkZjpEZXNjcmlwdGlvbj4gPC9yZGY6UkRGPiA8L3g6eG1wbWV0YT4gPD94cGFja2V0IGVuZD0iciI/PqqezsUAAAAfSURBVHjaYmRABcYwBiM2QSA4y4hNEKYDQxAEAAIMAHNGAzhkPOlYAAAAAElFTkSuQmCC") repeat-x;
+    border: 0;
+    color: #CCC;
+    height: 4px;
+    margin: 15px 0;
+    padding: 0;
+}
+.markdown-body ul, .markdown-body ol {
+    padding-left: 30px;
+}
+.markdown-body ul.no-list, .markdown-body ol.no-list {
+    list-style-type: none;
+    padding: 0;
+}
+.markdown-body ul ul, .markdown-body ul ol, .markdown-body ol ol, .markdown-body ol ul {
+    margin-bottom: 0;
+    margin-top: 0;
+}
+.markdown-body dl {
+    padding: 0;
+}
+.markdown-body dl dt {
+    font-size: 14px;
+    font-style: italic;
+    font-weight: bold;
+    margin-top: 15px;
+    padding: 0;
+}
+.markdown-body dl dd {
+    margin-bottom: 15px;
+    padding: 0 15px;
+}
+.markdown-body blockquote {
+    border-left: 4px solid #DDD;
+    color: #777;
+    padding: 0 15px;
+}
+.markdown-body blockquote > *:first-child {
+    margin-top: 0;
+}
+.markdown-body blockquote > *:last-child {
+    margin-bottom: 0;
+}
+.markdown-body table {
+    display: block;
+    overflow: auto;
+    width: 100%;
+    border-collapse: collapse;
+}
+.markdown-body table th {
+    font-weight: bold;
+}
+.markdown-body table th, .markdown-body table td {
+    border: 1px solid #DDD;
+    padding: 6px 13px;
+}
+.markdown-body table tr {
+    background-color: #FFF;
+    border-top: 1px solid #CCC;
+}
+.markdown-body table tr:nth-child(2n) {
+    background-color: #F8F8F8;
+}
+.markdown-body img {
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    -o-box-sizing: border-box;
+    box-sizing: border-box;
+    max-width: 100%;
+    border: 0px;
+}
+.markdown-body span.frame {
+    display: block;
+    overflow: hidden;
+}
+.markdown-body span.frame > span {
+    border: 1px solid #DDD;
+    display: block;
+    float: left;
+    margin: 13px 0 0;
+    overflow: hidden;
+    padding: 7px;
+    width: auto;
+}
+.markdown-body span.frame span img {
+    display: block;
+    float: left;
+}
+.markdown-body span.frame span span {
+    clear: both;
+    color: #333;
+    display: block;
+    padding: 5px 0 0;
+}
+.markdown-body span.align-center {
+    clear: both;
+    display: block;
+    overflow: hidden;
+}
+.markdown-body span.align-center > span {
+    display: block;
+    margin: 13px auto 0;
+    overflow: hidden;
+    text-align: center;
+}
+.markdown-body span.align-center span img {
+    margin: 0 auto;
+    text-align: center;
+}
+.markdown-body span.align-right {
+    clear: both;
+    display: block;
+    overflow: hidden;
+}
+.markdown-body span.align-right > span {
+    display: block;
+    margin: 13px 0 0;
+    overflow: hidden;
+    text-align: right;
+}
+.markdown-body span.align-right span img {
+    margin: 0;
+    text-align: right;
+}
+.markdown-body span.float-left {
+    display: block;
+    float: left;
+    margin-right: 13px;
+    overflow: hidden;
+}
+.markdown-body span.float-left span {
+    margin: 13px 0 0;
+}
+.markdown-body span.float-right {
+    display: block;
+    float: right;
+    margin-left: 13px;
+    overflow: hidden;
+}
+.markdown-body span.float-right > span {
+    display: block;
+    margin: 13px auto 0;
+    overflow: hidden;
+    text-align: right;
+}
+.markdown-body code, .markdown-body tt {
+    background-color: #F8F8F8;
+    border: 1px solid #DDD;
+    border-radius: 3px;
+    margin: 0 2px;
+    padding: 0 5px;
+}
+.markdown-body code {
+    white-space: nowrap;
+}
+.markdown-body pre > code {
+    border: medium none;
+    margin: 0;
+    padding: 0;
+    white-space: pre;
+}
+.markdown-body .highlight pre, .markdown-body pre {
+    background-color: #F8F8F8;
+    border: 1px solid #DDD;
+    border-radius: 3px;
+    font-size: 13px;
+    line-height: 19px;
+    overflow: auto;
+    padding: 6px 10px;
+}
+.markdown-body pre code, .markdown-body pre tt {
+    border: medium none;
+    margin: 0;
+    padding: 0;
+    word-wrap: normal;
+}
+
+pre, code, tt {
+    font-family: Consolas,"Liberation Mono",Courier,monospace;
+    font-size: 12px;
+}
+
+.highlight {
+    background: #FFF;
+}
+.highlight .k,
+.highlight .o,
+.highlight .cp,
+.highlight .cs,
+.highlight .gs,
+.highlight .gu,
+.highlight .kc,
+.highlight .kd,
+.highlight .kn,
+.highlight .kp,
+.highlight .kr,
+.highlight .kt,
+.highlight .nc,
+.highlight .ne,
+.highlight .nf,
+.highlight .ow {
+    font-weight: bold;
+}
+.highlight .gd,
+.highlight .gd .x,
+.highlight .gi,
+.highlight .gi .x,
+.type-csharp .highlight .nf,
+.type-csharp .highlight .nn {
+    color: #000;
+}
+.highlight .c,
+.highlight .cm,
+.highlight .c1 {
+    color: #998;
+    font-style: italic;
+}
+.highlight .err {
+    background-color: #E3D2D2;
+    color: #A61717;
+}
+.highlight .cp,
+.highlight .cs {
+    color: #999;
+}
+.highlight .cs,
+.highlight .ge {
+    font-style: italic;
+}
+.highlight .gd {
+    background-color: #FDD;
+}
+.highlight .gd .x {
+    background-color: #FAA;
+}
+.highlight .gr,
+.highlight .gt {
+    color: #A00;
+}
+.highlight .gh {
+    color: #999;
+}
+.highlight .gi {
+    background-color: #DFD;
+}
+.highlight .gi .x {
+    background-color: #AFA;
+}
+.highlight .go {
+    color: #888;
+}
+.highlight .gp,
+.highlight .nn {
+    color: #555;
+}
+.highlight .gu,
+.highlight .ni {
+    color: #800080;
+}
+.highlight .kt {
+    color: #458;
+}
+.highlight .m {
+    color: #099;
+}
+.highlight .s {
+    color: #D14;
+}
+.highlight .n {
+    color: #333;
+}
+.highlight .na,
+.highlight .no,
+.highlight .nv,
+.highlight .vc,
+.highlight .vg,
+.highlight .vi {
+    color: #008080;
+}
+.highlight .nb {
+    color: #0086B3;
+}
+.highlight .nc {
+    color: #458;
+}
+.highlight .ne,
+.highlight .nf {
+    color: #900;
+}
+.highlight .nt {
+    color: #000080;
+}
+.highlight .w {
+    color: #BBB;
+}
+.highlight .mf,
+.highlight .mh,
+.highlight .mi,
+.highlight .mo {
+    color: #099;
+}
+.highlight .sb,
+.highlight .sc,
+.highlight .sd,
+.highlight .s2,
+.highlight .se,
+.highlight .sh,
+.highlight .si,
+.highlight .sx,
+.highlight .s1 {
+    color: #D14;
+}
+.highlight .sr {
+    color: #009926;
+}
+.highlight .ss {
+    color: #990073;
+}
+.highlight .bp {
+    color: #999;
+}
+.highlight .il {
+    color: #099;
+}
+.highlight .gc {
+    background-color: #EAF2F5;
+    color: #999;
+}
+.type-csharp .highlight .k,
+.type-csharp .highlight .kt {
+    color: #00F;
+}
+.type-csharp .highlight .nf {
+    font-weight: normal;
+}
+.type-csharp .highlight .nc {
+    color: #2B91AF;
+}
+.type-csharp .highlight .s,
+.type-csharp .highlight .sc {
+    color: #A31515;
+}
+
+</style>
+
+
+<script type="text/javascript">
+
+function getDocumentScrollTop() 
+{
+   var res = document.body.scrollTop || document.documentElement.scrollTop || window.pageYOffset || 0;
+   // alert(res);
+   return res;
+}
+
+function setDocumentScrollTop(ypos) 
+{
+	window.scrollTo(0, ypos);
+}
+
+</script>
+
+
+</head>
+<body class="markdown-body">
+<h1> <a id="user-content-the-sql-query-language-for-asterix" class="anchor" href="#the-sql-query-language-for-asterix" aria-hidden="true"><span class="octicon octicon-link"></span></a>The SQL++ query language for Asterix</h1> 
+<p>Notice: this document is using a variant of Markdown called Github Flavored Markdown (GFM), which allows fancy features such as syntax coloring. To be able to view this document properly, please either go to the <a href="https://github.com/jtestard/asterixdb-sqlpp">github page for the project</a> or use Eclipse's <a href="https://github.com/satyagraha/gfm_viewer">GFM viewer</a>.</p> 
+<h2> <a id="user-content-introduction" class="anchor" href="#introduction" aria-hidden="true"><span class="octicon octicon-link"></span></a>Introduction</h2> 
+<p>This document is intended as a reference guide to the full syntax and semantics of the SQL++ Query Language for Asterix (Asterix SQL++). This document describes how the SQL++ query language is interpreted in the context of AsterixDB. Details for the SQL++ query language being developed at UCSD can be found <a href="http://forward.ucsd.edu/sqlpp.html">here</a>.</p> 
+<p>It is important to note that while we are using the SQL++ query language, we are keeping the Asterix Data Model. As such, there will be some differences between the language presented here and the standard &quot;UCSD&quot; SQL++ [1]. These differences will be clearly highlighted when they occur and will be kept at a minimum.</p> 
+<p>This description only addresses expressions for the moment. Unsupported expressions are currently greyed out. Note that this description contains left-recursion, while the parser used for SQL++ is LL(k). Therefore rules appearing in the parser may differ from this document.</p> 
+<h2> <a id="user-content-expressions" class="anchor" href="#expressions" aria-hidden="true"><span class="octicon octicon-link"></span></a>Expressions</h2> 
+<div class="highlight highlight-python">
+ <pre>SQLPPQuery ::<span class="pl-k">=</span> SQLPPExpression</pre>
+</div> 
+<p>A SQL++ query can be any legal SQL++ expression.</p> 
+<div class="highlight highlight-python">
+ <pre>SQLPPExpression ::<span class="pl-k">=</span>     SFWExpression
+                <span class="pl-k">|</span>       SQLPPOperatorExpr
+<span class="pl-c">#                |       SQLPPQuantifiedExpression</span></pre>
+</div> 
+<p>The <code>SQLPPQuantifiedExpression</code> expression specification will be deferred to a later date, given that existential/universal quantification is not fully supported in the SQL++ implementation as of this moment (in particular the <code>IN, EXISTS, ANY, ALL</code> keywords from the SQL++ language are not yet supported).</p> 
+<h3> <a id="user-content-sql-operator-expression" class="anchor" href="#sql-operator-expression" aria-hidden="true"><span class="octicon octicon-link"></span></a>SQL++ Operator Expression</h3> 
+<div class="highlight highlight-python">
+ <pre>SQLPPOperatorExpr   ::<span class="pl-k">=</span> SQLPPAndExpr ( <span class="pl-s1"><span class="pl-pds">&quot;</span>or<span class="pl-pds">&quot;</span></span> SQLPPAndExpr )<span class="pl-k">*</span>
+SQLPPAndExpr        ::<span class="pl-k">=</span> SQLPPRelExpr ( <span class="pl-s1"><span class="pl-pds">&quot;</span>and<span class="pl-pds">&quot;</span></span> SQLPPRelExpr )<span class="pl-k">*</span>
+SQLPPRelExpr        ::<span class="pl-k">=</span> SQLPPAddExpr ( ( <span class="pl-s1"><span class="pl-pds">&quot;</span>&lt;<span class="pl-pds">&quot;</span></span> <span class="pl-k">|</span> <span class="pl-s1"><span class="pl-pds">&quot;</span>&gt;<span class="pl-pds">&quot;</span></span> <span class="pl-k">|</span> <span class="pl-s1"><span class="pl-pds">&quot;</span>&lt;=<span class="pl-pds">&quot;</span></span> <span class="pl-k">|</span> 
+                    <span class="pl-s1"><span class="pl-pds">&quot;</span>&gt;=<span class="pl-pds">&quot;</span></span> <span class="pl-k">|</span> <span class="pl-s1"><span class="pl-pds">&quot;</span>=<span class="pl-pds">&quot;</span></span> <span class="pl-k">|</span> <span class="pl-s1"><span class="pl-pds">&quot;</span>!=<span class="pl-pds">&quot;</span></span> <span class="pl-k">|</span> <span class="pl-s1"><span class="pl-pds">&quot;</span>~=<span class="pl-pds">&quot;</span></span> ) SQLPPAddExpr )?
+SQLPPAddExpr        ::<span class="pl-k">=</span> SQLPPMultExpr ( ( <span class="pl-s1"><span class="pl-pds">&quot;</span>+<span class="pl-pds">&quot;</span></span> <span class="pl-k">|</span> <span class="pl-s1"><span class="pl-pds">&quot;</span>-<span class="pl-pds">&quot;</span></span> ) SQLPPMultExpr )<span class="pl-k">*</span>
+SQLPPMultExpr       ::<span class="pl-k">=</span> SQLPPUnaryExpr ( ( <span class="pl-s1"><span class="pl-pds">&quot;</span>*<span class="pl-pds">&quot;</span></span> <span class="pl-k">|</span> <span class="pl-s1"><span class="pl-pds">&quot;</span>/<span class="pl-pds">&quot;</span></span> <span class="pl-k">|</span> <span class="pl-s1"><span class="pl-pds">&quot;</span>%<span class="pl-pds">&quot;</span></span> <span class="pl-k">|</span>
+                        <span class="pl-s1"><span class="pl-pds">&quot;</span>^<span class="pl-pds">&quot;</span></span><span class="pl-k">|</span> <span class="pl-s1"><span class="pl-pds">&quot;</span>idiv<span class="pl-pds">&quot;</span></span> ) SQLPPUnaryExpr )<span class="pl-k">*</span>
+SQLPPUnaryExpr      ::<span class="pl-k">=</span> ( ( <span class="pl-s1"><span class="pl-pds">&quot;</span>+<span class="pl-pds">&quot;</span></span> <span class="pl-k">|</span> <span class="pl-s1"><span class="pl-pds">&quot;</span>-<span class="pl-pds">&quot;</span></span> ) )? SQLPPValueExpr</pre>
+</div> 
+<p>The operator expression structure is inherited from AQL.</p> 
+<h4> <a id="user-content-sql-value-expression" class="anchor" href="#sql-value-expression" aria-hidden="true"><span class="octicon octicon-link"></span></a>SQL++ Value Expression</h4> 
+<div class="highlight highlight-python">
+ <pre>    SQLPPValueExpr ::<span class="pl-k">=</span>   SQLPPValue
+                    <span class="pl-k">|</span>    SQLPPParenthesizedExpression
+                    <span class="pl-k">|</span>    SQLPPVariableRef
+                    <span class="pl-k">|</span>    SQLPPNavigation
+                    <span class="pl-k">|</span>    SQLPPNamedValue
+<span class="pl-c">#                    |    SQLPPFunctionCallExpr</span>
+                    <span class="pl-k">|</span>    SQLPPColumnReference</pre>
+</div> 
+<h4> <a id="user-content-sql-values" class="anchor" href="#sql-values" aria-hidden="true"><span class="octicon octicon-link"></span></a>SQL++ Values</h4> 
+<div class="highlight highlight-python">
+ <pre>SQLPPValue          ::<span class="pl-k">=</span> SQLPPDefinedValue
+                    <span class="pl-k">|</span>    <span class="pl-s1"><span class="pl-pds">&quot;</span>missing<span class="pl-pds">&quot;</span></span>
+SQLPPDefinedValue    ::<span class="pl-k">=</span> SQLPPScalarValue
+                    <span class="pl-k">|</span>    SQLPPComplexValue
+SQLPPComplexValue    ::<span class="pl-k">=</span> SQLPPTupleValue
+                    <span class="pl-k">|</span>    SQLPPBagValue
+                    <span class="pl-k">|</span>    SQLPPArrayValue
+                    <span class="pl-k">|</span>    SQLPPMapValue
+SQLPPScalarValue    ::<span class="pl-k">=</span> SQLPPPrimitveValue
+                    <span class="pl-k">|</span>    SQLPPEnrichedValue
+SQLPPPrimitveValue  ::<span class="pl-k">=</span> SQLPPStringValue
+                    <span class="pl-k">|</span>    SQLPPNumberValue
+                    <span class="pl-k">|</span>    <span class="pl-s1"><span class="pl-pds">&quot;</span>true<span class="pl-pds">&quot;</span></span>
+                    <span class="pl-k">|</span>    <span class="pl-s1"><span class="pl-pds">&quot;</span>false<span class="pl-pds">&quot;</span></span>
+                    <span class="pl-k">|</span>    <span class="pl-s1"><span class="pl-pds">&quot;</span>null<span class="pl-pds">&quot;</span></span>
+SQLPPNumberValue    ::<span class="pl-k">=</span> SQLPPIntegerValue
+                    <span class="pl-k">|</span>   SQLPPFloatValue
+                    <span class="pl-k">|</span>   SQLPPDoubleValue
+SQLPPEnrichedValue  ::<span class="pl-k">=</span> SQLPPIdentifier <span class="pl-s1"><span class="pl-pds">&quot;</span>(<span class="pl-pds">&quot;</span></span> SQLPPPrimitiveValue 
+                    ( <span class="pl-s1"><span class="pl-pds">&quot;</span>,<span class="pl-pds">&quot;</span></span> SQLPPPrimitiveValue ) ? <span class="pl-s1"><span class="pl-pds">&quot;</span>)<span class="pl-pds">&quot;</span></span>
+SQLPPTupleValue     ::<span class="pl-k">=</span> <span class="pl-s1"><span class="pl-pds">&quot;</span>{<span class="pl-pds">&quot;</span></span> ( SQLPPFieldBinding ( <span class="pl-s1"><span class="pl-pds">&quot;</span>,<span class="pl-pds">&quot;</span></span> SQLPPFieldBinding )<span class="pl-k">*</span> )?  <span class="pl-s1"><span class="pl-pds">&quot;</span>}<span class="pl-pds">&quot;</span></span>
+SQLPPBagValue       ::<span class="pl-k">=</span> <span class="pl-s1"><span class="pl-pds">&quot;</span>{{<span class="pl-pds">&quot;</span></span> ( SQLPPOperatorExpr ( <span class="pl-s1"><span class="pl-pds">&quot;</span>,<span class="pl-pds">&quot;</span></span> SQLPPOperatorExpr )<span class="pl-k">*</span> )?  <span class="pl-s1"><span class="pl-pds">&quot;</span>}}<span class="pl-pds">&quot;</span></span>
+SQLPPArrayValue     ::<span class="pl-k">=</span> <span class="pl-s1"><span class="pl-pds">&quot;</span>[<span class="pl-pds">&quot;</span></span> ( SQLPPOperatorExpr ( <span class="pl-s1"><span class="pl-pds">&quot;</span>,<span class="pl-pds">&quot;</span></span> SQLPPOperatorExpr )<span class="pl-k">*</span> )?  <span class="pl-s1"><span class="pl-pds">&quot;</span>]<span class="pl-pds">&quot;</span></span>
+SQLPPMapValue       ::<span class="pl-k">=</span> <span class="pl-s1"><span class="pl-pds">&quot;</span>map<span class="pl-pds">&quot;</span></span> <span class="pl-s1"><span class="pl-pds">&quot;</span>(<span class="pl-pds">&quot;</span></span> (SQLPPValue <span class="pl-s1"><span class="pl-pds">&quot;</span>:<span class="pl-pds">&quot;</span></span> SQLPPDefinedValue 
+                        ( <span class="pl-s1"><span class="pl-pds">&quot;</span>,<span class="pl-pds">&quot;</span></span> SQLPPValue <span class="pl-s1"><span class="pl-pds">&quot;</span>:<span class="pl-pds">&quot;</span></span> SQLPPDefinedValue )<span class="pl-k">*</span> )? <span class="pl-s1"><span class="pl-pds">&quot;</span>)<span class="pl-pds">&quot;</span></span>
+SQLPPFieldBinding   ::<span class="pl-k">=</span> SQLPPStringValue <span class="pl-s1"><span class="pl-pds">&quot;</span>:<span class="pl-pds">&quot;</span></span> SQLPPOperatorExpr</pre>
+</div> 
+<p>This section is inspired by the SQL++ Value BNF presented in [1]. However, some features from the BNF are not included. For example, the <code>id::</code> field for defined values is absent from this specification. In order to map more closely to AQL primitives, the number value is subdivided further to its AQL equivalents. Primitive values imported from AQL are appended with a <code>*</code>.</p> 
+<h4> <a id="user-content-sql-parenthesized-expression" class="anchor" href="#sql-parenthesized-expression" aria-hidden="true"><span class="octicon octicon-link"></span></a>SQL++ Parenthesized Expression</h4> 
+<div class="highlight highlight-python">
+ <pre>SQLPPParenthesizedExpression ::<span class="pl-k">=</span> <span class="pl-s1"><span class="pl-pds">&quot;</span>(<span class="pl-pds">&quot;</span></span> SFWExpression <span class="pl-s1"><span class="pl-pds">&quot;</span>)<span class="pl-pds">&quot;</span></span></pre>
+</div> 
+<h4> <a id="user-content-sql-pathstep" class="anchor" href="#sql-pathstep" aria-hidden="true"><span class="octicon octicon-link"></span></a>SQL++ PathStep</h4> 
+<div class="highlight highlight-python">
+ <pre>SQLPPNavigation ::<span class="pl-k">=</span> SQLPPValueExpr (SQLPPathstep)<span class="pl-k">*</span>
+SQLPPPathstep   ::<span class="pl-k">=</span> <span class="pl-s1"><span class="pl-pds">&quot;</span>.<span class="pl-pds">&quot;</span></span> SQLPPIdentifier
+                <span class="pl-k">|</span>   <span class="pl-s1"><span class="pl-pds">&quot;</span>[<span class="pl-pds">&quot;</span></span> SQLPPValueExpr <span class="pl-s1"><span class="pl-pds">&quot;</span>]<span class="pl-pds">&quot;</span></span>
+                <span class="pl-k">|</span>   <span class="pl-s1"><span class="pl-pds">&quot;</span>-&gt;<span class="pl-pds">&quot;</span></span> SQLPPValueExpr</pre>
+</div> 
+<p>Notice that SQL++ does not have the &quot;I am lucky&quot; array navigation AQL has (the &quot;?&quot; in array navigation). </p> 
+<h4> <a id="user-content-sql-named-value" class="anchor" href="#sql-named-value" aria-hidden="true"><span class="octicon octicon-link"></span></a>SQL++ Named Value</h4> 
+<div class="highlight highlight-python">
+ <pre>SQLPPNamedValue ::<span class="pl-k">=</span> SQLPPIdentifier</pre>
+</div> 
+<h4> <a id="user-content-sql-function-call-expression" class="anchor" href="#sql-function-call-expression" aria-hidden="true"><span class="octicon octicon-link"></span></a>SQL++ Function Call Expression</h4> 
+<div class="highlight highlight-python">
+ <pre>SQLPPFunctionCallExpr     ::<span class="pl-k">=</span> <span class="pl-s1"><span class="pl-pds">&quot;</span>(<span class="pl-pds">&quot;</span></span> SQLPPExpression ( <span class="pl-s1"><span class="pl-pds">&quot;</span>,<span class="pl-pds">&quot;</span></span> SQLPPExpression ) ? <span class="pl-s1"><span class="pl-pds">&quot;</span>)<span class="pl-pds">&quot;</span></span></pre>
+</div> 
+<p>In AQL, the symbols <code>&quot;&lt;&quot; | &quot;&gt;&quot; | &quot;&lt;=&quot; | &quot;&gt;=&quot; | &quot;=&quot; | &quot;!=&quot; | &quot;~=&quot; | &quot;+&quot; | &quot;-&quot; | &quot;*&quot; | &quot;%&quot; | &quot;/&quot;</code> are treated as special operators while in SQL++ they are treated as functions. We chose to keep the AQL format.</p> 
+<h3> <a id="user-content-sql-sfwexpression" class="anchor" href="#sql-sfwexpression" aria-hidden="true"><span class="octicon octicon-link"></span></a>SQL++ SFWExpression</h3> 
+<div class="highlight highlight-python">
+ <pre>SQLPPSFWExpression ::<span class="pl-k">=</span>    <span class="pl-s1"><span class="pl-pds">&quot;</span><span class="pl-k">SELECT</span><span class="pl-pds">&quot;</span></span> SQLPPSelectClause
+<span class="pl-c">#                    |     &quot;SELECT&quot;  &quot;DISTINCT&quot; SQLPPSelectClause</span>
+                    <span class="pl-k">|</span>    <span class="pl-s1"><span class="pl-pds">&quot;</span>FROM<span class="pl-pds">&quot;</span></span> SQLPPFromClause
+                    <span class="pl-k">|</span>    <span class="pl-s1"><span class="pl-pds">&quot;</span>WHERE<span class="pl-pds">&quot;</span></span> SQLPPOperatorExpr
+<span class="pl-c">#                    |    &quot;GROUPBY&quot; SQLPPGroupItem</span>
+<span class="pl-c">#                    |    &quot;HAVING&quot; SQLPPOperatorExpr</span>
+<span class="pl-c">#                    |    (&quot;UNION&quot; | &quot;INTERSECT&quot; | &quot;EXCEPT&quot;) [&quot;ALL&quot;] SQLPPSFWExpression</span>
+<span class="pl-c">#                    |    &quot;ORDER BY&quot; SQLPPOrderItem</span>
+<span class="pl-c">#                    |    &quot;LIMIT&quot; SQLPPOperatorExpr</span>
+<span class="pl-c">#                    |    &quot;OFFSET&quot; SQLPPOperatorExpr</span></pre>
+</div> 
+<h4> <a id="user-content-sql-select-clause" class="anchor" href="#sql-select-clause" aria-hidden="true"><span class="octicon octicon-link"></span></a>SQL++ Select Clause</h4> 
+<div class="highlight highlight-python">
+ <pre>SQLPPSelectClause   ::<span class="pl-k">=</span> SQLPPSelectItem (, SQLPPSelectItem)<span class="pl-k">*</span>
+<span class="pl-c">#                    |   &quot;TUPLE&quot; SQLPPSelectItem</span>
+<span class="pl-c">#                    |    &quot;ELEMENT&quot; SQLPPOperatorExpr</span>
+SQLPPSelectItem     ::<span class="pl-k">=</span> SQLPPOperatorExpr [ <span class="pl-s1"><span class="pl-pds">&quot;</span>AS<span class="pl-pds">&quot;</span></span> SQLPPAlias ]
+SQLPPAlias          ::<span class="pl-k">=</span> SQLPPIdentifier</pre>
+</div> 
+<h4> <a id="user-content-sql-from-clause" class="anchor" href="#sql-from-clause" aria-hidden="true"><span class="octicon octicon-link"></span></a>SQL++ From Clause</h4> 
+<div class="highlight highlight-python">
+ <pre>SQLPPFromClause         ::<span class="pl-k">=</span> SQLPPFromItem ( <span class="pl-s1"><span class="pl-pds">&quot;</span>,<span class="pl-pds">&quot;</span></span> SQLPPFromItem)<span class="pl-k">*</span>
+SQLPPFromItem           ::<span class="pl-k">=</span> SQLPPFromSingle
+                        <span class="pl-k">|</span>    SQLPPFromJoin
+<span class="pl-c">#                        |    SQLPPFromFlatten</span>
+SQLPPFromSingle         ::<span class="pl-k">=</span>     SQLPPValueExpression <span class="pl-s1"><span class="pl-pds">&quot;</span>AS<span class="pl-pds">&quot;</span></span> SQLPPVariableRef <span class="pl-c"># [&quot;AT&quot; SQLPPOperatorExpr ]</span>
+SQLPPFromJoin           ::<span class="pl-k">=</span>     SQLPPFromInnerJoin
+<span class="pl-c">#                       |       SQLPPFromOuterJoin</span>
+SQLPPFromInnerJoin      ::<span class="pl-k">=</span> SQLPPFromItem <span class="pl-s1"><span class="pl-pds">&quot;</span>JOIN<span class="pl-pds">&quot;</span></span> SQLPPFromItem <span class="pl-s1"><span class="pl-pds">&quot;</span>ON<span class="pl-pds">&quot;</span></span> SQLPPOperatorExpr
+<span class="pl-c"># SQLPPFromOuterJoin    ::= ( &quot;LEFT&quot; | &quot;RIGHT&quot; | &quot;FULL&quot; ) </span>
+<span class="pl-c">#                    &quot;JOIN&quot; SQLPPFromItem &quot;ON&quot; SQLPPOperatorExpr</span>
+<span class="pl-c"># SQLPPFromFlatten      ::= SQLPPFromInFlatten</span>
+<span class="pl-c">#                       |   SQLPPFromOutFlatten</span>
+<span class="pl-c"># SQLPPFromInFlatten    ::= &quot;FLATTEN&quot; &quot;(&quot;</span>
+<span class="pl-c">#                           SQLPPOpertorExpr &quot;AS&quot; SQLPPVariableRef &quot;,&quot;</span>
+<span class="pl-c">#                           SQLPPOpertorExpr &quot;AS&quot; SQLPPVariableRef &quot;)&quot;</span>
+<span class="pl-c"># SQLPPFromOutFlatten   ::= &quot;FLATTEN&quot; &quot;(&quot;</span>
+<span class="pl-c">#                           SQLPPOpertorExpr &quot;AS&quot; SQLPPVariableRef &quot;,&quot;</span>
+<span class="pl-c">#                           SQLPPOpertorExpr &quot;AS&quot; SQLPPVariableRef &quot;)&quot;</span>
+SQLPPVariableRef        ::<span class="pl-k">=</span> SQLPPIdentifier</pre>
+</div> 
+<h4> <a id="user-content-sql-group-by-clause" class="anchor" href="#sql-group-by-clause" aria-hidden="true"><span class="octicon octicon-link"></span></a>SQL++ GROUP BY Clause</h4> 
+<div class="highlight highlight-python">
+ <pre><span class="pl-c"># SQLPPGroupItem        ::= SQLPPOperatorExpr [ &quot;AS&quot; VariableRef* ]</span></pre>
+</div> 
+<h4> <a id="user-content-sql-order-by-clause" class="anchor" href="#sql-order-by-clause" aria-hidden="true"><span class="octicon octicon-link"></span></a>SQL++ ORDER BY Clause</h4> 
+<div class="highlight highlight-python">
+ <pre><span class="pl-c"># SQLPPOrderByItem    ::= SQLPPOperatorExpr [ &quot;ASC&quot; | &quot;DESC&quot; ]</span></pre>
+</div> 
+<h2> <a id="user-content-sql-configuration-parameters" class="anchor" href="#sql-configuration-parameters" aria-hidden="true"><span class="octicon octicon-link"></span></a>SQL++ Configuration Parameters</h2> 
+<p>UCSD SQL++ configuration parameters are implicitely defined in Asterix SQL++, and cannot be modified. They have been set to Asterix default behaviour.</p> 
+<h2> <a id="user-content-sqlpp-to-aql-mappings" class="anchor" href="#sqlpp-to-aql-mappings" aria-hidden="true"><span class="octicon octicon-link"></span></a>SQLPP to AQL Mappings</h2> 
+<div class="highlight highlight-python">
+ <pre>    SQLPPStringValue      <span class="pl-k">=</span><span class="pl-k">&gt;</span>        StringLiteral
+    SQLPPIntegerValue     <span class="pl-k">=</span><span class="pl-k">&gt;</span>        IntegerLiteral
+    SQLPPFloatValue       <span class="pl-k">=</span><span class="pl-k">&gt;</span>        FloatLiteral
+    SQLPPDoubleValue      <span class="pl-k">=</span><span class="pl-k">&gt;</span>        DoubleLiteral
+    SQLPPTupleValue         <span class="pl-k">=</span><span class="pl-k">&gt;</span>        RecordConstructor
+    SQLPPArrayValue         <span class="pl-k">=</span><span class="pl-k">&gt;</span>        OrderedListConstructor
+    SQLPPBagValue           <span class="pl-k">=</span><span class="pl-k">&gt;</span>        UnorderedListConstructor
+    SQLPPIdentifier         <span class="pl-k">=</span><span class="pl-k">&gt;</span>        Identifier
+    SQLPPVariableRef        <span class="pl-k">=</span><span class="pl-k">&gt;</span>        VariableRef
+    SQLPPNamedValue         <span class="pl-k">=</span><span class="pl-k">&gt;</span>        QualifiedName</pre>
+</div> 
+<p>This is tentative corresponding of SQL++ tokens to AQL tokens.</p> 
+<h2> <a id="user-content-notes" class="anchor" href="#notes" aria-hidden="true"><span class="octicon octicon-link"></span></a>Notes</h2> 
+<h4> <a id="user-content-sql-type-names" class="anchor" href="#sql-type-names" aria-hidden="true"><span class="octicon octicon-link"></span></a>SQL++ Type Names</h4> 
+<p>SQL++ does not provide a mechanism to identify a type, while AQL does. It seems like this would be a useful feature for an implementation of the SQL++ language.</p> 
+<p>We propose to introduce a type naming. The same way there can be a <em>named value</em>, we introduce the concept of a <em>named type</em>. We can evaluate later if such addition makes sense outside of the AQL context later.</p> 
+<h4> <a id="user-content-sql-named-values" class="anchor" href="#sql-named-values" aria-hidden="true"><span class="octicon octicon-link"></span></a>SQL++ Named Values</h4> 
+<p>Given SQL++ <em>named values</em></p> 
+<h4> <a id="user-content-sql-select-clause-1" class="anchor" href="#sql-select-clause-1" aria-hidden="true"><span class="octicon octicon-link"></span></a>SQL++ Select Clause</h4> 
+<p>Note sure whether <code>SQLPPSelectItem ::= SQLPPOperatorExpr [ &quot;AS&quot; {{Identifier}}* ]</code> is correct. Other candidates include <code>VariableRef</code>, <code>QualifiedName</code> and more.</p>
+</body>
+</html>

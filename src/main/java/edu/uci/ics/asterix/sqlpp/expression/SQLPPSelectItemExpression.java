@@ -17,9 +17,9 @@ public class SQLPPSelectItemExpression extends AbstractExpression {
 	private static final long serialVersionUID = -6427048095884193761L;
 
 	/**
-	 * Identifier in case of "AS" statement. May be null.
+	 * SQLPPAliasExpression in case of "AS" statement. May be null.
 	 */
-	private Identifier ident;
+	private SQLPPVariableRef alias;
 	
 	/**
 	 * Item expression. May not be null.
@@ -38,25 +38,25 @@ public class SQLPPSelectItemExpression extends AbstractExpression {
 	 * @param ident
 	 * @param expression
 	 */
-	public SQLPPSelectItemExpression(Identifier ident,
+	public SQLPPSelectItemExpression(SQLPPVariableRef var,
 			AbstractExpression expression) {
 		super();
-		this.ident = ident;
+		this.alias = var;
 		this.expression = expression;
 	}
 
 	/**
 	 * @return the ident
 	 */
-	public Identifier getIdent() {
-		return ident;
+	public SQLPPVariableRef getIdent() {
+		return alias;
 	}
 
 	/**
 	 * @param ident the ident to set
 	 */
-	public void setIdent(Identifier ident) {
-		this.ident = ident;
+	public void setIdent(SQLPPVariableRef var) {
+		this.alias = var;
 	}
 
 	/**

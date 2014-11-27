@@ -18,7 +18,6 @@ public class SQLPPNamedValueExpression extends AbstractExpression {
 	private static final long serialVersionUID = 5155470808163010522L;
 
 	private Identifier name;
-	private AbstractValue value;
 
 	/* (non-Javadoc)
 	 * @see edu.uci.ics.asterix.sqlpp.base.AbstractExpression#getKind()
@@ -32,10 +31,9 @@ public class SQLPPNamedValueExpression extends AbstractExpression {
 	 * @param name
 	 * @param value
 	 */
-	public SQLPPNamedValueExpression(Identifier name, AbstractValue value) {
+	public SQLPPNamedValueExpression(Identifier name) {
 		super();
 		this.name = name;
-		this.value = value;
 	}
 
 	/**
@@ -51,19 +49,4 @@ public class SQLPPNamedValueExpression extends AbstractExpression {
 	public void setName(Identifier name) {
 		this.name = name;
 	}
-
-	/**
-	 * @return the value
-	 */
-	public AbstractValue getValue() {
-		return value;
-	}
-
-	/**
-	 * @param value the value to set
-	 */
-	public void setValue(AbstractValue value) {
-		this.value = value;
-	}
-
 }

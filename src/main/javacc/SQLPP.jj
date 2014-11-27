@@ -3,7 +3,8 @@
  * 
  */
 options {
-    static = false;
+    STATIC = false;
+    IGNORE_CASE = true;
 }
 
 /**
@@ -20,7 +21,18 @@ import edu.uci.ics.asterix.sqlpp.base.AbstractExpression;
 import edu.uci.ics.asterix.sqlpp.expression.SQLPPOperatorExpr;
 import edu.uci.ics.asterix.sqlpp.expression.SQLPPUnaryExpr;
 import edu.uci.ics.asterix.sqlpp.expression.SQLPPUnaryExpr.Sign;
+import edu.uci.ics.asterix.sqlpp.expression.SQLPPSFWExpression;
 import edu.uci.ics.asterix.sqlpp.expression.SQLPPValueExpression;
+import edu.uci.ics.asterix.sqlpp.expression.SQLPPNamedValueExpression;
+import edu.uci.ics.asterix.sqlpp.expression.SQLPPSelectItemExpression;
+import edu.uci.ics.asterix.sqlpp.expression.SQLPPFromInnerJoin;
+import edu.uci.ics.asterix.sqlpp.expression.SQLPPFromOuterJoin;
+import edu.uci.ics.asterix.sqlpp.expression.SQLPPFromOuterJoin.OuterJoinType;
+import edu.uci.ics.asterix.sqlpp.expression.SQLPPFromItem;
+import edu.uci.ics.asterix.sqlpp.expression.SQLPPFromSingle;
+import edu.uci.ics.asterix.sqlpp.expression.SQLPPAliasExpression;
+import edu.uci.ics.asterix.sqlpp.expression.SQLPPVariableRef;
+import edu.uci.ics.asterix.sqlpp.expression.Identifier;
 import edu.uci.ics.asterix.sqlpp.base.AbstractValue;
 import edu.uci.ics.asterix.sqlpp.value.DoubleValue;
 import edu.uci.ics.asterix.sqlpp.value.FalseValue;
@@ -32,6 +44,10 @@ import edu.uci.ics.asterix.sqlpp.value.StringValue;
 import edu.uci.ics.asterix.sqlpp.value.NullValue;
 import edu.uci.ics.asterix.sqlpp.value.TrueValue;
 import edu.uci.ics.asterix.sqlpp.parser.AbstractParser;
+import edu.uci.ics.asterix.sqlpp.base.AbstractClause;
+import edu.uci.ics.asterix.sqlpp.clause.SelectClause;
+import edu.uci.ics.asterix.sqlpp.clause.FromClause;
+import edu.uci.ics.asterix.sqlpp.clause.WhereClause;
 
 
 public class SQLPP extends AbstractParser {
@@ -52,30 +68,17 @@ PARSER_END(SQLPP)
 <DEFAULT>
 TOKEN :
 {
-    <ASC : "asc">
-  | <AT : "at">
-  | <BY : "by">
-  | <DATASET : "dataset">
-  | <DECOR : "decor">
-  | <DESC : "desc">
-  | <DISTINCT : "distinct">
-  | <ELSE : "else">
-  | <EVERY : "every">
-  | <FOR : "for">
-  | <GROUP : "group">
-  | <IF : "if">
-  | <IN : "in">
-  | <LET : "let">
-  | <LIMIT : "limit">
-  | <OFFSET : "offset">
-  | <ORDER : "order">
-  | <RETURN : "return">
-  | <SATISFIES : "satisfies">
-  | <SOME : "some">
-  | <THEN : "then">
-  | <UNION : "union">
+  <SELECT : "select">
+  | <FROM : "from">
   | <WHERE : "where">
-  | <WITH : "with">
+  | <AS : "as">
+  | <JOIN : "join">
+  | <ON : "on">
+  | <INNER : "inner">
+  | <OUTER : "outer">
+  | <LEFT : "left">
+  | <RIGHT : "right">
+  | <FULL : "full">
 }
 
 <DEFAULT>
@@ -266,7 +269,7 @@ SKIP:
  * Rules
  */
 //TODO: Fix the multiple statement initiation.
-List<AbstractStatement> Statements(): {
+List<AbstractStatement> Statements() throws ParseException: {
 	List<AbstractStatement> statements = new ArrayList<AbstractStatement>();
 	AbstractStatement statement;
 }
@@ -282,18 +285,192 @@ List<AbstractStatement> Statements(): {
 	}
 }
 
-AbstractStatement SingleStatement(): {
+AbstractStatement SingleStatement() throws ParseException: {
 	AbstractStatement stmt;
 } {
 	stmt = Query() { return stmt; }
 }
 
-SQLPPQuery Query(): { SQLPPQuery q = new SQLPPQuery(); AbstractExpression e;}
-{
-	e = SQLPPOperatorExpression() <EOF> 
+SQLPPQuery Query() throws ParseException: {
+	SQLPPQuery q = new SQLPPQuery(); AbstractExpression e;
+} {
+	e = SQLPPExpression()
 	{
 		q.setBody(e);
 		return q;
+	}
+}
+
+AbstractExpression SQLPPExpression() throws ParseException: {
+	AbstractExpression e;
+} {
+	( 
+		e = SQLPPOperatorExpression()
+		| e = SFWExpression()
+	)
+	{
+		return e;
+	}
+} 
+
+AbstractExpression SFWExpression() throws ParseException: {
+	ArrayList<AbstractClause> clauses = new ArrayList<AbstractClause>();
+	AbstractClause tmp;
+} {
+    tmp = Select()  {
+    	clauses.add(tmp);
+    }
+    
+    tmp = From() {
+    	clauses.add(tmp);
+    }
+    (
+    	tmp = Where() {
+    		clauses.add(tmp);
+    	}
+    )?
+   {
+     return new SQLPPSFWExpression(clauses);
+   }
+}
+
+AbstractClause Select() throws ParseException: {
+	ArrayList<SQLPPSelectItemExpression> items = new ArrayList<SQLPPSelectItemExpression>();
+	SQLPPSelectItemExpression expr1 = null;
+	SQLPPSelectItemExpression expr2 = null;
+} {
+	<SELECT>
+	expr1 = SelectItemExpr()
+	(
+		<COMMA>
+		expr2 = SelectItemExpr()
+		{
+			items.add(expr2);
+		}
+	)*
+	{
+		items.add(0, expr1); //Adds expr1 at the begining of the list.
+		return new SelectClause(items);
+	}
+}
+
+SQLPPSelectItemExpression SelectItemExpr() throws ParseException: {
+	SQLPPVariableRef var = null;
+	AbstractExpression expr = null;
+} {
+	expr = ValueExpr()
+	(
+		<AS>
+		var = VariableRef()
+	)? {
+		return new SQLPPSelectItemExpression(var, expr);
+	}
+}
+
+SQLPPAliasExpression AliasExpression() throws ParseException: {
+	Identifier ident = null;
+} {
+	ident = Identifier() {
+		return new SQLPPAliasExpression(ident);
+	}
+}
+
+AbstractClause From() throws ParseException: {
+	ArrayList<SQLPPFromItem> items = new ArrayList<SQLPPFromItem>();
+	SQLPPFromItem expr1 = null;
+	SQLPPFromItem expr2 = null;
+} {
+	<FROM>
+	expr1 = FromItem()
+	(
+		<COMMA>
+		expr2 = FromItem()
+		{
+			items.add(expr2);
+		}
+	)*
+	{
+		items.add(0,expr1);
+		return new FromClause(items);
+	}	
+}
+
+SQLPPFromItem FromItem() throws ParseException: {
+	SQLPPFromItem fromItem;
+} {
+	( fromItem = FromInnerJoin()
+	| fromItem = FromOuterJoin()
+	) {
+		return fromItem;
+	}
+}
+
+SQLPPFromSingle FromSingle() throws ParseException: {
+	AbstractExpression expr = null;
+	SQLPPVariableRef var = null;
+} {
+	expr = ValueExpr()
+	(
+		<AS>
+		var = VariableRef()
+	)? {
+		return new SQLPPFromSingle(var, expr);
+	}
+}
+
+SQLPPFromItem FromInnerJoin() throws ParseException: {
+	SQLPPFromItem left = null;
+	SQLPPFromItem right = null;
+	AbstractExpression expr = null;
+} {
+	(<INNER>) ?
+	left = FromSingle()
+	( <JOIN>
+	  right = FromItem()
+	  <ON>
+	  expr = SQLPPOperatorExpression()
+	)? {
+		if (right==null) { return left;}
+		else {return new SQLPPFromInnerJoin(left, right, expr);}
+	}
+}
+
+SQLPPFromItem FromOuterJoin() throws ParseException: {
+	OuterJoinType joinType;
+	SQLPPFromItem left = null;
+	SQLPPFromItem right = null;
+	AbstractExpression expr = null;
+} {
+	( <LEFT> { joinType = OuterJoinType.LEFT;}
+	  | <RIGHT> { joinType = OuterJoinType.RIGHT;}
+	  | <FULL> { joinType = OuterJoinType.FULL;}
+	)
+	<OUTER> 
+	left = FromSingle()
+	<JOIN>
+	right = FromItem()
+	<ON>
+	expr = SQLPPOperatorExpression()
+	{
+		return new SQLPPFromOuterJoin(joinType, left, right, expr);
+	}
+}
+
+SQLPPVariableRef VariableRef() throws ParseException: {
+	Identifier ident = null;
+} {
+	ident = Identifier() {
+		return new SQLPPVariableRef(ident);
+	}
+}
+
+AbstractClause Where() throws ParseException: {
+	AbstractExpression expr = null;
+} {
+	<WHERE>
+	expr = SQLPPOperatorExpression()
+	{
+		return new WhereClause(expr);
 	}
 }
 
@@ -326,7 +503,7 @@ AbstractExpression SQLPPOperatorExpression() throws ParseException:
 	}
 }
 
-AbstractExpression AndExpr()throws ParseException:
+AbstractExpression AndExpr() throws ParseException:
 {
   SQLPPOperatorExpr op = null;
   AbstractExpression operand = null;
@@ -387,6 +564,13 @@ AbstractExpression RelExpr()throws ParseException:
  	}
 }
 
+/**
+ * TODO: fix this problem.
+ * Warning: Choice conflict in (...)* construct in this rule. Will need to be addressed.
+         Expansion nested within construct and expansion following construct
+         have common prefixes, one of which is: "+"
+         Consider using a lookahead of 2 or more for nested expansion.
+ */
 AbstractExpression AddExpr() throws ParseException:
 {
   SQLPPOperatorExpr op = null;
@@ -395,7 +579,7 @@ AbstractExpression AddExpr() throws ParseException:
 {
 	operand = MultExpr()
 
-	( (<PLUS> | <MINUS>)
+	( LOOKAHEAD(2)(<PLUS> | <MINUS>)
   	{
   	  if (op == null) {
   	    op = new SQLPPOperatorExpr();
@@ -448,7 +632,7 @@ AbstractExpression UnaryExpr() throws ParseException:
 	AbstractExpression expr = null;
 }
 {
-	( (<PLUS> | <MINUS>) 
+	( (<PLUS> | <MINUS>)
 	{
 	  	uexpr = new SQLPPUnaryExpr();
 		if("+".equals(token.image))
@@ -472,12 +656,14 @@ AbstractExpression UnaryExpr() throws ParseException:
 	}
 }
 
-AbstractExpression ValueExpr()throws ParseException:
+AbstractExpression ValueExpr() throws ParseException:
 {
   AbstractExpression expr = null;
 }
 {
-    expr = Value()
+    ( expr = Value()
+    | expr = NamedValue()
+    )
     {
       return expr;
     }
@@ -486,14 +672,9 @@ AbstractExpression ValueExpr()throws ParseException:
 AbstractExpression Value() throws ParseException:
 {
   SQLPPValueExpression expr = new SQLPPValueExpression();
-  String str = null;
 }
 {
   (
-//    str = StringLiteral() //not sure how StringLiteral() works
-//    {
-//      expr.setValue(new StringValue(str));
-//    }
 	<STRING_LITERAL>
 	{
 	   expr.setValue(new StringValue(removeQuotesAndEscapes(token.image)));
@@ -535,4 +716,26 @@ AbstractExpression Value() throws ParseException:
     {
       return expr;
     }
+}
+
+/**
+ * Named value rule
+ */
+AbstractExpression NamedValue() throws ParseException:
+{
+	Identifier ident = null;
+}
+{
+	ident = Identifier()
+	{
+		return new SQLPPNamedValueExpression(ident);
+	}
+}
+
+Identifier Identifier() throws ParseException: {}
+{
+	<IDENTIFIER>
+	{
+	   return new Identifier(token.image);
+	}
 }

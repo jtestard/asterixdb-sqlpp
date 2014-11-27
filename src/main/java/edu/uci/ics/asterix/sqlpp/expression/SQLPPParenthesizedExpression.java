@@ -15,7 +15,7 @@ public class SQLPPParenthesizedExpression extends AbstractExpression {
 	 * 
 	 */
 	private static final long serialVersionUID = 6128513727472807410L;
-	private SFWExpression expression;
+	private SQLPPSFWExpression expression;
 
 	/* (non-Javadoc)
 	 * @see edu.uci.ics.asterix.sqlpp.base.AbstractExpression#getKind()
@@ -28,21 +28,21 @@ public class SQLPPParenthesizedExpression extends AbstractExpression {
 	/**
 	 * @return the expression
 	 */
-	public SFWExpression getExpression() {
+	public SQLPPSFWExpression getExpression() {
 		return expression;
 	}
 
 	/**
 	 * @param expression the expression to set
 	 */
-	public void setExpression(SFWExpression expression) {
+	public void setExpression(SQLPPSFWExpression expression) {
 		this.expression = expression;
 	}
 
 	/**
 	 * @param expression
 	 */
-	public SQLPPParenthesizedExpression(SFWExpression expression) {
+	public SQLPPParenthesizedExpression(SQLPPSFWExpression expression) {
 		super();
 		this.expression = expression;
 	}

@@ -1,13 +1,15 @@
 # The SQL++ query language for Asterix
 
+Notice: this document is using a variant of Markdown called Github Flavored Markdown (GFM), which allows fancy features such as syntax coloring. To be able to view this document properly, please either go to the [github page for the project](https://github.com/jtestard/asterixdb-sqlpp) or use Eclipse's [GFM viewer](https://github.com/satyagraha/gfm_viewer).
 
 ## Introduction
 
-This document is intended as a reference guide to the full syntax and semantics of the SQL++ Query Language for Asterix (Asterix SQL++). This document describes how the SQL++ query language is interpreted in the context of AsterixDB. Details for the SQL++ query language being developped at UCSD can be found [here](http://forward.ucsd.edu/sqlpp.html).
+This document is intended as a reference guide to the full syntax and semantics of the SQL++ Query Language for Asterix (Asterix SQL++). This document describes how the SQL++ query language is interpreted in the context of AsterixDB. Details for the SQL++ query language being developed at UCSD can be found [here](http://forward.ucsd.edu/sqlpp.html).
 
 It is important to note that while we are using the SQL++ query language, we are keeping the Asterix Data Model. As such, there will be some differences between the language presented here and the standard "UCSD" SQL++ [1]. These differences will be clearly highlighted when they occur and will be kept at a minimum.
 
 This description only addresses expressions for the moment. Unsupported expressions are currently greyed out.
+Note that this description contains left-recursion, while the parser used for SQL++ is LL(k). Therefore rules appearing in the parser may differ from this document.
 
 ## Expressions
 ```python
@@ -18,7 +20,7 @@ A SQL++ query can be any legal SQL++ expression.
 ```python
 SQLPPExpression ::=     SFWExpression
                 |       SQLPPOperatorExpr
-                |       SQLPPQuantifiedExpression
+#                |       SQLPPQuantifiedExpression
 ```
 
 The `SQLPPQuantifiedExpression` expression specification will be deferred to a later date, given that existential/universal quantification is not fully supported in the SQL++ implementation as of this moment (in particular the `IN, EXISTS, ANY, ALL` keywords from the SQL++ language are not yet supported).
@@ -44,9 +46,10 @@ The operator expression structure is inherited from AQL.
     SQLPPValueExpr ::=   SQLPPValue
                     |    SQLPPParenthesizedExpression
                     |    SQLPPVariableRef
-                    |    SQLPPPathStep
+                    |    SQLPPNavigation
                     |    SQLPPNamedValue
 #                    |    SQLPPFunctionCallExpr
+                    |    SQLPPColumnReference
 ```
                     
 #### SQL++ Values
@@ -75,8 +78,8 @@ SQLPPEnrichedValue  ::= SQLPPIdentifier "(" SQLPPPrimitiveValue
 SQLPPTupleValue     ::= "{" ( SQLPPFieldBinding ( "," SQLPPFieldBinding )* )?  "}"
 SQLPPBagValue       ::= "{{" ( SQLPPOperatorExpr ( "," SQLPPOperatorExpr )* )?  "}}"
 SQLPPArrayValue     ::= "[" ( SQLPPOperatorExpr ( "," SQLPPOperatorExpr )* )?  "]"
-SQLPPMapValue       ::= "map" "(" SQLPPValue ":" SQLPPDefinedValue 
-                        ( "," SQLPPValue ":" SQLPPDefinedValue ) ")"
+SQLPPMapValue       ::= "map" "(" (SQLPPValue ":" SQLPPDefinedValue 
+                        ( "," SQLPPValue ":" SQLPPDefinedValue )* )? ")"
 SQLPPFieldBinding   ::= SQLPPStringValue ":" SQLPPOperatorExpr
 ```
     
@@ -92,16 +95,18 @@ SQLPPParenthesizedExpression ::= "(" SFWExpression ")"
 #### SQL++ PathStep
 
 ```python
-SQLPPPathstep   ::= SQLPPOperatorExpr "." SQLPPIdentifier
-                |    SQLPPOperatorExpr "[" SQLPPValueExpr "]"
-                |    SQLPPOperatorExpr "->" SQLPPValueExpr
+SQLPPNavigation ::= SQLPPValueExpr (SQLPPathstep)*
+SQLPPPathstep   ::= "." SQLPPIdentifier
+                |   "[" SQLPPValueExpr "]"
+                |   "->" SQLPPValueExpr
 ```
 
 Notice that SQL++ does not have the "I am lucky" array navigation AQL has (the "?" in array navigation).            
+
 #### SQL++ Named Value
 
 ```python
-
+SQLPPNamedValue ::= SQLPPIdentifier
 ```
 
 #### SQL++ Function Call Expression
@@ -133,7 +138,8 @@ SQLPPSFWExpression ::=    "SELECT" SQLPPSelectClause
 SQLPPSelectClause   ::= SQLPPSelectItem (, SQLPPSelectItem)*
 #                    |   "TUPLE" SQLPPSelectItem
 #                    |    "ELEMENT" SQLPPOperatorExpr
-SQLPPSelectItem     ::= SQLPPOperatorExpr [ "AS" SQLPPIdentifier ]
+SQLPPSelectItem     ::= SQLPPOperatorExpr [ "AS" SQLPPAlias ]
+SQLPPAlias          ::= SQLPPIdentifier
 ```
 
 #### SQL++ From Clause
@@ -143,7 +149,7 @@ SQLPPFromClause         ::= SQLPPFromItem ( "," SQLPPFromItem)*
 SQLPPFromItem           ::= SQLPPFromSingle
                         |    SQLPPFromJoin
 #                        |    SQLPPFromFlatten
-SQLPPFromSingle         ::=     SQLPPOperatorExpr "AS" SQLPPVariableRef # ["AT" SQLPPOperatorExpr ]
+SQLPPFromSingle         ::=     SQLPPValueExpression "AS" SQLPPVariableRef # ["AT" SQLPPOperatorExpr ]
 SQLPPFromJoin           ::=     SQLPPFromInnerJoin
 #                       |       SQLPPFromOuterJoin
 SQLPPFromInnerJoin      ::= SQLPPFromItem "JOIN" SQLPPFromItem "ON" SQLPPOperatorExpr
@@ -157,6 +163,7 @@ SQLPPFromInnerJoin      ::= SQLPPFromItem "JOIN" SQLPPFromItem "ON" SQLPPOperato
 # SQLPPFromOutFlatten   ::= "FLATTEN" "("
 #                           SQLPPOpertorExpr "AS" SQLPPVariableRef ","
 #                           SQLPPOpertorExpr "AS" SQLPPVariableRef ")"
+SQLPPVariableRef        ::= SQLPPIdentifier
 ```
 
 #### SQL++ GROUP BY Clause

@@ -11,7 +11,7 @@ import edu.uci.ics.asterix.sqlpp.base.AbstractExpression;
  */
 public class SQLPPVariableRef extends AbstractExpression {
 	
-	private Identifier var;
+	private Identifier variable;
 
 	/**
 	 * 
@@ -30,14 +30,14 @@ public class SQLPPVariableRef extends AbstractExpression {
 	 * @return the var
 	 */
 	public Identifier getVar() {
-		return var;
+		return variable;
 	}
 
 	/**
 	 * @param var the var to set
 	 */
 	public void setVar(Identifier var) {
-		this.var = var;
+		this.variable = var;
 	}
 
 	/**
@@ -45,7 +45,7 @@ public class SQLPPVariableRef extends AbstractExpression {
 	 */
 	public SQLPPVariableRef(Identifier var) {
 		super();
-		this.var = var;
+		this.variable = var;
 	}
 
 }

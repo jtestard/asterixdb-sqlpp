@@ -1,0 +1,29 @@
+{
+  "@type":"edu.uci.ics.asterix.sqlpp.statement.SQLPPQuery",
+  "body":{
+    "@type":"edu.uci.ics.asterix.sqlpp.expression.SQLPPOperatorExpr",
+    "expressions":[
+      {
+        "@type":"edu.uci.ics.asterix.sqlpp.expression.SQLPPValueExpression",
+        "value":{
+          "@type":"edu.uci.ics.asterix.sqlpp.value.IntegerValue",
+          "value":1
+        }
+      },
+      {
+        "@type":"edu.uci.ics.asterix.sqlpp.expression.SQLPPValueExpression",
+        "value":{
+          "@type":"edu.uci.ics.asterix.sqlpp.value.IntegerValue",
+          "value":2
+        }
+      }
+    ],
+    "operators":[
+      {
+        "@type":"edu.uci.ics.asterix.sqlpp.expression.OperatorType",
+        "name":"EQ",
+        "ordinal":6
+      }
+    ]
+  }
+}

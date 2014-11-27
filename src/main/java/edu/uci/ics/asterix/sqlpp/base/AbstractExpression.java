@@ -35,12 +35,14 @@ public abstract class AbstractExpression implements ISqlppExpression {
         TUPLE_ACCESS_EXPRESSION,
         MAP_ACCESS_EXPRESSION,
         ARRAY_ACCESS_EXPRESSION,
+        ALIAS_EXPRESSION,
         NAMED_EXPRESSION,
         UNARY_EXPRESSION,
         SFW_EXPRESSION,
         SELECT_ITEM_EXPRESSION,
         FROM_ITEM_SINGLE_EXPRESSION,
         FROM_ITEM_INNER_JOIN_EXPRESSION,
+        FROM_ITEM_OUTER_JOIN_EXPRESSION
     }
     
     public String toJSON() throws IOException {

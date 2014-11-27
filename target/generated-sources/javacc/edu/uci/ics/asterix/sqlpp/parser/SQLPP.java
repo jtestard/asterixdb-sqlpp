@@ -10,7 +10,18 @@ import edu.uci.ics.asterix.sqlpp.base.AbstractExpression;
 import edu.uci.ics.asterix.sqlpp.expression.SQLPPOperatorExpr;
 import edu.uci.ics.asterix.sqlpp.expression.SQLPPUnaryExpr;
 import edu.uci.ics.asterix.sqlpp.expression.SQLPPUnaryExpr.Sign;
+import edu.uci.ics.asterix.sqlpp.expression.SQLPPSFWExpression;
 import edu.uci.ics.asterix.sqlpp.expression.SQLPPValueExpression;
+import edu.uci.ics.asterix.sqlpp.expression.SQLPPNamedValueExpression;
+import edu.uci.ics.asterix.sqlpp.expression.SQLPPSelectItemExpression;
+import edu.uci.ics.asterix.sqlpp.expression.SQLPPFromInnerJoin;
+import edu.uci.ics.asterix.sqlpp.expression.SQLPPFromOuterJoin;
+import edu.uci.ics.asterix.sqlpp.expression.SQLPPFromOuterJoin.OuterJoinType;
+import edu.uci.ics.asterix.sqlpp.expression.SQLPPFromItem;
+import edu.uci.ics.asterix.sqlpp.expression.SQLPPFromSingle;
+import edu.uci.ics.asterix.sqlpp.expression.SQLPPAliasExpression;
+import edu.uci.ics.asterix.sqlpp.expression.SQLPPVariableRef;
+import edu.uci.ics.asterix.sqlpp.expression.Identifier;
 import edu.uci.ics.asterix.sqlpp.base.AbstractValue;
 import edu.uci.ics.asterix.sqlpp.value.DoubleValue;
 import edu.uci.ics.asterix.sqlpp.value.FalseValue;
@@ -22,6 +33,10 @@ import edu.uci.ics.asterix.sqlpp.value.StringValue;
 import edu.uci.ics.asterix.sqlpp.value.NullValue;
 import edu.uci.ics.asterix.sqlpp.value.TrueValue;
 import edu.uci.ics.asterix.sqlpp.parser.AbstractParser;
+import edu.uci.ics.asterix.sqlpp.base.AbstractClause;
+import edu.uci.ics.asterix.sqlpp.clause.SelectClause;
+import edu.uci.ics.asterix.sqlpp.clause.FromClause;
+import edu.uci.ics.asterix.sqlpp.clause.WhereClause;
 
 
 public class SQLPP extends AbstractParser implements SQLPPConstants {
@@ -61,11 +76,12 @@ public class SQLPP extends AbstractParser implements SQLPPConstants {
  * Rules
  */
 //TODO: Fix the multiple statement initiation.
-  final public List<AbstractStatement> Statements() throws ParseException {List<AbstractStatement> statements = new ArrayList<AbstractStatement>();
+  final public List<AbstractStatement> Statements() throws ParseException, ParseException {List<AbstractStatement> statements = new ArrayList<AbstractStatement>();
         AbstractStatement statement;
     label_1:
     while (true) {
       switch ((jj_ntk==-1)?jj_ntk_f():jj_ntk) {
+      case SELECT:
       case MINUS:
       case PLUS:
       case INTEGER_LITERAL:
@@ -75,7 +91,8 @@ public class SQLPP extends AbstractParser implements SQLPPConstants {
       case MISSING:
       case DOUBLE_LITERAL:
       case FLOAT_LITERAL:
-      case STRING_LITERAL:{
+      case STRING_LITERAL:
+      case IDENTIFIER:{
         ;
         break;
         }
@@ -86,8 +103,8 @@ public class SQLPP extends AbstractParser implements SQLPPConstants {
       statement = SingleStatement();
 statements.add(statement);
       switch ((jj_ntk==-1)?jj_ntk_f():jj_ntk) {
-      case 79:{
-        jj_consume_token(79);
+      case 66:{
+        jj_consume_token(66);
         break;
         }
       default:
@@ -100,24 +117,270 @@ statements.add(statement);
     throw new Error("Missing return statement in function");
   }
 
-  final public AbstractStatement SingleStatement() throws ParseException {AbstractStatement stmt;
+  final public AbstractStatement SingleStatement() throws ParseException, ParseException {AbstractStatement stmt;
     stmt = Query();
 {if ("" != null) return stmt;}
     throw new Error("Missing return statement in function");
   }
 
-  final public SQLPPQuery Query() throws ParseException {SQLPPQuery q = new SQLPPQuery(); AbstractExpression e;
-    e = SQLPPOperatorExpression();
-    jj_consume_token(0);
+  final public SQLPPQuery Query() throws ParseException, ParseException {SQLPPQuery q = new SQLPPQuery(); AbstractExpression e;
+    e = SQLPPExpression();
 q.setBody(e);
                 {if ("" != null) return q;}
+    throw new Error("Missing return statement in function");
+  }
+
+  final public AbstractExpression SQLPPExpression() throws ParseException, ParseException {AbstractExpression e;
+    switch ((jj_ntk==-1)?jj_ntk_f():jj_ntk) {
+    case MINUS:
+    case PLUS:
+    case INTEGER_LITERAL:
+    case NULL:
+    case TRUE:
+    case FALSE:
+    case MISSING:
+    case DOUBLE_LITERAL:
+    case FLOAT_LITERAL:
+    case STRING_LITERAL:
+    case IDENTIFIER:{
+      e = SQLPPOperatorExpression();
+      break;
+      }
+    case SELECT:{
+      e = SFWExpression();
+      break;
+      }
+    default:
+      jj_la1[2] = jj_gen;
+      jj_consume_token(-1);
+      throw new ParseException();
+    }
+{if ("" != null) return e;}
+    throw new Error("Missing return statement in function");
+  }
+
+  final public AbstractExpression SFWExpression() throws ParseException, ParseException {ArrayList<AbstractClause> clauses = new ArrayList<AbstractClause>();
+        AbstractClause tmp;
+    tmp = Select();
+clauses.add(tmp);
+    tmp = From();
+clauses.add(tmp);
+    switch ((jj_ntk==-1)?jj_ntk_f():jj_ntk) {
+    case WHERE:{
+      tmp = Where();
+clauses.add(tmp);
+      break;
+      }
+    default:
+      jj_la1[3] = jj_gen;
+      ;
+    }
+{if ("" != null) return new SQLPPSFWExpression(clauses);}
+    throw new Error("Missing return statement in function");
+  }
+
+  final public AbstractClause Select() throws ParseException, ParseException {ArrayList<SQLPPSelectItemExpression> items = new ArrayList<SQLPPSelectItemExpression>();
+        SQLPPSelectItemExpression expr1 = null;
+        SQLPPSelectItemExpression expr2 = null;
+    jj_consume_token(SELECT);
+    expr1 = SelectItemExpr();
+    label_2:
+    while (true) {
+      switch ((jj_ntk==-1)?jj_ntk_f():jj_ntk) {
+      case COMMA:{
+        ;
+        break;
+        }
+      default:
+        jj_la1[4] = jj_gen;
+        break label_2;
+      }
+      jj_consume_token(COMMA);
+      expr2 = SelectItemExpr();
+items.add(expr2);
+    }
+items.add(0, expr1); //Adds expr1 at the begining of the list.
+                {if ("" != null) return new SelectClause(items);}
+    throw new Error("Missing return statement in function");
+  }
+
+  final public SQLPPSelectItemExpression SelectItemExpr() throws ParseException, ParseException {SQLPPVariableRef var = null;
+        AbstractExpression expr = null;
+    expr = ValueExpr();
+    switch ((jj_ntk==-1)?jj_ntk_f():jj_ntk) {
+    case AS:{
+      jj_consume_token(AS);
+      var = VariableRef();
+      break;
+      }
+    default:
+      jj_la1[5] = jj_gen;
+      ;
+    }
+{if ("" != null) return new SQLPPSelectItemExpression(var, expr);}
+    throw new Error("Missing return statement in function");
+  }
+
+  final public SQLPPAliasExpression AliasExpression() throws ParseException, ParseException {Identifier ident = null;
+    ident = Identifier();
+{if ("" != null) return new SQLPPAliasExpression(ident);}
+    throw new Error("Missing return statement in function");
+  }
+
+  final public AbstractClause From() throws ParseException, ParseException {ArrayList<SQLPPFromItem> items = new ArrayList<SQLPPFromItem>();
+        SQLPPFromItem expr1 = null;
+        SQLPPFromItem expr2 = null;
+    jj_consume_token(FROM);
+    expr1 = FromItem();
+    label_3:
+    while (true) {
+      switch ((jj_ntk==-1)?jj_ntk_f():jj_ntk) {
+      case COMMA:{
+        ;
+        break;
+        }
+      default:
+        jj_la1[6] = jj_gen;
+        break label_3;
+      }
+      jj_consume_token(COMMA);
+      expr2 = FromItem();
+items.add(expr2);
+    }
+items.add(0,expr1);
+                {if ("" != null) return new FromClause(items);}
+    throw new Error("Missing return statement in function");
+  }
+
+  final public SQLPPFromItem FromItem() throws ParseException, ParseException {SQLPPFromItem fromItem;
+    switch ((jj_ntk==-1)?jj_ntk_f():jj_ntk) {
+    case INNER:
+    case INTEGER_LITERAL:
+    case NULL:
+    case TRUE:
+    case FALSE:
+    case MISSING:
+    case DOUBLE_LITERAL:
+    case FLOAT_LITERAL:
+    case STRING_LITERAL:
+    case IDENTIFIER:{
+      fromItem = FromInnerJoin();
+      break;
+      }
+    case LEFT:
+    case RIGHT:
+    case FULL:{
+      fromItem = FromOuterJoin();
+      break;
+      }
+    default:
+      jj_la1[7] = jj_gen;
+      jj_consume_token(-1);
+      throw new ParseException();
+    }
+{if ("" != null) return fromItem;}
+    throw new Error("Missing return statement in function");
+  }
+
+  final public SQLPPFromSingle FromSingle() throws ParseException, ParseException {AbstractExpression expr = null;
+        SQLPPVariableRef var = null;
+    expr = ValueExpr();
+    switch ((jj_ntk==-1)?jj_ntk_f():jj_ntk) {
+    case AS:{
+      jj_consume_token(AS);
+      var = VariableRef();
+      break;
+      }
+    default:
+      jj_la1[8] = jj_gen;
+      ;
+    }
+{if ("" != null) return new SQLPPFromSingle(var, expr);}
+    throw new Error("Missing return statement in function");
+  }
+
+  final public SQLPPFromItem FromInnerJoin() throws ParseException, ParseException {SQLPPFromItem left = null;
+        SQLPPFromItem right = null;
+        AbstractExpression expr = null;
+    switch ((jj_ntk==-1)?jj_ntk_f():jj_ntk) {
+    case INNER:{
+      jj_consume_token(INNER);
+      break;
+      }
+    default:
+      jj_la1[9] = jj_gen;
+      ;
+    }
+    left = FromSingle();
+    switch ((jj_ntk==-1)?jj_ntk_f():jj_ntk) {
+    case JOIN:{
+      jj_consume_token(JOIN);
+      right = FromItem();
+      jj_consume_token(ON);
+      expr = SQLPPOperatorExpression();
+      break;
+      }
+    default:
+      jj_la1[10] = jj_gen;
+      ;
+    }
+if (right==null) { {if ("" != null) return left;}}
+                else {{if ("" != null) return new SQLPPFromInnerJoin(left, right, expr);}}
+    throw new Error("Missing return statement in function");
+  }
+
+  final public SQLPPFromItem FromOuterJoin() throws ParseException, ParseException {OuterJoinType joinType;
+        SQLPPFromItem left = null;
+        SQLPPFromItem right = null;
+        AbstractExpression expr = null;
+    switch ((jj_ntk==-1)?jj_ntk_f():jj_ntk) {
+    case LEFT:{
+      jj_consume_token(LEFT);
+joinType = OuterJoinType.LEFT;
+      break;
+      }
+    case RIGHT:{
+      jj_consume_token(RIGHT);
+joinType = OuterJoinType.RIGHT;
+      break;
+      }
+    case FULL:{
+      jj_consume_token(FULL);
+joinType = OuterJoinType.FULL;
+      break;
+      }
+    default:
+      jj_la1[11] = jj_gen;
+      jj_consume_token(-1);
+      throw new ParseException();
+    }
+    jj_consume_token(OUTER);
+    left = FromSingle();
+    jj_consume_token(JOIN);
+    right = FromItem();
+    jj_consume_token(ON);
+    expr = SQLPPOperatorExpression();
+{if ("" != null) return new SQLPPFromOuterJoin(joinType, left, right, expr);}
+    throw new Error("Missing return statement in function");
+  }
+
+  final public SQLPPVariableRef VariableRef() throws ParseException, ParseException {Identifier ident = null;
+    ident = Identifier();
+{if ("" != null) return new SQLPPVariableRef(ident);}
+    throw new Error("Missing return statement in function");
+  }
+
+  final public AbstractClause Where() throws ParseException, ParseException {AbstractExpression expr = null;
+    jj_consume_token(WHERE);
+    expr = SQLPPOperatorExpression();
+{if ("" != null) return new WhereClause(expr);}
     throw new Error("Missing return statement in function");
   }
 
   final public AbstractExpression SQLPPOperatorExpression() throws ParseException, ParseException {SQLPPOperatorExpr op = null;
   AbstractExpression operand = null;
     operand = AndExpr();
-    label_2:
+    label_4:
     while (true) {
       switch ((jj_ntk==-1)?jj_ntk_f():jj_ntk) {
       case OR:{
@@ -125,8 +388,8 @@ q.setBody(e);
         break;
         }
       default:
-        jj_la1[2] = jj_gen;
-        break label_2;
+        jj_la1[12] = jj_gen;
+        break label_4;
       }
       jj_consume_token(OR);
 if (op == null) {
@@ -144,7 +407,7 @@ op.addOperand(operand);
   final public AbstractExpression AndExpr() throws ParseException, ParseException {SQLPPOperatorExpr op = null;
   AbstractExpression operand = null;
     operand = RelExpr();
-    label_3:
+    label_5:
     while (true) {
       switch ((jj_ntk==-1)?jj_ntk_f():jj_ntk) {
       case AND:{
@@ -152,8 +415,8 @@ op.addOperand(operand);
         break;
         }
       default:
-        jj_la1[3] = jj_gen;
-        break label_3;
+        jj_la1[13] = jj_gen;
+        break label_5;
       }
       jj_consume_token(AND);
 if (op == null) {
@@ -202,7 +465,7 @@ op.addOperand(operand);
         break;
         }
       default:
-        jj_la1[4] = jj_gen;
+        jj_la1[14] = jj_gen;
         jj_consume_token(-1);
         throw new ParseException();
       }
@@ -220,20 +483,22 @@ op.addOperand(operand);
     throw new Error("Missing return statement in function");
   }
 
+/**
+ * TODO: fix this problem.
+ * Warning: Choice conflict in (...)* construct in this rule. Will need to be addressed.
+         Expansion nested within construct and expansion following construct
+         have common prefixes, one of which is: "+"
+         Consider using a lookahead of 2 or more for nested expansion.
+ */
   final public AbstractExpression AddExpr() throws ParseException, ParseException {SQLPPOperatorExpr op = null;
   AbstractExpression operand = null;
     operand = MultExpr();
-    label_4:
+    label_6:
     while (true) {
-      switch ((jj_ntk==-1)?jj_ntk_f():jj_ntk) {
-      case MINUS:
-      case PLUS:{
+      if (jj_2_2(2)) {
         ;
-        break;
-        }
-      default:
-        jj_la1[5] = jj_gen;
-        break label_4;
+      } else {
+        break label_6;
       }
       switch ((jj_ntk==-1)?jj_ntk_f():jj_ntk) {
       case PLUS:{
@@ -245,7 +510,7 @@ op.addOperand(operand);
         break;
         }
       default:
-        jj_la1[6] = jj_gen;
+        jj_la1[15] = jj_gen;
         jj_consume_token(-1);
         throw new ParseException();
       }
@@ -264,7 +529,7 @@ op.addOperand(operand);
   final public AbstractExpression MultExpr() throws ParseException, ParseException {SQLPPOperatorExpr op = null;
   AbstractExpression operand = null;
     operand = UnaryExpr();
-    label_5:
+    label_7:
     while (true) {
       switch ((jj_ntk==-1)?jj_ntk_f():jj_ntk) {
       case CARET:
@@ -276,8 +541,8 @@ op.addOperand(operand);
         break;
         }
       default:
-        jj_la1[7] = jj_gen;
-        break label_5;
+        jj_la1[16] = jj_gen;
+        break label_7;
       }
       switch ((jj_ntk==-1)?jj_ntk_f():jj_ntk) {
       case MUL:{
@@ -301,7 +566,7 @@ op.addOperand(operand);
         break;
         }
       default:
-        jj_la1[8] = jj_gen;
+        jj_la1[17] = jj_gen;
         jj_consume_token(-1);
         throw new ParseException();
       }
@@ -332,7 +597,7 @@ op.addOperand(operand);
         break;
         }
       default:
-        jj_la1[9] = jj_gen;
+        jj_la1[18] = jj_gen;
         jj_consume_token(-1);
         throw new ParseException();
       }
@@ -346,7 +611,7 @@ uexpr = new SQLPPUnaryExpr();
       break;
       }
     default:
-      jj_la1[10] = jj_gen;
+      jj_la1[19] = jj_gen;
       ;
     }
     expr = ValueExpr();
@@ -361,13 +626,32 @@ if(uexpr!=null){
   }
 
   final public AbstractExpression ValueExpr() throws ParseException, ParseException {AbstractExpression expr = null;
-    expr = Value();
+    switch ((jj_ntk==-1)?jj_ntk_f():jj_ntk) {
+    case INTEGER_LITERAL:
+    case NULL:
+    case TRUE:
+    case FALSE:
+    case MISSING:
+    case DOUBLE_LITERAL:
+    case FLOAT_LITERAL:
+    case STRING_LITERAL:{
+      expr = Value();
+      break;
+      }
+    case IDENTIFIER:{
+      expr = NamedValue();
+      break;
+      }
+    default:
+      jj_la1[20] = jj_gen;
+      jj_consume_token(-1);
+      throw new ParseException();
+    }
 {if ("" != null) return expr;}
     throw new Error("Missing return statement in function");
   }
 
   final public AbstractExpression Value() throws ParseException, ParseException {SQLPPValueExpression expr = new SQLPPValueExpression();
-  String str = null;
     switch ((jj_ntk==-1)?jj_ntk_f():jj_ntk) {
     case STRING_LITERAL:{
       jj_consume_token(STRING_LITERAL);
@@ -414,11 +698,26 @@ expr.setValue(new MissingValue());
       break;
       }
     default:
-      jj_la1[11] = jj_gen;
+      jj_la1[21] = jj_gen;
       jj_consume_token(-1);
       throw new ParseException();
     }
 {if ("" != null) return expr;}
+    throw new Error("Missing return statement in function");
+  }
+
+/**
+ * Named value rule
+ */
+  final public AbstractExpression NamedValue() throws ParseException, ParseException {Identifier ident = null;
+    ident = Identifier();
+{if ("" != null) return new SQLPPNamedValueExpression(ident);}
+    throw new Error("Missing return statement in function");
+  }
+
+  final public Identifier Identifier() throws ParseException, ParseException {
+    jj_consume_token(IDENTIFIER);
+{if ("" != null) return new Identifier(token.image);}
     throw new Error("Missing return statement in function");
   }
 
@@ -430,33 +729,62 @@ expr.setValue(new MissingValue());
     finally { jj_save(0, xla); }
   }
 
-  private boolean jj_3R_17()
+  private boolean jj_2_2(int xla)
  {
-    if (jj_scan_token(TRUE)) return true;
-    return false;
+    jj_la = xla; jj_lastpos = jj_scanpos = token;
+    try { return !jj_3_2(); }
+    catch(LookaheadSuccess ls) { return true; }
+    finally { jj_save(1, xla); }
   }
 
-  private boolean jj_3R_7()
- {
-    if (jj_3R_8()) return true;
-    return false;
-  }
-
-  private boolean jj_3R_16()
+  private boolean jj_3R_21()
  {
     if (jj_scan_token(NULL)) return true;
     return false;
   }
 
-  private boolean jj_3R_6()
+  private boolean jj_3R_20()
  {
-    if (jj_3R_7()) return true;
+    if (jj_scan_token(DOUBLE_LITERAL)) return true;
     return false;
   }
 
-  private boolean jj_3R_15()
+  private boolean jj_3R_25()
  {
-    if (jj_scan_token(DOUBLE_LITERAL)) return true;
+    if (jj_scan_token(IDENTIFIER)) return true;
+    return false;
+  }
+
+  private boolean jj_3R_19()
+ {
+    if (jj_scan_token(FLOAT_LITERAL)) return true;
+    return false;
+  }
+
+  private boolean jj_3_1()
+ {
+    Token xsp;
+    xsp = jj_scanpos;
+    if (jj_scan_token(27)) {
+    jj_scanpos = xsp;
+    if (jj_scan_token(28)) {
+    jj_scanpos = xsp;
+    if (jj_scan_token(29)) {
+    jj_scanpos = xsp;
+    if (jj_scan_token(30)) {
+    jj_scanpos = xsp;
+    if (jj_scan_token(31)) {
+    jj_scanpos = xsp;
+    if (jj_scan_token(32)) {
+    jj_scanpos = xsp;
+    if (jj_scan_token(33)) return true;
+    }
+    }
+    }
+    }
+    }
+    }
+    if (jj_3R_8()) return true;
     return false;
   }
 
@@ -464,21 +792,77 @@ expr.setValue(new MissingValue());
  {
     Token xsp;
     xsp = jj_scanpos;
-    if (jj_3R_12()) {
+    if (jj_scan_token(18)) {
     jj_scanpos = xsp;
-    if (jj_3R_13()) {
+    if (jj_scan_token(15)) return true;
+    }
+    return false;
+  }
+
+  private boolean jj_3R_18()
+ {
+    if (jj_scan_token(INTEGER_LITERAL)) return true;
+    return false;
+  }
+
+  private boolean jj_3R_10()
+ {
+    Token xsp;
+    xsp = jj_scanpos;
+    if (jj_3R_11()) jj_scanpos = xsp;
+    if (jj_3R_12()) return true;
+    return false;
+  }
+
+  private boolean jj_3R_16()
+ {
+    if (jj_3R_25()) return true;
+    return false;
+  }
+
+  private boolean jj_3_2()
+ {
+    Token xsp;
+    xsp = jj_scanpos;
+    if (jj_scan_token(18)) {
     jj_scanpos = xsp;
-    if (jj_3R_14()) {
-    jj_scanpos = xsp;
-    if (jj_3R_15()) {
-    jj_scanpos = xsp;
-    if (jj_3R_16()) {
-    jj_scanpos = xsp;
+    if (jj_scan_token(15)) return true;
+    }
+    if (jj_3R_9()) return true;
+    return false;
+  }
+
+  private boolean jj_3R_17()
+ {
+    if (jj_scan_token(STRING_LITERAL)) return true;
+    return false;
+  }
+
+  private boolean jj_3R_8()
+ {
+    if (jj_3R_9()) return true;
+    return false;
+  }
+
+  private boolean jj_3R_15()
+ {
+    Token xsp;
+    xsp = jj_scanpos;
     if (jj_3R_17()) {
     jj_scanpos = xsp;
     if (jj_3R_18()) {
     jj_scanpos = xsp;
-    if (jj_3R_19()) return true;
+    if (jj_3R_19()) {
+    jj_scanpos = xsp;
+    if (jj_3R_20()) {
+    jj_scanpos = xsp;
+    if (jj_3R_21()) {
+    jj_scanpos = xsp;
+    if (jj_3R_22()) {
+    jj_scanpos = xsp;
+    if (jj_3R_23()) {
+    jj_scanpos = xsp;
+    if (jj_3R_24()) return true;
     }
     }
     }
@@ -491,50 +875,34 @@ expr.setValue(new MissingValue());
 
   private boolean jj_3R_14()
  {
-    if (jj_scan_token(FLOAT_LITERAL)) return true;
-    return false;
-  }
-
-  private boolean jj_3_1()
- {
-    Token xsp;
-    xsp = jj_scanpos;
-    if (jj_scan_token(40)) {
-    jj_scanpos = xsp;
-    if (jj_scan_token(41)) {
-    jj_scanpos = xsp;
-    if (jj_scan_token(42)) {
-    jj_scanpos = xsp;
-    if (jj_scan_token(43)) {
-    jj_scanpos = xsp;
-    if (jj_scan_token(44)) {
-    jj_scanpos = xsp;
-    if (jj_scan_token(45)) {
-    jj_scanpos = xsp;
-    if (jj_scan_token(46)) return true;
-    }
-    }
-    }
-    }
-    }
-    }
-    if (jj_3R_6()) return true;
-    return false;
-  }
-
-  private boolean jj_3R_19()
- {
-    if (jj_scan_token(MISSING)) return true;
+    if (jj_3R_16()) return true;
     return false;
   }
 
   private boolean jj_3R_13()
  {
-    if (jj_scan_token(INTEGER_LITERAL)) return true;
+    if (jj_3R_15()) return true;
     return false;
   }
 
-  private boolean jj_3R_18()
+  private boolean jj_3R_24()
+ {
+    if (jj_scan_token(MISSING)) return true;
+    return false;
+  }
+
+  private boolean jj_3R_12()
+ {
+    Token xsp;
+    xsp = jj_scanpos;
+    if (jj_3R_13()) {
+    jj_scanpos = xsp;
+    if (jj_3R_14()) return true;
+    }
+    return false;
+  }
+
+  private boolean jj_3R_23()
  {
     if (jj_scan_token(FALSE)) return true;
     return false;
@@ -542,33 +910,13 @@ expr.setValue(new MissingValue());
 
   private boolean jj_3R_9()
  {
-    Token xsp;
-    xsp = jj_scanpos;
-    if (jj_scan_token(31)) {
-    jj_scanpos = xsp;
-    if (jj_scan_token(28)) return true;
-    }
-    return false;
-  }
-
-  private boolean jj_3R_10()
- {
-    if (jj_3R_11()) return true;
-    return false;
-  }
-
-  private boolean jj_3R_12()
- {
-    if (jj_scan_token(STRING_LITERAL)) return true;
-    return false;
-  }
-
-  private boolean jj_3R_8()
- {
-    Token xsp;
-    xsp = jj_scanpos;
-    if (jj_3R_9()) jj_scanpos = xsp;
     if (jj_3R_10()) return true;
+    return false;
+  }
+
+  private boolean jj_3R_22()
+ {
+    if (jj_scan_token(TRUE)) return true;
     return false;
   }
 
@@ -583,7 +931,7 @@ expr.setValue(new MissingValue());
   private Token jj_scanpos, jj_lastpos;
   private int jj_la;
   private int jj_gen;
-  final private int[] jj_la1 = new int[12];
+  final private int[] jj_la1 = new int[22];
   static private int[] jj_la1_0;
   static private int[] jj_la1_1;
   static private int[] jj_la1_2;
@@ -593,15 +941,15 @@ expr.setValue(new MissingValue());
       jj_la1_init_2();
    }
    private static void jj_la1_init_0() {
-      jj_la1_0 = new int[] {0x90000000,0x0,0x0,0x0,0x0,0x90000000,0x90000000,0x6e000000,0x6e000000,0x90000000,0x90000000,0x0,};
+      jj_la1_0 = new int[] {0x48002,0x0,0x48002,0x8,0x1000000,0x10,0x1000000,0xe80,0x10,0x80,0x20,0xe00,0x0,0x0,0xf8000000,0x48000,0x37000,0x37000,0x48000,0x48000,0x0,0x0,};
    }
    private static void jj_la1_init_1() {
-      jj_la1_1 = new int[] {0x237c0000,0x0,0x20000,0x10000,0x7f00,0x0,0x0,0x0,0x0,0x0,0x0,0x237c0000,};
+      jj_la1_1 = new int[] {0x4011be0,0x0,0x4011be0,0x0,0x0,0x0,0x0,0x4011be0,0x0,0x0,0x0,0x0,0x10,0x8,0x3,0x0,0x0,0x0,0x0,0x0,0x4011be0,0x11be0,};
    }
    private static void jj_la1_init_2() {
-      jj_la1_2 = new int[] {0x0,0x8000,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,};
+      jj_la1_2 = new int[] {0x0,0x4,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,};
    }
-  final private JJCalls[] jj_2_rtns = new JJCalls[1];
+  final private JJCalls[] jj_2_rtns = new JJCalls[2];
   private boolean jj_rescan = false;
   private int jj_gc = 0;
 
@@ -616,7 +964,7 @@ expr.setValue(new MissingValue());
     token = new Token();
     jj_ntk = -1;
     jj_gen = 0;
-    for (int i = 0; i < 12; i++) jj_la1[i] = -1;
+    for (int i = 0; i < 22; i++) jj_la1[i] = -1;
     for (int i = 0; i < jj_2_rtns.length; i++) jj_2_rtns[i] = new JJCalls();
   }
 
@@ -631,7 +979,7 @@ expr.setValue(new MissingValue());
     token = new Token();
     jj_ntk = -1;
     jj_gen = 0;
-    for (int i = 0; i < 12; i++) jj_la1[i] = -1;
+    for (int i = 0; i < 22; i++) jj_la1[i] = -1;
     for (int i = 0; i < jj_2_rtns.length; i++) jj_2_rtns[i] = new JJCalls();
   }
 
@@ -642,7 +990,7 @@ expr.setValue(new MissingValue());
     token = new Token();
     jj_ntk = -1;
     jj_gen = 0;
-    for (int i = 0; i < 12; i++) jj_la1[i] = -1;
+    for (int i = 0; i < 22; i++) jj_la1[i] = -1;
     for (int i = 0; i < jj_2_rtns.length; i++) jj_2_rtns[i] = new JJCalls();
   }
 
@@ -653,7 +1001,7 @@ expr.setValue(new MissingValue());
     token = new Token();
     jj_ntk = -1;
     jj_gen = 0;
-    for (int i = 0; i < 12; i++) jj_la1[i] = -1;
+    for (int i = 0; i < 22; i++) jj_la1[i] = -1;
     for (int i = 0; i < jj_2_rtns.length; i++) jj_2_rtns[i] = new JJCalls();
   }
 
@@ -663,7 +1011,7 @@ expr.setValue(new MissingValue());
     token = new Token();
     jj_ntk = -1;
     jj_gen = 0;
-    for (int i = 0; i < 12; i++) jj_la1[i] = -1;
+    for (int i = 0; i < 22; i++) jj_la1[i] = -1;
     for (int i = 0; i < jj_2_rtns.length; i++) jj_2_rtns[i] = new JJCalls();
   }
 
@@ -673,7 +1021,7 @@ expr.setValue(new MissingValue());
     token = new Token();
     jj_ntk = -1;
     jj_gen = 0;
-    for (int i = 0; i < 12; i++) jj_la1[i] = -1;
+    for (int i = 0; i < 22; i++) jj_la1[i] = -1;
     for (int i = 0; i < jj_2_rtns.length; i++) jj_2_rtns[i] = new JJCalls();
   }
 
@@ -786,12 +1134,12 @@ expr.setValue(new MissingValue());
   /** Generate ParseException. */
   public ParseException generateParseException() {
     jj_expentries.clear();
-    boolean[] la1tokens = new boolean[80];
+    boolean[] la1tokens = new boolean[67];
     if (jj_kind >= 0) {
       la1tokens[jj_kind] = true;
       jj_kind = -1;
     }
-    for (int i = 0; i < 12; i++) {
+    for (int i = 0; i < 22; i++) {
       if (jj_la1[i] == jj_gen) {
         for (int j = 0; j < 32; j++) {
           if ((jj_la1_0[i] & (1<<j)) != 0) {
@@ -806,7 +1154,7 @@ expr.setValue(new MissingValue());
         }
       }
     }
-    for (int i = 0; i < 80; i++) {
+    for (int i = 0; i < 67; i++) {
       if (la1tokens[i]) {
         jj_expentry = new int[1];
         jj_expentry[0] = i;
@@ -833,7 +1181,7 @@ expr.setValue(new MissingValue());
 
   private void jj_rescan_token() {
     jj_rescan = true;
-    for (int i = 0; i < 1; i++) {
+    for (int i = 0; i < 2; i++) {
     try {
       JJCalls p = jj_2_rtns[i];
       do {
@@ -841,6 +1189,7 @@ expr.setValue(new MissingValue());
           jj_la = p.arg; jj_lastpos = jj_scanpos = p.first;
           switch (i) {
             case 0: jj_3_1(); break;
+            case 1: jj_3_2(); break;
           }
         }
         p = p.next;

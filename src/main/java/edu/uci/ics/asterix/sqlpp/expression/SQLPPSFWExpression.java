@@ -12,10 +12,9 @@ import edu.uci.ics.asterix.sqlpp.base.AbstractExpression;
  * @author julestestard
  *
  */
-public class SFWExpression extends AbstractExpression {
+public class SQLPPSFWExpression extends AbstractExpression {
 	
 	ArrayList<AbstractClause> clauses;
-	AbstractExpression returnExpr;
 
 	/**
 	 * 
@@ -34,11 +33,9 @@ public class SFWExpression extends AbstractExpression {
 	 * @param clauses
 	 * @param returnExpr
 	 */
-	public SFWExpression(ArrayList<AbstractClause> clauses,
-			AbstractExpression returnExpr) {
+	public SQLPPSFWExpression(ArrayList<AbstractClause> clauses) {
 		super();
 		this.clauses = clauses;
-		this.returnExpr = returnExpr;
 	}
 
 	/**
@@ -53,20 +50,6 @@ public class SFWExpression extends AbstractExpression {
 	 */
 	public void setClauses(ArrayList<AbstractClause> clauses) {
 		this.clauses = clauses;
-	}
-
-	/**
-	 * @return the returnExpr
-	 */
-	public AbstractExpression getReturnExpr() {
-		return returnExpr;
-	}
-
-	/**
-	 * @param returnExpr the returnExpr to set
-	 */
-	public void setReturnExpr(AbstractExpression returnExpr) {
-		this.returnExpr = returnExpr;
 	}
 
 }

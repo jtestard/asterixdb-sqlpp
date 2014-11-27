@@ -47,8 +47,8 @@ public class SQLPPOperatorExpressionsTest {
 	public TestName testName = new TestName();
 	
 	private String testFileName;
-	private String expectedJSONString;
-	private String actualJSONString;
+	private String expectedJSONString = "";
+	private String actualJSONString = "";
 
 	/**
 	 * @throws java.lang.Exception
@@ -56,10 +56,10 @@ public class SQLPPOperatorExpressionsTest {
 	@Before
 	public void setUp() throws Exception {
 		testFileName = testName.getMethodName();
-//		File file = new File(TEST_RESOURCE_DIR_PATH
-//				+ testFileName + ".json");
-//		FileInputStream fis = new FileInputStream(file);
-//		expectedJSONString = IOUtils.toString(fis);
+		File file = new File(TEST_RESOURCE_DIR_PATH
+				+ testFileName + ".json");
+		FileInputStream fis = new FileInputStream(file);
+		expectedJSONString = IOUtils.toString(fis);
 	}
 
 	/**
@@ -86,7 +86,7 @@ public class SQLPPOperatorExpressionsTest {
 				SQLPPQuery q = (SQLPPQuery) stmt;
 				actualJSONString += JsonWriter.formatJson(q.toJSON());
 			}
-//			assertEquals(expectedJSONString, actualJSONString);
+			assertEquals(expectedJSONString, actualJSONString);
 		} catch (ParseException e) {
 			fail(e.getMessage());
 			e.printStackTrace();
@@ -126,9 +126,15 @@ public class SQLPPOperatorExpressionsTest {
 		testQuery(queryStr);
 	}
 	
-//	@Test
-//	public void testPathExpression() {
-//		String queryStr = "person.info";
-//		testQuery(queryStr);
-//	}
+	@Test
+	public void testNegNums() {
+		String queryStr = "1 * 2 + -3";
+		testQuery(queryStr);
+	}
+	
+	@Test
+	public void testNamedValueExpression() {
+		String queryStr = "person";
+		testQuery(queryStr);
+	}
 }

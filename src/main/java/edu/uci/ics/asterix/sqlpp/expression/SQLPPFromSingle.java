@@ -11,7 +11,7 @@ import edu.uci.ics.asterix.sqlpp.base.AbstractExpression;
  */
 public class SQLPPFromSingle extends SQLPPFromItem {
 	
-	private SQLPPVariableRef var;
+	private SQLPPVariableRef alias;
 	
 	private AbstractExpression expression;
 
@@ -32,9 +32,9 @@ public class SQLPPFromSingle extends SQLPPFromItem {
 	 * @param var
 	 * @param expression
 	 */
-	public SQLPPFromSingle(SQLPPVariableRef var, AbstractExpression expression) {
+	public SQLPPFromSingle(SQLPPVariableRef alias, AbstractExpression expression) {
 		super();
-		this.var = var;
+		this.alias = alias;
 		this.expression = expression;
 	}
 
@@ -42,14 +42,14 @@ public class SQLPPFromSingle extends SQLPPFromItem {
 	 * @return the var
 	 */
 	public SQLPPVariableRef getVar() {
-		return var;
+		return alias;
 	}
 
 	/**
 	 * @param var the var to set
 	 */
-	public void setVar(SQLPPVariableRef var) {
-		this.var = var;
+	public void setVar(SQLPPVariableRef alias) {
+		this.alias = alias;
 	}
 
 	/**

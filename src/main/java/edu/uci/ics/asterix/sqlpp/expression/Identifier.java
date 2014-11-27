@@ -25,25 +25,25 @@ public class Identifier implements ISqlppExpression {
 	 * 
 	 */
 	private static final long serialVersionUID = -7001220918191136197L;
-	protected String value;
+	protected String identifier;
 
     public Identifier() {
     }
 
     public Identifier(String value) {
-        this.value = value;
+        this.identifier = value;
     }
 
     public final String getValue() {
-        return value;
+        return identifier;
     }
 
     public final void setValue(String value) {
-        this.value = value;
+        this.identifier = value;
     }
 
     public String toString() {
-        return value;
+        return identifier;
     }
 
     @Override
@@ -52,13 +52,13 @@ public class Identifier implements ISqlppExpression {
             return false;
         } else {
             Identifier i = (Identifier) o;
-            return this.value.equals(i.value);
+            return this.identifier.equals(i.identifier);
         }
     }
 
     @Override
     public int hashCode() {
-        return value.hashCode();
+        return identifier.hashCode();
     }
 
     public String toJSON() throws IOException {

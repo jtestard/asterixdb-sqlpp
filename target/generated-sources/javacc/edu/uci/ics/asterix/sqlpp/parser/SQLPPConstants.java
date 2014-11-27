@@ -11,149 +11,123 @@ public interface SQLPPConstants {
   /** End of File. */
   int EOF = 0;
   /** RegularExpression Id. */
-  int ASC = 1;
+  int SELECT = 1;
   /** RegularExpression Id. */
-  int AT = 2;
+  int FROM = 2;
   /** RegularExpression Id. */
-  int BY = 3;
+  int WHERE = 3;
   /** RegularExpression Id. */
-  int DATASET = 4;
+  int AS = 4;
   /** RegularExpression Id. */
-  int DECOR = 5;
+  int JOIN = 5;
   /** RegularExpression Id. */
-  int DESC = 6;
+  int ON = 6;
   /** RegularExpression Id. */
-  int DISTINCT = 7;
+  int INNER = 7;
   /** RegularExpression Id. */
-  int ELSE = 8;
+  int OUTER = 8;
   /** RegularExpression Id. */
-  int EVERY = 9;
+  int LEFT = 9;
   /** RegularExpression Id. */
-  int FOR = 10;
+  int RIGHT = 10;
   /** RegularExpression Id. */
-  int GROUP = 11;
+  int FULL = 11;
   /** RegularExpression Id. */
-  int IF = 12;
+  int CARET = 12;
   /** RegularExpression Id. */
-  int IN = 13;
+  int DIV = 13;
   /** RegularExpression Id. */
-  int LET = 14;
+  int IDIV = 14;
   /** RegularExpression Id. */
-  int LIMIT = 15;
+  int MINUS = 15;
   /** RegularExpression Id. */
-  int OFFSET = 16;
+  int MOD = 16;
   /** RegularExpression Id. */
-  int ORDER = 17;
+  int MUL = 17;
   /** RegularExpression Id. */
-  int RETURN = 18;
+  int PLUS = 18;
   /** RegularExpression Id. */
-  int SATISFIES = 19;
+  int LEFTPAREN = 19;
   /** RegularExpression Id. */
-  int SOME = 20;
+  int RIGHTPAREN = 20;
   /** RegularExpression Id. */
-  int THEN = 21;
+  int LEFTBRACKET = 21;
   /** RegularExpression Id. */
-  int UNION = 22;
+  int RIGHTBRACKET = 22;
   /** RegularExpression Id. */
-  int WHERE = 23;
+  int COLON = 23;
   /** RegularExpression Id. */
-  int WITH = 24;
+  int COMMA = 24;
   /** RegularExpression Id. */
-  int CARET = 25;
+  int DOT = 25;
   /** RegularExpression Id. */
-  int DIV = 26;
+  int QUES = 26;
   /** RegularExpression Id. */
-  int IDIV = 27;
+  int LT = 27;
   /** RegularExpression Id. */
-  int MINUS = 28;
+  int GT = 28;
   /** RegularExpression Id. */
-  int MOD = 29;
+  int LE = 29;
   /** RegularExpression Id. */
-  int MUL = 30;
+  int GE = 30;
   /** RegularExpression Id. */
-  int PLUS = 31;
+  int EQ = 31;
   /** RegularExpression Id. */
-  int LEFTPAREN = 32;
+  int NE = 32;
   /** RegularExpression Id. */
-  int RIGHTPAREN = 33;
+  int SIMILAR = 33;
   /** RegularExpression Id. */
-  int LEFTBRACKET = 34;
+  int ASSIGN = 34;
   /** RegularExpression Id. */
-  int RIGHTBRACKET = 35;
+  int AND = 35;
   /** RegularExpression Id. */
-  int COLON = 36;
+  int OR = 36;
   /** RegularExpression Id. */
-  int COMMA = 37;
+  int INTEGER_LITERAL = 37;
   /** RegularExpression Id. */
-  int DOT = 38;
+  int NULL = 38;
   /** RegularExpression Id. */
-  int QUES = 39;
+  int TRUE = 39;
   /** RegularExpression Id. */
-  int LT = 40;
+  int FALSE = 40;
   /** RegularExpression Id. */
-  int GT = 41;
+  int MISSING = 41;
   /** RegularExpression Id. */
-  int LE = 42;
+  int DIGIT = 42;
   /** RegularExpression Id. */
-  int GE = 43;
+  int DOUBLE_LITERAL = 43;
   /** RegularExpression Id. */
-  int EQ = 44;
+  int FLOAT_LITERAL = 44;
   /** RegularExpression Id. */
-  int NE = 45;
+  int DIGITS = 45;
   /** RegularExpression Id. */
-  int SIMILAR = 46;
+  int LETTER = 46;
   /** RegularExpression Id. */
-  int ASSIGN = 47;
+  int SPECIALCHARS = 47;
   /** RegularExpression Id. */
-  int AND = 48;
+  int STRING_LITERAL = 48;
   /** RegularExpression Id. */
-  int OR = 49;
+  int EscapeQuot = 49;
   /** RegularExpression Id. */
-  int INTEGER_LITERAL = 50;
+  int EscapeApos = 50;
   /** RegularExpression Id. */
-  int NULL = 51;
+  int EscapeBslash = 51;
   /** RegularExpression Id. */
-  int TRUE = 52;
+  int EscapeSlash = 52;
   /** RegularExpression Id. */
-  int FALSE = 53;
+  int EscapeBspace = 53;
   /** RegularExpression Id. */
-  int MISSING = 54;
+  int EscapeFormf = 54;
   /** RegularExpression Id. */
-  int DIGIT = 55;
+  int EscapeNl = 55;
   /** RegularExpression Id. */
-  int DOUBLE_LITERAL = 56;
+  int EscapeCr = 56;
   /** RegularExpression Id. */
-  int FLOAT_LITERAL = 57;
+  int EscapeTab = 57;
   /** RegularExpression Id. */
-  int DIGITS = 58;
+  int IDENTIFIER = 58;
   /** RegularExpression Id. */
-  int LETTER = 59;
-  /** RegularExpression Id. */
-  int SPECIALCHARS = 60;
-  /** RegularExpression Id. */
-  int STRING_LITERAL = 61;
-  /** RegularExpression Id. */
-  int EscapeQuot = 62;
-  /** RegularExpression Id. */
-  int EscapeApos = 63;
-  /** RegularExpression Id. */
-  int EscapeBslash = 64;
-  /** RegularExpression Id. */
-  int EscapeSlash = 65;
-  /** RegularExpression Id. */
-  int EscapeBspace = 66;
-  /** RegularExpression Id. */
-  int EscapeFormf = 67;
-  /** RegularExpression Id. */
-  int EscapeNl = 68;
-  /** RegularExpression Id. */
-  int EscapeCr = 69;
-  /** RegularExpression Id. */
-  int EscapeTab = 70;
-  /** RegularExpression Id. */
-  int IDENTIFIER = 71;
-  /** RegularExpression Id. */
-  int VARIABLE = 72;
+  int VARIABLE = 59;
 
   /** Lexical state. */
   int DEFAULT = 0;
@@ -161,30 +135,17 @@ public interface SQLPPConstants {
   /** Literal token values. */
   String[] tokenImage = {
     "<EOF>",
-    "\"asc\"",
-    "\"at\"",
-    "\"by\"",
-    "\"dataset\"",
-    "\"decor\"",
-    "\"desc\"",
-    "\"distinct\"",
-    "\"else\"",
-    "\"every\"",
-    "\"for\"",
-    "\"group\"",
-    "\"if\"",
-    "\"in\"",
-    "\"let\"",
-    "\"limit\"",
-    "\"offset\"",
-    "\"order\"",
-    "\"return\"",
-    "\"satisfies\"",
-    "\"some\"",
-    "\"then\"",
-    "\"union\"",
+    "\"select\"",
+    "\"from\"",
     "\"where\"",
-    "\"with\"",
+    "\"as\"",
+    "\"join\"",
+    "\"on\"",
+    "\"inner\"",
+    "\"outer\"",
+    "\"left\"",
+    "\"right\"",
+    "\"full\"",
     "\"^\"",
     "\"/\"",
     "\"idiv\"",
@@ -237,8 +198,8 @@ public interface SQLPPConstants {
     "\"\\t\"",
     "\"\\r\"",
     "\"\\n\"",
-    "<token of kind 77>",
-    "<token of kind 78>",
+    "<token of kind 64>",
+    "<token of kind 65>",
     "\";\"",
   };
 
