@@ -10,7 +10,7 @@ import edu.uci.ics.asterix.sqlpp.base.AbstractValue;
  * @author julestestard
  *
  */
-public class SQLPPMapAccess extends AbstractExpression {
+public class SQLPPMapAccess extends SQLPPAbstractAccessor {
 	
 	/**
 	 * 
@@ -43,8 +43,8 @@ public class SQLPPMapAccess extends AbstractExpression {
 	/**
 	 * @param value
 	 */
-	public SQLPPMapAccess(AbstractValue value) {
-		super();
+	public SQLPPMapAccess(AbstractExpression expr, AbstractValue value) {
+		super(expr);
 		this.value = value;
 	}
 

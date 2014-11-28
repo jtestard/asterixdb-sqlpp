@@ -9,7 +9,7 @@ import edu.uci.ics.asterix.sqlpp.base.AbstractExpression;
  * @author julestestard
  *
  */
-public class SQLPPTupleAccess extends AbstractExpression {
+public class SQLPPTupleAccess extends SQLPPAbstractAccessor {
 	
 	/**
 	 * 
@@ -42,8 +42,8 @@ public class SQLPPTupleAccess extends AbstractExpression {
 	/**
 	 * @param ident
 	 */
-	public SQLPPTupleAccess(Identifier ident) {
-		super();
+	public SQLPPTupleAccess(AbstractExpression expr, Identifier ident) {
+		super(expr);
 		this.ident = ident;
 	}
 

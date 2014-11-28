@@ -2,6 +2,8 @@
 
 Notice: this document is using a variant of Markdown called Github Flavored Markdown (GFM), which allows fancy features such as syntax coloring. To be able to view this document properly, please either go to the [github page for the project](https://github.com/jtestard/asterixdb-sqlpp) or use Eclipse's [GFM viewer](https://github.com/satyagraha/gfm_viewer).
 
+Generate SQL++ and AQL syntax trees for identical (semantically, maybe not syntactically) query and compare differences.
+
 ## Introduction
 
 This document is intended as a reference guide to the full syntax and semantics of the SQL++ Query Language for Asterix (Asterix SQL++). This document describes how the SQL++ query language is interpreted in the context of AsterixDB. Details for the SQL++ query language being developed at UCSD can be found [here](http://forward.ucsd.edu/sqlpp.html).
@@ -40,19 +42,27 @@ SQLPPUnaryExpr      ::= ( ( "+" | "-" ) )? SQLPPValueExpr
 
 The operator expression structure is inherited from AQL.
 
+#### SQL++ PathStep
+
+```python
+SQLPPValueExpr ::= SQLPPPrimaryExpr (SQLPPathstep)*
+SQLPPPathstep   ::= "." SQLPPIdentifier
+                |   "[" SQLPPValueExpr "]"
+                |   "->" SQLPPValueExpr
+```
+
 #### SQL++ Value Expression
 
 ```python
-    SQLPPValueExpr ::=   SQLPPValue
-                    |    SQLPPParenthesizedExpression
-                    |    SQLPPVariableRef
-                    |    SQLPPNavigation
-                    |    SQLPPNamedValue
-#                    |    SQLPPFunctionCallExpr
-                    |    SQLPPColumnReference
+    SQLPPPrimaryExpr ::=   SQLPPValue
+                     |     SQLPPParenthesizedExpression
+                     |     SQLPPVariableRef
+                     |     SQLPPNamedValue
+                     |     SQLPPFunctionCallExpr
+#                    |     SQLPPColumnReference
 ```
                     
-#### SQL++ Values
+#### SQL++ Values (includes literals)
 
 ```python
 SQLPPValue          ::= SQLPPDefinedValue
@@ -90,15 +100,6 @@ the `id::` field for defined values is absent from this specification. In order 
 
 ```python
 SQLPPParenthesizedExpression ::= "(" SFWExpression ")"
-```
-    
-#### SQL++ PathStep
-
-```python
-SQLPPNavigation ::= SQLPPValueExpr (SQLPPathstep)*
-SQLPPPathstep   ::= "." SQLPPIdentifier
-                |   "[" SQLPPValueExpr "]"
-                |   "->" SQLPPValueExpr
 ```
 
 Notice that SQL++ does not have the "I am lucky" array navigation AQL has (the "?" in array navigation).            
@@ -138,8 +139,10 @@ SQLPPSFWExpression ::=    "SELECT" SQLPPSelectClause
 SQLPPSelectClause   ::= SQLPPSelectItem (, SQLPPSelectItem)*
 #                    |   "TUPLE" SQLPPSelectItem
 #                    |    "ELEMENT" SQLPPOperatorExpr
-SQLPPSelectItem     ::= SQLPPOperatorExpr [ "AS" SQLPPAlias ]
+SQLPPSelectItem     ::= SQLPPValueExpr [ "AS" SQLPPAlias ]
+                    |   SQLPPWildCard
 SQLPPAlias          ::= SQLPPIdentifier
+SQLPPWildCard       ::= "*"
 ```
 
 #### SQL++ From Clause
@@ -198,19 +201,3 @@ UCSD SQL++ configuration parameters are implicitely defined in Asterix SQL++, an
 ```
 
 This is tentative corresponding of SQL++ tokens to AQL tokens.
-
-## Notes
-
-#### SQL++ Type Names
-
-SQL++ does not provide a mechanism to identify a type, while AQL does. It seems like this would be a useful feature for an implementation of the SQL++ language.
-
-We propose to introduce a type naming. The same way there can be a *named value*, we introduce the concept of a *named type*. We can evaluate later if such addition makes sense outside of the AQL context later.
-
-#### SQL++ Named Values
-
-Given SQL++ *named values*
-
-#### SQL++ Select Clause
-
-Note sure whether `SQLPPSelectItem    ::= SQLPPOperatorExpr [ "AS" {{Identifier}}* ]` is correct. Other candidates include `VariableRef`, `QualifiedName` and more.

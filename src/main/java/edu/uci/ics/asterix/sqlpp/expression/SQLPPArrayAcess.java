@@ -9,7 +9,7 @@ import edu.uci.ics.asterix.sqlpp.base.AbstractExpression;
  * @author julestestard
  *
  */
-public class SQLPPArrayAcess extends AbstractExpression {
+public class SQLPPArrayAcess extends SQLPPAbstractAccessor {
 	
 	/**
 	 * 
@@ -42,8 +42,8 @@ public class SQLPPArrayAcess extends AbstractExpression {
 	/**
 	 * @param index
 	 */
-	public SQLPPArrayAcess(AbstractExpression index) {
-		super();
+	public SQLPPArrayAcess(AbstractExpression expr, AbstractExpression index) {
+		super(expr);
 		this.indexExpr = index;
 	}
 }
