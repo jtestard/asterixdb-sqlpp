@@ -1,0 +1,432 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<HTML>
+<HEAD>
+<TITLE>BNF for SQLPP.jj</TITLE>
+</HEAD>
+<BODY>
+<H1 ALIGN=CENTER>BNF for SQLPP.jj</H1>
+<H2 ALIGN=CENTER>TOKENS</H2>
+<TABLE>
+ <!-- Special token -->
+ <TR>
+  <TD>
+<PRE>
+/**
+ * Tokens
+ */</PRE>
+  </TD>
+ </TR>
+ <!-- Token -->
+ <TR>
+  <TD>
+   <PRE>
+&lt;DEFAULT&gt; TOKEN : {
+&lt;SELECT: "select"&gt;
+| &lt;FROM: "from"&gt;
+| &lt;WHERE: "where"&gt;
+| &lt;AS: "as"&gt;
+| &lt;JOIN: "join"&gt;
+| &lt;ON: "on"&gt;
+| &lt;INNER: "inner"&gt;
+| &lt;OUTER: "outer"&gt;
+| &lt;LEFT: "left"&gt;
+| &lt;RIGHT: "right"&gt;
+| &lt;FULL: "full"&gt;
+}
+
+   </PRE>
+  </TD>
+ </TR>
+ <!-- Token -->
+ <TR>
+  <TD>
+   <PRE>
+&lt;DEFAULT&gt; TOKEN : {
+&lt;CARET: "^"&gt;
+| &lt;DIV: "/"&gt;
+| &lt;IDIV: "idiv"&gt;
+| &lt;MINUS: "-"&gt;
+| &lt;MOD: "%"&gt;
+| &lt;MUL: "*"&gt;
+| &lt;PLUS: "+"&gt;
+| &lt;LEFTPAREN: "("&gt;
+| &lt;RIGHTPAREN: ")"&gt;
+| &lt;LEFTBRACKET: "["&gt;
+| &lt;RIGHTBRACKET: "]"&gt;
+| &lt;COLON: ":"&gt;
+| &lt;COMMA: ","&gt;
+| &lt;DOT: "."&gt;
+| &lt;QUES: "?"&gt;
+| &lt;LT: "&lt;"&gt;
+| &lt;GT: "&gt;"&gt;
+| &lt;LE: "&lt;="&gt;
+| &lt;GE: "&gt;="&gt;
+| &lt;EQ: "="&gt;
+| &lt;NE: "!="&gt;
+| &lt;SIMILAR: "~="&gt;
+| &lt;ASSIGN: ":="&gt;
+| &lt;AND: "and"&gt;
+| &lt;OR: "or"&gt;
+}
+
+   </PRE>
+  </TD>
+ </TR>
+ <!-- Special token -->
+ <TR>
+  <TD>
+<PRE>
+/**
+ * Tuple value type not added yet.
+ */
+//<DEFAULT> 
+//TOKEN :
+//{
+//    <LEFTBRACE : "{"> { pushState(); } : DEFAULT
+//}
+//
+//<DEFAULT>
+//TOKEN :
+//{
+//    <RIGHTBRACE : "}"> { popState("}"); }
+//}
+</PRE>
+  </TD>
+ </TR>
+ <!-- Token -->
+ <TR>
+  <TD>
+   <PRE>
+&lt;DEFAULT&gt; TOKEN : {
+&lt;INTEGER_LITERAL: (&lt;DIGIT&gt;)+&gt;
+}
+
+   </PRE>
+  </TD>
+ </TR>
+ <!-- Token -->
+ <TR>
+  <TD>
+   <PRE>
+&lt;DEFAULT&gt; TOKEN : {
+&lt;NULL: "null"&gt;
+| &lt;TRUE: "true"&gt;
+| &lt;FALSE: "false"&gt;
+| &lt;MISSING: "missing"&gt;
+}
+
+   </PRE>
+  </TD>
+ </TR>
+ <!-- Token -->
+ <TR>
+  <TD>
+   <PRE>
+&lt;DEFAULT&gt; TOKEN : {
+&lt;#DIGIT: ["0"-"9"]&gt;
+}
+
+   </PRE>
+  </TD>
+ </TR>
+ <!-- Token -->
+ <TR>
+  <TD>
+   <PRE>
+&lt;DEFAULT&gt; TOKEN : {
+&lt;DOUBLE_LITERAL: &lt;DIGITS&gt; | &lt;DIGITS&gt; ("." &lt;DIGITS&gt;)? | "." &lt;DIGITS&gt;&gt;
+| &lt;FLOAT_LITERAL: &lt;DIGITS&gt; ("f" | "F") | &lt;DIGITS&gt; ("." &lt;DIGITS&gt; ("f" | "F"))? | "." &lt;DIGITS&gt; ("f" | "F")&gt;
+| &lt;DIGITS: (&lt;DIGIT&gt;)+&gt;
+}
+
+   </PRE>
+  </TD>
+ </TR>
+ <!-- Token -->
+ <TR>
+  <TD>
+   <PRE>
+&lt;DEFAULT&gt; TOKEN : {
+&lt;#LETTER: ["A"-"Z","a"-"z"]&gt;
+| &lt;SPECIALCHARS: ["$","_","-"]&gt;
+}
+
+   </PRE>
+  </TD>
+ </TR>
+ <!-- Token -->
+ <TR>
+  <TD>
+   <PRE>
+&lt;DEFAULT&gt; TOKEN : {
+&lt;STRING_LITERAL: "\"" (&lt;EscapeQuot&gt; | &lt;EscapeBslash&gt; | &lt;EscapeSlash&gt; | &lt;EscapeBspace&gt; | &lt;EscapeFormf&gt; | &lt;EscapeNl&gt; | &lt;EscapeCr&gt; | &lt;EscapeTab&gt; | ~["\"","\\"])* "\"" | "\'" (&lt;EscapeApos&gt; | &lt;EscapeBslash&gt; | &lt;EscapeSlash&gt; | &lt;EscapeBspace&gt; | &lt;EscapeFormf&gt; | &lt;EscapeNl&gt; | &lt;EscapeCr&gt; | &lt;EscapeTab&gt; | ~["\'","\\"])* "\'"&gt;
+| &lt;#EscapeQuot: "\\\""&gt;
+| &lt;#EscapeApos: "\\\'"&gt;
+| &lt;#EscapeBslash: "\\\\"&gt;
+| &lt;#EscapeSlash: "\\/"&gt;
+| &lt;#EscapeBspace: "\\b"&gt;
+| &lt;#EscapeFormf: "\\f"&gt;
+| &lt;#EscapeNl: "\\n"&gt;
+| &lt;#EscapeCr: "\\r"&gt;
+| &lt;#EscapeTab: "\\t"&gt;
+}
+
+   </PRE>
+  </TD>
+ </TR>
+ <!-- Token -->
+ <TR>
+  <TD>
+   <PRE>
+&lt;DEFAULT&gt; TOKEN : {
+&lt;IDENTIFIER: &lt;LETTER&gt; (&lt;LETTER&gt; | &lt;DIGIT&gt; | &lt;SPECIALCHARS&gt;)*&gt;
+}
+
+   </PRE>
+  </TD>
+ </TR>
+ <!-- Token -->
+ <TR>
+  <TD>
+   <PRE>
+&lt;DEFAULT&gt; TOKEN : {
+&lt;VARIABLE: "$" &lt;LETTER&gt; (&lt;LETTER&gt; | &lt;DIGIT&gt; | "_")*&gt;
+}
+
+   </PRE>
+  </TD>
+ </TR>
+ <!-- Token -->
+ <TR>
+  <TD>
+   <PRE>
+&lt;DEFAULT&gt; SKIP : {
+" "
+| "\t"
+| "\r"
+| "\n"
+}
+
+   </PRE>
+  </TD>
+ </TR>
+ <!-- Token -->
+ <TR>
+  <TD>
+   <PRE>
+&lt;DEFAULT&gt; SKIP : {
+&lt;"//" (~["\n"])* "\n"&gt;
+}
+
+   </PRE>
+  </TD>
+ </TR>
+ <!-- Token -->
+ <TR>
+  <TD>
+   <PRE>
+&lt;DEFAULT&gt; SKIP : {
+&lt;"//" (~["\n","\r"])* ("\n" | "\r" | "\r\n")?&gt;
+}
+
+   </PRE>
+  </TD>
+ </TR>
+</TABLE>
+<H2 ALIGN=CENTER>NON-TERMINALS</H2>
+<TABLE>
+ <!-- Special token -->
+ <TR>
+  <TD>
+<PRE>
+/**
+ * Comments are ignored, nothing about what is inside comments is done.
+ */
+//<DEFAULT>
+//SKIP:
+//{
+//    <"/*"> { pushState(); } : INSIDE_COMMENT
+//}
+//
+//<INSIDE_COMMENT> SPECIAL : {
+//<"+" (" ")* (~["*"])*>
+//}
+//
+//   
+//<INSIDE_COMMENT> SKIP : {
+//"/*" : {
+//}
+//
+//   
+//<INSIDE_COMMENT> SKIP : {
+//"*/" : {
+//| <~[]>
+//}
+
+/**
+ * Rules
+ */
+//TODO: Fix the multiple statement initiation.
+</PRE>
+  </TD>
+ </TR>
+<TR>
+<TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod1">Statements</A></TD>
+<TD ALIGN=CENTER VALIGN=BASELINE>::=</TD>
+<TD ALIGN=LEFT VALIGN=BASELINE>( <A HREF="#prod2">SingleStatement</A> ( ";" )? )* &lt;EOF&gt;</TD>
+</TR>
+<TR>
+<TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod2">SingleStatement</A></TD>
+<TD ALIGN=CENTER VALIGN=BASELINE>::=</TD>
+<TD ALIGN=LEFT VALIGN=BASELINE><A HREF="#prod3">Query</A></TD>
+</TR>
+<TR>
+<TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod3">Query</A></TD>
+<TD ALIGN=CENTER VALIGN=BASELINE>::=</TD>
+<TD ALIGN=LEFT VALIGN=BASELINE><A HREF="#prod4">SQLPPExpression</A></TD>
+</TR>
+<TR>
+<TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod4">SQLPPExpression</A></TD>
+<TD ALIGN=CENTER VALIGN=BASELINE>::=</TD>
+<TD ALIGN=LEFT VALIGN=BASELINE>( <A HREF="#prod5">SQLPPOperatorExpression</A> | <A HREF="#prod6">SFWExpression</A> )</TD>
+</TR>
+<TR>
+<TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod6">SFWExpression</A></TD>
+<TD ALIGN=CENTER VALIGN=BASELINE>::=</TD>
+<TD ALIGN=LEFT VALIGN=BASELINE><A HREF="#prod7">Select</A> <A HREF="#prod8">From</A> ( <A HREF="#prod9">Where</A> )?</TD>
+</TR>
+<TR>
+<TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod7">Select</A></TD>
+<TD ALIGN=CENTER VALIGN=BASELINE>::=</TD>
+<TD ALIGN=LEFT VALIGN=BASELINE>&lt;SELECT&gt; <A HREF="#prod10">SelectItemExpr</A> ( &lt;COMMA&gt; <A HREF="#prod10">SelectItemExpr</A> )*</TD>
+</TR>
+<TR>
+<TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod10">SelectItemExpr</A></TD>
+<TD ALIGN=CENTER VALIGN=BASELINE>::=</TD>
+<TD ALIGN=LEFT VALIGN=BASELINE><A HREF="#prod11">ValueExpr</A> ( &lt;AS&gt; <A HREF="#prod12">VariableRef</A> )?</TD>
+</TR>
+<TR>
+<TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod13">AliasExpression</A></TD>
+<TD ALIGN=CENTER VALIGN=BASELINE>::=</TD>
+<TD ALIGN=LEFT VALIGN=BASELINE><A HREF="#prod14">Identifier</A></TD>
+</TR>
+<TR>
+<TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod8">From</A></TD>
+<TD ALIGN=CENTER VALIGN=BASELINE>::=</TD>
+<TD ALIGN=LEFT VALIGN=BASELINE>&lt;FROM&gt; <A HREF="#prod15">FromItem</A> ( &lt;COMMA&gt; <A HREF="#prod15">FromItem</A> )*</TD>
+</TR>
+<TR>
+<TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod15">FromItem</A></TD>
+<TD ALIGN=CENTER VALIGN=BASELINE>::=</TD>
+<TD ALIGN=LEFT VALIGN=BASELINE>( <A HREF="#prod16">FromInnerJoin</A> | <A HREF="#prod17">FromOuterJoin</A> )</TD>
+</TR>
+<TR>
+<TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod18">FromSingle</A></TD>
+<TD ALIGN=CENTER VALIGN=BASELINE>::=</TD>
+<TD ALIGN=LEFT VALIGN=BASELINE><A HREF="#prod11">ValueExpr</A> ( &lt;AS&gt; <A HREF="#prod12">VariableRef</A> )?</TD>
+</TR>
+<TR>
+<TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod16">FromInnerJoin</A></TD>
+<TD ALIGN=CENTER VALIGN=BASELINE>::=</TD>
+<TD ALIGN=LEFT VALIGN=BASELINE>( &lt;INNER&gt; )? <A HREF="#prod18">FromSingle</A> ( &lt;JOIN&gt; <A HREF="#prod15">FromItem</A> &lt;ON&gt; <A HREF="#prod5">SQLPPOperatorExpression</A> )?</TD>
+</TR>
+<TR>
+<TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod17">FromOuterJoin</A></TD>
+<TD ALIGN=CENTER VALIGN=BASELINE>::=</TD>
+<TD ALIGN=LEFT VALIGN=BASELINE>( &lt;LEFT&gt; | &lt;RIGHT&gt; | &lt;FULL&gt; ) &lt;OUTER&gt; <A HREF="#prod18">FromSingle</A> &lt;JOIN&gt; <A HREF="#prod15">FromItem</A> &lt;ON&gt; <A HREF="#prod5">SQLPPOperatorExpression</A></TD>
+</TR>
+<TR>
+<TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod12">VariableRef</A></TD>
+<TD ALIGN=CENTER VALIGN=BASELINE>::=</TD>
+<TD ALIGN=LEFT VALIGN=BASELINE><A HREF="#prod14">Identifier</A></TD>
+</TR>
+<TR>
+<TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod9">Where</A></TD>
+<TD ALIGN=CENTER VALIGN=BASELINE>::=</TD>
+<TD ALIGN=LEFT VALIGN=BASELINE>&lt;WHERE&gt; <A HREF="#prod5">SQLPPOperatorExpression</A></TD>
+</TR>
+<TR>
+<TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod5">SQLPPOperatorExpression</A></TD>
+<TD ALIGN=CENTER VALIGN=BASELINE>::=</TD>
+<TD ALIGN=LEFT VALIGN=BASELINE><A HREF="#prod19">AndExpr</A> ( &lt;OR&gt; <A HREF="#prod19">AndExpr</A> )*</TD>
+</TR>
+<TR>
+<TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod19">AndExpr</A></TD>
+<TD ALIGN=CENTER VALIGN=BASELINE>::=</TD>
+<TD ALIGN=LEFT VALIGN=BASELINE><A HREF="#prod20">RelExpr</A> ( &lt;AND&gt; <A HREF="#prod20">RelExpr</A> )*</TD>
+</TR>
+<TR>
+<TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod20">RelExpr</A></TD>
+<TD ALIGN=CENTER VALIGN=BASELINE>::=</TD>
+<TD ALIGN=LEFT VALIGN=BASELINE><A HREF="#prod21">AddExpr</A> ( ( &lt;LT&gt; | &lt;GT&gt; | &lt;LE&gt; | &lt;GE&gt; | &lt;EQ&gt; | &lt;NE&gt; | &lt;SIMILAR&gt; ) <A HREF="#prod21">AddExpr</A> )?</TD>
+</TR>
+ <!-- Special token -->
+ <TR>
+  <TD>
+<PRE>
+/**
+ * TODO: fix this problem.
+ * Warning: Choice conflict in (...)* construct in this rule. Will need to be addressed.
+         Expansion nested within construct and expansion following construct
+         have common prefixes, one of which is: "+"
+         Consider using a lookahead of 2 or more for nested expansion.
+ */</PRE>
+  </TD>
+ </TR>
+<TR>
+<TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod21">AddExpr</A></TD>
+<TD ALIGN=CENTER VALIGN=BASELINE>::=</TD>
+<TD ALIGN=LEFT VALIGN=BASELINE><A HREF="#prod22">MultExpr</A> ( ( &lt;PLUS&gt; | &lt;MINUS&gt; ) <A HREF="#prod22">MultExpr</A> )*</TD>
+</TR>
+<TR>
+<TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod22">MultExpr</A></TD>
+<TD ALIGN=CENTER VALIGN=BASELINE>::=</TD>
+<TD ALIGN=LEFT VALIGN=BASELINE><A HREF="#prod23">UnaryExpr</A> ( ( &lt;MUL&gt; | &lt;DIV&gt; | &lt;MOD&gt; | &lt;CARET&gt; | &lt;IDIV&gt; ) <A HREF="#prod23">UnaryExpr</A> )*</TD>
+</TR>
+<TR>
+<TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod23">UnaryExpr</A></TD>
+<TD ALIGN=CENTER VALIGN=BASELINE>::=</TD>
+<TD ALIGN=LEFT VALIGN=BASELINE>( ( &lt;PLUS&gt; | &lt;MINUS&gt; ) )? <A HREF="#prod11">ValueExpr</A></TD>
+</TR>
+<TR>
+<TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod11">ValueExpr</A></TD>
+<TD ALIGN=CENTER VALIGN=BASELINE>::=</TD>
+<TD ALIGN=LEFT VALIGN=BASELINE><A HREF="#prod24">PrimaryExpr</A> ( <A HREF="#prod25">TupleAccess</A> )*</TD>
+</TR>
+<TR>
+<TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod25">TupleAccess</A></TD>
+<TD ALIGN=CENTER VALIGN=BASELINE>::=</TD>
+<TD ALIGN=LEFT VALIGN=BASELINE>&lt;DOT&gt; <A HREF="#prod14">Identifier</A></TD>
+</TR>
+<TR>
+<TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod24">PrimaryExpr</A></TD>
+<TD ALIGN=CENTER VALIGN=BASELINE>::=</TD>
+<TD ALIGN=LEFT VALIGN=BASELINE>( <A HREF="#prod26">Value</A> | <A HREF="#prod27">NamedValue</A> )</TD>
+</TR>
+<TR>
+<TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod26">Value</A></TD>
+<TD ALIGN=CENTER VALIGN=BASELINE>::=</TD>
+<TD ALIGN=LEFT VALIGN=BASELINE>( &lt;STRING_LITERAL&gt; | &lt;INTEGER_LITERAL&gt; | &lt;FLOAT_LITERAL&gt; | &lt;DOUBLE_LITERAL&gt; | &lt;NULL&gt; | &lt;TRUE&gt; | &lt;FALSE&gt; | &lt;MISSING&gt; )</TD>
+</TR>
+ <!-- Special token -->
+ <TR>
+  <TD>
+<PRE>
+/**
+ * Named value rule
+ */</PRE>
+  </TD>
+ </TR>
+<TR>
+<TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod27">NamedValue</A></TD>
+<TD ALIGN=CENTER VALIGN=BASELINE>::=</TD>
+<TD ALIGN=LEFT VALIGN=BASELINE><A HREF="#prod14">Identifier</A></TD>
+</TR>
+<TR>
+<TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod14">Identifier</A></TD>
+<TD ALIGN=CENTER VALIGN=BASELINE>::=</TD>
+<TD ALIGN=LEFT VALIGN=BASELINE>&lt;IDENTIFIER&gt;</TD>
+</TR>
+</TABLE>
+</BODY>
+</HTML>

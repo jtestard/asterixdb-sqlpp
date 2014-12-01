@@ -5,3 +5,10 @@
 /SimpleCharStream.java
 /Token.java
 /TokenMgrError.java
+/ParseException.java
+/SimpleCharStream.java
+/SQLPP.java
+/SQLPPConstants.java
+/SQLPPTokenManager.java
+/Token.java
+/TokenMgrError.java
