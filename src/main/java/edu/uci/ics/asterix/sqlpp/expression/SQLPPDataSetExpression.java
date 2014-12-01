@@ -12,7 +12,7 @@ import edu.uci.ics.asterix.sqlpp.base.AbstractValue;
  * @author julestestard
  *
  */
-public class SQLPPNamedValueExpression extends AbstractExpression {
+public class SQLPPDataSetExpression extends AbstractExpression {
 	
 	/**
 	 * 
@@ -33,7 +33,7 @@ public class SQLPPNamedValueExpression extends AbstractExpression {
 	 * @param name
 	 * @param value
 	 */
-	public SQLPPNamedValueExpression(Identifier name) {
+	public SQLPPDataSetExpression(Identifier name) {
 		super();
 		this.name = name;
 	}
@@ -53,6 +53,6 @@ public class SQLPPNamedValueExpression extends AbstractExpression {
 	}
 	
     public String toJSON() throws IOException {
-		return "\"NamedValue(" + name.getValue() + ")\"";
+		return "\"DataSet(" + name.getValue() + ")\"";
 	}
 }

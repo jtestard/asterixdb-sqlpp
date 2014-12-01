@@ -1,5 +1,84 @@
 ## AQL vs SQL++ AST comparison
 
+### Hello World
+1) AQL :
+```
+"Hello World!"
+```
+With (rewritten) AST :
+```
+FLWOGR [
+  Let Variable [ Name=@@0 Id=0 ]
+    := 
+    LiteralExpr [STRING] [Hello World!] 
+  Return
+    Variable [ Name=@@0 Id=0 ]
+]
+```
+
+2) SQL++ :
+```
+"Hello World!"
+```
+With AST :
+```
+{
+  "query":"Hello World!"
+}
+```
+
+3) Asterix Logical Plan :
+```
+distribute result [%0->$$0] -- |UNPARTITIONED|
+  project ([$$0]) -- |UNPARTITIONED|
+    assign [$$0] <- [AString: {Hello World!}] -- |UNPARTITIONED|
+      empty-tuple-source -- |UNPARTITIONED|
+```
+
+### Boolean conditions
+1) AQL :
+```
+1 != 2 and true
+```
+With (rewritten) AST :
+```
+FLWOGR [
+  Let Variable [ Name=@@0 Id=0 ]
+    := 
+    OperatorExpr [
+      OperatorExpr [
+        LiteralExpr [INTEGER] [1] 
+        NEQ
+        LiteralExpr [INTEGER] [2] 
+      ]
+      AND
+      LiteralExpr [TRUE]
+    ]
+  Return
+    Variable [ Name=@@0 Id=0 ]
+] 
+```
+
+2) SQL++ :
+```
+1 != 2 and true
+```
+With AST :
+```
+{
+  "query":[
+    [
+      1,
+      "NEQ",
+      2
+    ],
+    "AND",
+    true
+  ]
+}
+```
+
+ 
 ### SFW query without join
 
 Assume the Asterix Dataset `TinySocial` from the examples. Consider the queries :
@@ -11,15 +90,15 @@ for $user in dataset FacebookUsers
 where $user.id = 8
 return $user.alias;
 ```
-With AST: 
-
-    FLWOGR [
-        For Variable [ Name=$user Id=0 ]
-            In 
-            FunctionCall Metadata.dataset@1[
-                LiteralExpr [STRING] [FacebookUsers] 
-            ]
-    Where 
+With (rewritten) AST: 
+```
+FLWOGR [
+  For Variable [ Name=$user Id=0 ]
+    In 
+    FunctionCall Metadata.dataset@1[
+      LiteralExpr [STRING] [FacebookUsers] 
+    ]
+  Where 
     OperatorExpr [
       FieldAccessor [
         Variable [ Name=$user Id=0 ]
@@ -28,12 +107,13 @@ With AST:
       EQ
       LiteralExpr [INTEGER] [8] 
     ]
-    Return
-        FieldAccessor [
-            Variable [ Name=$user Id=0 ]
-            Field=alias
-        ]
+  Return
+    FieldAccessor [
+      Variable [ Name=$user Id=0 ]
+      Field=alias
     ]
+]
+```
 
 2) SQL++:
 ```
@@ -49,7 +129,7 @@ With AST :
       "select":[
         {
           "expression":{
-            "expression":"NamedValue(FB)",
+            "expression":"DataSet(FB)",
             ".":"Ident(alias)"
           },
           "alias":"null"
@@ -59,7 +139,7 @@ With AST :
     {
       "from":[
         {
-          "expression":"NamedValue(FacebookUsers)",
+          "expression":"DataSet(FacebookUsers)",
           "alias":"Variable(FB)"
         }
       ]
@@ -67,7 +147,7 @@ With AST :
     {
       "where":[
         {
-          "expression":"NamedValue(FB)",
+          "expression":"DataSet(FB)",
           ".":"Ident(id)"
         },
         "EQ",
@@ -167,14 +247,14 @@ with AST :
       "select":[
         {
           "expression":{
-            "expression":"NamedValue(FBU)",
+            "expression":"DataSet(FBU)",
             ".":"Ident(name)"
           },
           "alias":"Variable(uname)"
         },
         {
           "expression":{
-            "expression":"NamedValue(FBM)",
+            "expression":"DataSet(FBM)",
             ".":"Ident(message)"
           },
           "alias":"Variable(message)"
@@ -186,21 +266,21 @@ with AST :
         {
           "type":"LEFT_OUTER",
           "left":{
-            "expression":"NamedValue(FacebookUsers)",
+            "expression":"DataSet(FacebookUsers)",
             "alias":"Variable(FBU)"
           },
           "right":{
-            "expression":"NamedValue(FacebookMessages)",
+            "expression":"DataSet(FacebookMessages)",
             "alias":"Variable(FBM)"
           },
           "condition":[
             {
-              "expression":"NamedValue(FBU)",
+              "expression":"DataSet(FBU)",
               ".":"Ident(id)"
             },
             "EQ",
             {
-              "expression":"NamedValue(FBM)",
+              "expression":"DataSet(FBM)",
               ".":"Ident(author-id)"
             }
           ]

@@ -68,7 +68,7 @@ public class SQLPPUnaryExpr extends AbstractExpression {
     public String toJSON() throws IOException {
 		return "{" + 
 				"\"expression\":" + expr.toJSON() + "," +
-				"\"sign\":" + sign.toJSON() + "," +
+				"\"sign\":" + sign.toJSON() +
 				"}";
 	}
 }

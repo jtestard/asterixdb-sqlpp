@@ -25,7 +25,7 @@ import edu.uci.ics.asterix.sqlpp.expression.SQLPPUnaryExpr;
 import edu.uci.ics.asterix.sqlpp.expression.SQLPPUnaryExpr.Sign;
 import edu.uci.ics.asterix.sqlpp.expression.SQLPPSFWExpression;
 import edu.uci.ics.asterix.sqlpp.expression.SQLPPValueExpression;
-import edu.uci.ics.asterix.sqlpp.expression.SQLPPNamedValueExpression;
+import edu.uci.ics.asterix.sqlpp.expression.SQLPPDataSetExpression;
 import edu.uci.ics.asterix.sqlpp.expression.SQLPPSelectItemExpression;
 import edu.uci.ics.asterix.sqlpp.expression.SQLPPFromJoin;
 import edu.uci.ics.asterix.sqlpp.expression.SQLPPFromJoin.JoinType;
@@ -668,7 +668,7 @@ AbstractExpression PrimaryExpr() throws ParseException:
 	AbstractExpression expr = null;
 } {
     ( expr = Value()
-    | expr = NamedValue()
+    | expr = DataSet()
     )
     {
       return expr;
@@ -727,14 +727,14 @@ AbstractExpression Value() throws ParseException:
 /**
  * Named value rule
  */
-AbstractExpression NamedValue() throws ParseException:
+AbstractExpression DataSet() throws ParseException:
 {
 	Identifier ident = null;
 }
 {
 	ident = Identifier()
 	{
-		return new SQLPPNamedValueExpression(ident);
+		return new SQLPPDataSetExpression(ident);
 	}
 }
 

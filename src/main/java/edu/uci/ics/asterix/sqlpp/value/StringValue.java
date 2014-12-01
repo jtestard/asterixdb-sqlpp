@@ -54,7 +54,7 @@ public class StringValue extends AbstractValue implements DefinedValue {
 	}
 	
 	public String toJSON() throws IOException {
-		return value;
+		return "\"" + value + "\"";
 	}
 
 }
