@@ -124,3 +124,14 @@ With AST :
   }
 }
 ```
+
+3) Asterix Logical Plan :
+
+```
+distribute result [%0->$$4] -- |UNPARTITIONED|
+  project ([$$4]) -- |UNPARTITIONED|
+    assign [$$4] <- [function-call: asterix:field-access-by-name, Args:[%0->$$0, AString: {alias}]] -- |UNPARTITIONED|
+      select (function-call: algebricks:eq, Args:[function-call: asterix:field-access-by-name, Args:[%0->$$0, AString: {id}], AInt32: {8}]) -- |UNPARTITIONED|
+        unnest $$0 <- function-call: asterix:dataset, Args:[AString: {FacebookUsers}] -- |UNPARTITIONED|
+          empty-tuple-source -- |UNPARTITIONED|
+```
