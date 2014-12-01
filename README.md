@@ -2,11 +2,10 @@
 
 Notice: this document is using a variant of Markdown called Github Flavored Markdown (GFM), which allows fancy features such as syntax coloring. To be able to view this document properly, please either go to the [github page for the project](https://github.com/jtestard/asterixdb-sqlpp) or use Eclipse's [GFM viewer](https://github.com/satyagraha/gfm_viewer).
 
-Generate SQL++ and AQL syntax trees for identical (semantically, maybe not syntactically) query and compare differences.
 
 ## Introduction
 
-This document is intended as a reference guide to the full syntax and semantics of the SQL++ Query Language for Asterix (Asterix SQL++). This document describes how the SQL++ query language is interpreted in the context of AsterixDB. Details for the SQL++ query language being developed at UCSD can be found [here](http://forward.ucsd.edu/sqlpp.html).
+This document is intended as a reference guide to the full syntax and semantics of the SQL++ Query Language for Asterix (Asterix SQL++). This document describes how the SQL++ query language is parsed in the context of AsterixDB. Details for the SQL++ query language being developed at UCSD can be found [here](http://forward.ucsd.edu/sqlpp.html).
 
 It is important to note that while we are using the SQL++ query language, we are keeping the Asterix Data Model. As such, there will be some differences between the language presented here and the standard "UCSD" SQL++ [1]. These differences will be clearly highlighted when they occur and will be kept at a minimum.
 
@@ -57,9 +56,7 @@ SQLPPPathstep   ::= "." SQLPPIdentifier
     SQLPPPrimaryExpr ::=   SQLPPValue
                      |     SQLPPParenthesizedExpression
                      |     SQLPPVariableRef
-                     |     SQLPPNamedValue
                      |     SQLPPFunctionCallExpr
-#                    |     SQLPPColumnReference
 ```
                     
 #### SQL++ Values (includes literals)
@@ -152,7 +149,7 @@ SQLPPFromClause         ::= SQLPPFromItem ( "," SQLPPFromItem)*
 SQLPPFromItem           ::= SQLPPFromSingle
                         |    SQLPPFromJoin
 #                        |    SQLPPFromFlatten
-SQLPPFromSingle         ::=     SQLPPValueExpression "AS" SQLPPVariableRef # ["AT" SQLPPOperatorExpr ]
+SQLPPFromSingle         ::=     SQLPPFromElement "AS" SQLPPVariableRef # ["AT" SQLPPOperatorExpr ]
 SQLPPFromJoin           ::=     SQLPPFromInnerJoin
 #                       |       SQLPPFromOuterJoin
 SQLPPFromInnerJoin      ::= SQLPPFromItem "JOIN" SQLPPFromItem "ON" SQLPPOperatorExpr
@@ -167,6 +164,8 @@ SQLPPFromOuterJoin      ::= ( "LEFT" | "RIGHT" | "FULL" )
 #                           SQLPPOpertorExpr "AS" SQLPPVariableRef ","
 #                           SQLPPOpertorExpr "AS" SQLPPVariableRef ")"
 SQLPPVariableRef        ::= SQLPPIdentifier
+SQLPPFromElement        ::= SQLPPValueExpression (SQLPPathstep)*
+                        |   SQLPPDataset (SQLPPathstep)*
 ```
 
 #### SQL++ GROUP BY Clause
@@ -187,17 +186,15 @@ UCSD SQL++ configuration parameters are implicitely defined in Asterix SQL++, an
 
 ## SQLPP to AQL Mappings
 
+Values can easily be mapped from the SQL++ AST to the AQL AST.
 ```python
-    SQLPPStringValue      =>        StringLiteral
-    SQLPPIntegerValue     =>        IntegerLiteral
-    SQLPPFloatValue       =>        FloatLiteral
-    SQLPPDoubleValue      =>        DoubleLiteral
-    SQLPPTupleValue         =>        RecordConstructor
-    SQLPPArrayValue         =>        OrderedListConstructor
-    SQLPPBagValue           =>        UnorderedListConstructor
-    SQLPPIdentifier         =>        Identifier
-    SQLPPVariableRef        =>        VariableRef
-    SQLPPNamedValue         =>        QualifiedName
+SQLPPStringValue      =>        StringLiteral
+SQLPPIntegerValue     =>        IntegerLiteral
+SQLPPFloatValue       =>        FloatLiteral
+SQLPPDoubleValue      =>        DoubleLiteral
+SQLPPTupleValue         =>        RecordConstructor
+SQLPPArrayValue         =>        OrderedListConstructor
+SQLPPBagValue           =>        UnorderedListConstructor
+SQLPPIdentifier         =>        Identifier
+SQLPPVariableRef        =>        VariableRef
 ```
-
-This is tentative corresponding of SQL++ tokens to AQL tokens.

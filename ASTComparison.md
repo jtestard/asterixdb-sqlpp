@@ -1,5 +1,7 @@
 ## AQL vs SQL++ AST comparison
 
+Generate SQL++ and AQL syntax trees for identical (semantically, maybe not syntactically) query and compare differences.
+
 ### Hello World
 1) AQL :
 ```
