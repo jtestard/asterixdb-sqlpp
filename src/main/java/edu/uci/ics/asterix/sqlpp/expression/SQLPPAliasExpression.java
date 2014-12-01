@@ -3,6 +3,8 @@
  */
 package edu.uci.ics.asterix.sqlpp.expression;
 
+import java.io.IOException;
+
 import edu.uci.ics.asterix.sqlpp.base.AbstractExpression;
 
 /**
@@ -54,6 +56,10 @@ public class SQLPPAliasExpression extends AbstractExpression {
 	 */
 	public void setIdent(Identifier ident) {
 		this.alias = ident;
+	}
+	
+    public String toJSON() throws IOException {
+		return "\"Alias(" + alias.getValue() + ")\"";
 	}
 
 }

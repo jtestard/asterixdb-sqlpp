@@ -3,6 +3,8 @@
  */
 package edu.uci.ics.asterix.sqlpp.value;
 
+import java.io.IOException;
+
 import edu.uci.ics.asterix.sqlpp.base.AbstractValue;
 import edu.uci.ics.asterix.sqlpp.base.DefinedValue;
 
@@ -49,6 +51,10 @@ public class StringValue extends AbstractValue implements DefinedValue {
 	public StringValue(String value) {
 		super();
 		this.value = value;
+	}
+	
+	public String toJSON() throws IOException {
+		return value;
 	}
 
 }

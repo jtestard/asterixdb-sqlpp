@@ -3,8 +3,11 @@
  */
 package edu.uci.ics.asterix.sqlpp.clause;
 
+import java.io.IOException;
+
 import edu.uci.ics.asterix.sqlpp.base.AbstractClause;
 import edu.uci.ics.asterix.sqlpp.base.AbstractExpression;
+import edu.uci.ics.asterix.sqlpp.expression.SQLPPFromItem;
 
 /**
  * @author julestestard
@@ -47,5 +50,9 @@ public class WhereClause extends AbstractClause {
 	 */
 	public void setExpression(AbstractExpression expression) {
 		this.expression = expression;
+	}
+	
+	public String toJSON() throws IOException {
+		return "{\"where\":" + expression.toJSON() + "}";
 	}
 }

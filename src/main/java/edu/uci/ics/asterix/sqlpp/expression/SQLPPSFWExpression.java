@@ -3,6 +3,7 @@
  */
 package edu.uci.ics.asterix.sqlpp.expression;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
 import edu.uci.ics.asterix.sqlpp.base.AbstractClause;
@@ -50,6 +51,15 @@ public class SQLPPSFWExpression extends AbstractExpression {
 	 */
 	public void setClauses(ArrayList<AbstractClause> clauses) {
 		this.clauses = clauses;
+	}
+	
+	public String toJSON() throws IOException {
+		String it = "[";
+		for (AbstractClause item : clauses) {
+			it += item.toJSON() + ",";
+		}
+		it = it.substring(0, it.length()-1) + "]";
+		return it;
 	}
 
 }

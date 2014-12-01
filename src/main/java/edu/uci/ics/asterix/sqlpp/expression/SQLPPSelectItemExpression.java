@@ -3,6 +3,8 @@
  */
 package edu.uci.ics.asterix.sqlpp.expression;
 
+import java.io.IOException;
+
 import edu.uci.ics.asterix.sqlpp.base.AbstractExpression;
 
 /**
@@ -71,6 +73,13 @@ public class SQLPPSelectItemExpression extends AbstractExpression {
 	 */
 	public void setExpression(AbstractExpression expression) {
 		this.expression = expression;
+	}
+	
+    public String toJSON() throws IOException {
+		return "{" + 
+				"\"expression\":" + expression.toJSON() + "," +
+				"\"alias\":" + ((alias == null) ? "\"null\"" : alias.toJSON()) +
+				"}";
 	}
 
 }

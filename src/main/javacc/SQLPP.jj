@@ -27,9 +27,8 @@ import edu.uci.ics.asterix.sqlpp.expression.SQLPPSFWExpression;
 import edu.uci.ics.asterix.sqlpp.expression.SQLPPValueExpression;
 import edu.uci.ics.asterix.sqlpp.expression.SQLPPNamedValueExpression;
 import edu.uci.ics.asterix.sqlpp.expression.SQLPPSelectItemExpression;
-import edu.uci.ics.asterix.sqlpp.expression.SQLPPFromInnerJoin;
-import edu.uci.ics.asterix.sqlpp.expression.SQLPPFromOuterJoin;
-import edu.uci.ics.asterix.sqlpp.expression.SQLPPFromOuterJoin.OuterJoinType;
+import edu.uci.ics.asterix.sqlpp.expression.SQLPPFromJoin;
+import edu.uci.ics.asterix.sqlpp.expression.SQLPPFromJoin.JoinType;
 import edu.uci.ics.asterix.sqlpp.expression.SQLPPFromItem;
 import edu.uci.ics.asterix.sqlpp.expression.SQLPPFromSingle;
 import edu.uci.ics.asterix.sqlpp.expression.SQLPPAliasExpression;
@@ -398,12 +397,13 @@ AbstractClause From() throws ParseException: {
 }
 
 SQLPPFromItem FromItem() throws ParseException: {
-	SQLPPFromItem fromItem;
+	SQLPPFromItem fromLeft = null;
+	SQLPPFromItem result = null;
 } {
-	( fromItem = FromInnerJoin()
-	| fromItem = FromOuterJoin()
-	) {
-		return fromItem;
+	fromLeft = FromSingle()
+	( result = FromJoin(fromLeft) ) ?
+	{
+		return (result == null) ? (SQLPPFromItem) fromLeft : (SQLPPFromItem) result ;
 	}
 }
 
@@ -420,41 +420,24 @@ SQLPPFromSingle FromSingle() throws ParseException: {
 	}
 }
 
-SQLPPFromItem FromInnerJoin() throws ParseException: {
-	SQLPPFromItem left = null;
+SQLPPFromJoin FromJoin(SQLPPFromItem left) throws ParseException: {
+	JoinType joinType = null;
 	SQLPPFromItem right = null;
 	AbstractExpression expr = null;
 } {
-	(<INNER>) ?
-	left = FromSingle()
-	( <JOIN>
-	  right = FromItem()
-	  <ON>
-	  expr = SQLPPOperatorExpression()
-	)? {
-		if (right==null) { return left;}
-		else {return new SQLPPFromInnerJoin(left, right, expr);}
+	[ <LEFT> <OUTER>{ joinType = JoinType.LEFT_OUTER;}
+	  | <RIGHT> <OUTER>{ joinType = JoinType.RIGHT_OUTER;}
+	  | <FULL> <OUTER> { joinType = JoinType.FULL_OUTER;}
+	  | <INNER> { joinType = JoinType.INNER; }
+	]
+	<JOIN> {
+		if (joinType == null) { joinType = JoinType.INNER; }
 	}
-}
-
-SQLPPFromItem FromOuterJoin() throws ParseException: {
-	OuterJoinType joinType;
-	SQLPPFromItem left = null;
-	SQLPPFromItem right = null;
-	AbstractExpression expr = null;
-} {
-	( <LEFT> { joinType = OuterJoinType.LEFT;}
-	  | <RIGHT> { joinType = OuterJoinType.RIGHT;}
-	  | <FULL> { joinType = OuterJoinType.FULL;}
-	)
-	<OUTER> 
-	left = FromSingle()
-	<JOIN>
 	right = FromItem()
 	<ON>
 	expr = SQLPPOperatorExpression()
 	{
-		return new SQLPPFromOuterJoin(joinType, left, right, expr);
+		return new SQLPPFromJoin(joinType, left, right, expr);
 	}
 }
 
@@ -566,13 +549,6 @@ AbstractExpression RelExpr()throws ParseException:
  	}
 }
 
-/**
- * TODO: fix this problem.
- * Warning: Choice conflict in (...)* construct in this rule. Will need to be addressed.
-         Expansion nested within construct and expansion following construct
-         have common prefixes, one of which is: "+"
-         Consider using a lookahead of 2 or more for nested expansion.
- */
 AbstractExpression AddExpr() throws ParseException:
 {
   SQLPPOperatorExpr op = null;

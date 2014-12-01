@@ -125,25 +125,25 @@ public class SQLPPSFWExpressionTest {
 	
 	@Test
 	public void testFromInnerJoinWithInnerKeywordExpression() {
-		String queryStr = "SELECT id, name, age FROM INNER person JOIN books ON id = 2";
+		String queryStr = "SELECT id, name, age FROM person INNER JOIN books ON id = 2";
 		testQuery(queryStr);
 	}
 	
 	@Test
 	public void testFromLeftOuterJoinExpression() {
-		String queryStr = "SELECT id, name, age FROM LEFT OUTER person JOIN books ON id = 2";
+		String queryStr = "SELECT id, name, age FROM person LEFT OUTER JOIN books ON id = 2";
 		testQuery(queryStr);
 	}
 	
 	@Test
 	public void testFromRightOuterJoinExpression() {
-		String queryStr = "SELECT id, name, age FROM RIGHT OUTER person JOIN books ON id = 2";
+		String queryStr = "SELECT id, name, age FROM person RIGHT OUTER JOIN books ON id = 2";
 		testQuery(queryStr);
 	}
 	
 	@Test
 	public void testFromFullOuterJoinExpression() {
-		String queryStr = "SELECT id, name, age FROM FULL OUTER person JOIN books ON id = 2";
+		String queryStr = "SELECT id, name, age FROM person FULL OUTER JOIN books ON id = 2";
 		testQuery(queryStr);
 	}
 	
@@ -156,6 +156,14 @@ public class SQLPPSFWExpressionTest {
 	@Test
 	public void testTinySocialQuery1() {
 		String queryStr = "SELECT FB.alias FROM FacebookUsers AS FB WHERE FB.id = 8";
+		testQuery(queryStr);
+	}
+	
+	@Test
+	public void testTinySocialQuery2() {
+		String queryStr = "SELECT FBU.name AS uname, FBM.message AS message\n" +
+				"FROM FacebookUsers AS FBU LEFT OUTER JOIN FacebookMessages AS FBM\n" +
+				"ON FBU.id = FBM.author-id";
 		testQuery(queryStr);
 	}
 }

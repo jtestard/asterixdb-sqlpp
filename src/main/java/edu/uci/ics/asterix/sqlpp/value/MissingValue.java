@@ -3,6 +3,8 @@
  */
 package edu.uci.ics.asterix.sqlpp.value;
 
+import java.io.IOException;
+
 import edu.uci.ics.asterix.sqlpp.base.AbstractValue;
 
 /**
@@ -33,4 +35,8 @@ public class MissingValue extends AbstractValue {
 	}
 
 	public MissingValue() {}
+	
+	public String toJSON() throws IOException {
+		return "missing";
+	}
 }

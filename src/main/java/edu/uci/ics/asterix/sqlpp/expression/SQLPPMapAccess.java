@@ -3,6 +3,8 @@
  */
 package edu.uci.ics.asterix.sqlpp.expression;
 
+import java.io.IOException;
+
 import edu.uci.ics.asterix.sqlpp.base.AbstractExpression;
 import edu.uci.ics.asterix.sqlpp.base.AbstractValue;
 
@@ -48,4 +50,11 @@ public class SQLPPMapAccess extends SQLPPAbstractAccessor {
 		this.value = value;
 	}
 
+    public String toJSON() throws IOException {
+		return "{" +
+				"\"expression\":" + this.expr.toJSON() + "," +
+				"\"()\":" + value.toJSON() +
+				"}";
+	}
+	
 }

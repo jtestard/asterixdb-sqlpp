@@ -3,6 +3,8 @@
  */
 package edu.uci.ics.asterix.sqlpp.expression;
 
+import java.io.IOException;
+
 import edu.uci.ics.asterix.sqlpp.base.AbstractExpression;
 
 /**
@@ -45,6 +47,13 @@ public class SQLPPTupleAccess extends SQLPPAbstractAccessor {
 	public SQLPPTupleAccess(AbstractExpression expr, Identifier ident) {
 		super(expr);
 		this.ident = ident;
+	}
+	
+    public String toJSON() throws IOException {
+		return "{" +
+				"\"expression\":" + this.expr.toJSON() + "," +
+				"\".\":" + ident.toJSON() +
+				"}";
 	}
 
 }

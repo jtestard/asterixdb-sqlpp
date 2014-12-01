@@ -3,20 +3,23 @@
  */
 package edu.uci.ics.asterix.sqlpp.expression;
 
+import java.io.IOException;
+
 import edu.uci.ics.asterix.sqlpp.base.AbstractExpression;
+import edu.uci.ics.asterix.sqlpp.base.ISqlppExpression;
 
 /**
  * @author julestestard
  *
  */
-public class SQLPPFromOuterJoin extends SQLPPFromItem {
+public class SQLPPFromJoin extends SQLPPFromItem {
 	
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 8693383208706734723L;
 	
-	private OuterJoinType outerJoinType;
+	private JoinType joinType;
 	private SQLPPFromItem left;
 	private SQLPPFromItem right;
 	private AbstractExpression conditionExpr;
@@ -24,7 +27,7 @@ public class SQLPPFromOuterJoin extends SQLPPFromItem {
 	/**
 	 * 
 	 */
-	public SQLPPFromOuterJoin() {
+	public SQLPPFromJoin() {
 	}
 
 	/**
@@ -33,10 +36,10 @@ public class SQLPPFromOuterJoin extends SQLPPFromItem {
 	 * @param right
 	 * @param conditionExpr
 	 */
-	public SQLPPFromOuterJoin(OuterJoinType outerJoinType, SQLPPFromItem left,
+	public SQLPPFromJoin(JoinType joinType, SQLPPFromItem left,
 			SQLPPFromItem right, AbstractExpression conditionExpr) {
 		super();
-		this.outerJoinType = outerJoinType;
+		this.joinType = joinType;
 		this.left = left;
 		this.right = right;
 		this.conditionExpr = conditionExpr;
@@ -50,10 +53,15 @@ public class SQLPPFromOuterJoin extends SQLPPFromItem {
 		return Kind.FROM_ITEM_OUTER_JOIN_EXPRESSION;
 	}
 	
-    public enum OuterJoinType {
-        LEFT,
-        RIGHT,
-        FULL,
+    public enum JoinType implements ISqlppExpression {
+        LEFT_OUTER,
+        RIGHT_OUTER,
+        FULL_OUTER,
+        INNER;
+        
+        public String toJSON() {
+        	return "\"" + name() + "\"";
+        }
     }
 
 	/**
@@ -101,7 +109,16 @@ public class SQLPPFromOuterJoin extends SQLPPFromItem {
 	/**
 	 * @return the outerJoinType
 	 */
-	public OuterJoinType getOuterJoinType() {
-		return outerJoinType;
+	public JoinType getJoinType() {
+		return joinType;
+	}
+	
+    public String toJSON() throws IOException {
+		return "{" +
+				"\"type\" : \""+ this.getJoinType() + "\"," +
+				"\"left\" : " + left.toJSON() + "," +
+				"\"right\" : " + right.toJSON() + "," +
+				"\"condition\" : " + conditionExpr.toJSON() + 
+				"}";
 	}
 }

@@ -42,5 +42,9 @@ public class SQLPPQuery extends AbstractStatement {
 	public void setBody(AbstractExpression body) {
 		this.body = body;
 	}
+	
+	public String toJSON() throws IOException {
+		return "{\"query\":" + body.toJSON() + "}";
+	}
 
 }

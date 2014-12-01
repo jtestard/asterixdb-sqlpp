@@ -14,6 +14,8 @@
  */
 package edu.uci.ics.asterix.sqlpp.expression;
 
+import edu.uci.ics.asterix.sqlpp.base.ISqlppExpression;
+
 /**
  * Operators used in SQL++. Ordinal positions of the operators are mentionned
  * in the generated Abstract Syntax Tree (AST).
@@ -21,7 +23,7 @@ package edu.uci.ics.asterix.sqlpp.expression;
  * @author julestestard
  *
  */
-public enum OperatorType {
+public enum OperatorType implements ISqlppExpression {
     OR,
     AND,
     LT,
@@ -38,5 +40,9 @@ public enum OperatorType {
     MOD,
     CARET,
     IDIV, // integer divide
-    FUZZY_EQ
+    FUZZY_EQ;
+    
+    public String toJSON() {
+    	return "\"" + name() + "\"";
+    }
 }

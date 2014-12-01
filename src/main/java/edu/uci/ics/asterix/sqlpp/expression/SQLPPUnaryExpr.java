@@ -14,7 +14,10 @@
  */
 package edu.uci.ics.asterix.sqlpp.expression;
 
+import java.io.IOException;
+
 import edu.uci.ics.asterix.sqlpp.base.AbstractExpression;
+import edu.uci.ics.asterix.sqlpp.base.ISqlppExpression;
 
 public class SQLPPUnaryExpr extends AbstractExpression {
     /**
@@ -53,8 +56,19 @@ public class SQLPPUnaryExpr extends AbstractExpression {
         return Kind.UNARY_EXPRESSION;
     }
 
-    public enum Sign {
+    public enum Sign implements ISqlppExpression {
         POSITIVE,
-        NEGATIVE
+        NEGATIVE;
+
+		public String toJSON() throws IOException {
+			return "\"" + name() + "\"";
+		}
     }
+    
+    public String toJSON() throws IOException {
+		return "{" + 
+				"\"expression\":" + expr.toJSON() + "," +
+				"\"sign\":" + sign.toJSON() + "," +
+				"}";
+	}
 }

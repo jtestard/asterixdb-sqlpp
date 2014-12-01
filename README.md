@@ -156,8 +156,8 @@ SQLPPFromSingle         ::=     SQLPPValueExpression "AS" SQLPPVariableRef # ["A
 SQLPPFromJoin           ::=     SQLPPFromInnerJoin
 #                       |       SQLPPFromOuterJoin
 SQLPPFromInnerJoin      ::= SQLPPFromItem "JOIN" SQLPPFromItem "ON" SQLPPOperatorExpr
-# SQLPPFromOuterJoin    ::= ( "LEFT" | "RIGHT" | "FULL" ) 
-#                    "JOIN" SQLPPFromItem "ON" SQLPPOperatorExpr
+SQLPPFromOuterJoin      ::= ( "LEFT" | "RIGHT" | "FULL" ) 
+                            "JOIN" SQLPPFromItem "ON" SQLPPOperatorExpr
 # SQLPPFromFlatten      ::= SQLPPFromInFlatten
 #                       |   SQLPPFromOutFlatten
 # SQLPPFromInFlatten    ::= "FLATTEN" "("

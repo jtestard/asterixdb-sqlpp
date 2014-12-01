@@ -14,7 +14,10 @@
  */
 package edu.uci.ics.asterix.sqlpp.expression;
 
+import java.io.IOException;
+
 import edu.uci.ics.asterix.sqlpp.base.AbstractExpression;
+import edu.uci.ics.asterix.sqlpp.base.ISqlppExpression;
 
 public abstract class SQLPPAbstractAccessor extends AbstractExpression {
     /**
@@ -35,5 +38,5 @@ public abstract class SQLPPAbstractAccessor extends AbstractExpression {
     public void setExpr(AbstractExpression expr) {
         this.expr = expr;
     }
-
+    
 }

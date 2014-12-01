@@ -62,6 +62,6 @@ public class Identifier implements ISqlppExpression {
     }
 
     public String toJSON() throws IOException {
-		return JsonWriter.objectToJson(this);
+		return "\"Ident(" + identifier + ")\"";
 	}
 }

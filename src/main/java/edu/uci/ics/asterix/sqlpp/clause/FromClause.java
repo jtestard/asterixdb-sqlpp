@@ -3,6 +3,7 @@
  */
 package edu.uci.ics.asterix.sqlpp.clause;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
 import edu.uci.ics.asterix.sqlpp.base.AbstractClause;
@@ -46,5 +47,14 @@ public class FromClause extends AbstractClause {
 	 */
 	public void setItems(ArrayList<SQLPPFromItem> items) {
 		this.items = items;
+	}
+	
+	public String toJSON() throws IOException {
+		String it = "[";
+		for (SQLPPFromItem item : items) {
+			it += item.toJSON() + ",";
+		}
+		it = it.substring(0, it.length()-1) + "]";
+		return "{\"from\":" + it + "}";
 	}
 }

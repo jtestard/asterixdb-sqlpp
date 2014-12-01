@@ -3,6 +3,8 @@
  */
 package edu.uci.ics.asterix.sqlpp.expression;
 
+import java.io.IOException;
+
 import edu.uci.ics.asterix.sqlpp.base.AbstractExpression;
 import edu.uci.ics.asterix.sqlpp.base.AbstractValue;
 
@@ -48,5 +50,9 @@ public class SQLPPNamedValueExpression extends AbstractExpression {
 	 */
 	public void setName(Identifier name) {
 		this.name = name;
+	}
+	
+    public String toJSON() throws IOException {
+		return "\"NamedValue(" + name.getValue() + ")\"";
 	}
 }

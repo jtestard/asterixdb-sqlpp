@@ -3,6 +3,8 @@
  */
 package edu.uci.ics.asterix.sqlpp.value;
 
+import java.io.IOException;
+
 import edu.uci.ics.asterix.sqlpp.base.AbstractValue;
 import edu.uci.ics.asterix.sqlpp.base.DefinedValue;
 
@@ -36,4 +38,8 @@ public class TrueValue extends AbstractValue implements DefinedValue {
 	}
 
 	public TrueValue() {}
+	
+	public String toJSON() throws IOException {
+		return "true";
+	}
 }

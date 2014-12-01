@@ -3,6 +3,8 @@
  */
 package edu.uci.ics.asterix.sqlpp.expression;
 
+import java.io.IOException;
+
 import edu.uci.ics.asterix.sqlpp.base.AbstractExpression;
 
 /**
@@ -46,6 +48,10 @@ public class SQLPPVariableRef extends AbstractExpression {
 	public SQLPPVariableRef(Identifier var) {
 		super();
 		this.variable = var;
+	}
+	
+    public String toJSON() throws IOException {
+		return "\"Variable(" + variable.getValue() + ")\"";
 	}
 
 }

@@ -3,6 +3,7 @@
  */
 package edu.uci.ics.asterix.sqlpp.expression;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
 import edu.uci.ics.asterix.sqlpp.expression.OperatorType;
@@ -95,5 +96,19 @@ public class SQLPPOperatorExpr extends AbstractExpression {
 	 */
 	public void setAndExpressions(ArrayList<AbstractExpression> andExpressions) {
 		this.expressions = andExpressions;
+	}
+	
+	public String toJSON() throws IOException {
+		String it = "[";
+		for (int i = 0; i < expressions.size(); i++) {
+			AbstractExpression expression = expressions.get(i);
+			it += expression.toJSON() + ",";
+			if (i < expressions.size() - 1) {
+				OperatorType operator = operators.get(i);
+				it += operator.toJSON() + ",";
+			}
+		}
+		it = it.substring(0, it.length()-1) + "]";
+		return it;
 	}
 }
