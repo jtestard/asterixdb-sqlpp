@@ -7,10 +7,9 @@ Notice: this document is using a variant of Markdown called Github Flavored Mark
 
 This document is intended as a reference guide to the full syntax and semantics of the SQL++ Query Language for Asterix (Asterix SQL++). This document describes how the SQL++ query language is parsed in the context of AsterixDB. Details for the SQL++ query language being developed at UCSD can be found [here](http://forward.ucsd.edu/sqlpp.html).
 
-It is important to note that while we are using the SQL++ query language, we are keeping the Asterix Data Model. As such, there will be some differences between the language presented here and the standard "UCSD" SQL++ [1]. These differences will be clearly highlighted when they occur and will be kept at a minimum.
+It is important to note that while we are using the SQL++ query language, we are keeping the Asterix Data Model. As such, there will be some differences between the language presented here and the SQL++ Reference Implementation [1]. These differences will be clearly highlighted when they occur and will be kept at a minimum.
 
-This description only addresses expressions for the moment. Unsupported expressions are currently greyed out.
-Note that this description contains left-recursion, while the parser used for SQL++ is LL(k). Therefore rules appearing in the parser may differ from this document.
+Note that only queries are affected by the SQL++ syntax, and all other statements (insert, create ...) are exactly the same as in AQL. All types of statements are presented here.
 
 ## Expressions
 ```python
@@ -21,7 +20,6 @@ A SQL++ query can be any legal SQL++ expression.
 ```python
 SQLPPExpression ::=     SFWExpression
                 |       SQLPPOperatorExpr
-#                |       SQLPPQuantifiedExpression
 ```
 
 The `SQLPPQuantifiedExpression` expression specification will be deferred to a later date, given that existential/universal quantification is not fully supported in the SQL++ implementation as of this moment (in particular the `IN, EXISTS, ANY, ALL` keywords from the SQL++ language are not yet supported).
@@ -53,10 +51,10 @@ SQLPPPathstep   ::= "." SQLPPIdentifier
 #### SQL++ Value Expression
 
 ```python
-    SQLPPPrimaryExpr ::=   SQLPPValue
-                     |     SQLPPParenthesizedExpression
-                     |     SQLPPVariableRef
-                     |     SQLPPFunctionCallExpr
+SQLPPPrimaryExpr ::=   SQLPPValue
+                 |     SQLPPParenthesizedExpression
+                 |     SQLPPVariableRef
+                 |     SQLPPFunctionCallExpr
 ```
                     
 #### SQL++ Values (includes literals)
@@ -119,23 +117,23 @@ In AQL, the symbols `"<" | ">" | "<=" | ">=" | "=" | "!=" | "~=" | "+" | "-" | "
 
 ```python
 SQLPPSFWExpression ::=    "SELECT" SQLPPSelectClause
-#                    |     "SELECT"  "DISTINCT" SQLPPSelectClause
+                    |     "SELECT"  "DISTINCT" SQLPPSelectClause
                     |    "FROM" SQLPPFromClause
                     |    "WHERE" SQLPPOperatorExpr
-#                    |    "GROUPBY" SQLPPGroupItem
-#                    |    "HAVING" SQLPPOperatorExpr
-#                    |    ("UNION" | "INTERSECT" | "EXCEPT") ["ALL"] SQLPPSFWExpression
-#                    |    "ORDER BY" SQLPPOrderItem
-#                    |    "LIMIT" SQLPPOperatorExpr
-#                    |    "OFFSET" SQLPPOperatorExpr
+                    |    "GROUPBY" SQLPPGroupItem
+                    |    "HAVING" SQLPPOperatorExpr
+                    |    ("UNION" | "INTERSECT" | "EXCEPT") ["ALL"] SQLPPSFWExpression
+                    |    "ORDER BY" SQLPPOrderItem
+                    |    "LIMIT" SQLPPOperatorExpr
+                    |    "OFFSET" SQLPPOperatorExpr
 ```
 
 #### SQL++ Select Clause
 
 ```python
 SQLPPSelectClause   ::= SQLPPSelectItem (, SQLPPSelectItem)*
-#                    |   "TUPLE" SQLPPSelectItem
-#                    |    "ELEMENT" SQLPPOperatorExpr
+                    |   "TUPLE" SQLPPSelectItem
+                    |    "ELEMENT" SQLPPOperatorExpr
 SQLPPSelectItem     ::= SQLPPValueExpr [ "AS" SQLPPAlias ]
                     |   SQLPPWildCard
 SQLPPAlias          ::= SQLPPIdentifier
@@ -148,21 +146,21 @@ SQLPPWildCard       ::= "*"
 SQLPPFromClause         ::= SQLPPFromItem ( "," SQLPPFromItem)*
 SQLPPFromItem           ::= SQLPPFromSingle
                         |    SQLPPFromJoin
-#                        |    SQLPPFromFlatten
+                        |    SQLPPFromFlatten
 SQLPPFromSingle         ::=     SQLPPFromElement "AS" SQLPPVariableRef # ["AT" SQLPPOperatorExpr ]
 SQLPPFromJoin           ::=     SQLPPFromInnerJoin
                         |       SQLPPFromOuterJoin
 SQLPPFromInnerJoin      ::= SQLPPFromItem "JOIN" SQLPPFromItem "ON" SQLPPOperatorExpr
 SQLPPFromOuterJoin      ::= ( "LEFT" | "RIGHT" | "FULL" ) 
                             "JOIN" SQLPPFromItem "ON" SQLPPOperatorExpr
-# SQLPPFromFlatten      ::= SQLPPFromInFlatten
-#                       |   SQLPPFromOutFlatten
-# SQLPPFromInFlatten    ::= "FLATTEN" "("
-#                           SQLPPOpertorExpr "AS" SQLPPVariableRef ","
-#                           SQLPPOpertorExpr "AS" SQLPPVariableRef ")"
-# SQLPPFromOutFlatten   ::= "FLATTEN" "("
-#                           SQLPPOpertorExpr "AS" SQLPPVariableRef ","
-#                           SQLPPOpertorExpr "AS" SQLPPVariableRef ")"
+SQLPPFromFlatten      ::= SQLPPFromInFlatten
+                       |   SQLPPFromOutFlatten
+SQLPPFromInFlatten    ::= "FLATTEN" "("
+                           SQLPPOpertorExpr "AS" SQLPPVariableRef ","
+                           SQLPPOpertorExpr "AS" SQLPPVariableRef ")"
+SQLPPFromOutFlatten   ::= "FLATTEN" "("
+                           SQLPPOpertorExpr "AS" SQLPPVariableRef ","
+                           SQLPPOpertorExpr "AS" SQLPPVariableRef ")"
 SQLPPVariableRef        ::= SQLPPIdentifier
 SQLPPFromElement        ::= SQLPPValueExpression (SQLPPathstep)*
                         |   SQLPPDataset (SQLPPathstep)*
@@ -171,30 +169,32 @@ SQLPPFromElement        ::= SQLPPValueExpression (SQLPPathstep)*
 #### SQL++ GROUP BY Clause
 
 ```python
-# SQLPPGroupItem        ::= SQLPPOperatorExpr [ "AS" VariableRef* ]
+SQLPPGroupItem        ::= SQLPPOperatorExpr [ "AS" VariableRef* ]
 ```
 
 #### SQL++ ORDER BY Clause
 
 ```python
-# SQLPPOrderByItem    ::= SQLPPOperatorExpr [ "ASC" | "DESC" ]
+SQLPPOrderByItem    ::= SQLPPOperatorExpr [ "ASC" | "DESC" ]
 ```
+
+## Statements
+
+```python
+Statement       ::= ( SingleStatement ( ";" )? )* <EOF>
+SingleStatement ::= DataverseDeclaration
+                  | FunctionDeclaration
+                  | CreateStatement
+                  | DropStatement
+                  | LoadStatement
+                  | SetStatement
+                  | InsertStatement
+                  | DeleteStatement
+                  | SQLPPQuery
+```
+
+For details about non-query statements, please refer to the guide found [here](https://asterixdb.ics.uci.edu/documentation/aql/manual.html).
 
 ## SQL++ Configuration Parameters
 
 UCSD SQL++ configuration parameters are implicitely defined in Asterix SQL++, and cannot be modified. They have been set to Asterix default behaviour.
-
-## SQLPP to AQL Mappings
-
-Values can easily be mapped from the SQL++ AST to the AQL AST.
-```python
-SQLPPStringValue      =>        StringLiteral
-SQLPPIntegerValue     =>        IntegerLiteral
-SQLPPFloatValue       =>        FloatLiteral
-SQLPPDoubleValue      =>        DoubleLiteral
-SQLPPTupleValue         =>        RecordConstructor
-SQLPPArrayValue         =>        OrderedListConstructor
-SQLPPBagValue           =>        UnorderedListConstructor
-SQLPPIdentifier         =>        Identifier
-SQLPPVariableRef        =>        VariableRef
-```
