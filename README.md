@@ -13,6 +13,16 @@ Note that the SQL++ interface currently only offers query capabilities. To do an
 
 **Disclaimer** : This BNF is not final and will change when support for new types of operators is added.
 
+## Statements
+
+```python
+Statement       ::= ( SingleStatement ( ";" )? )* <EOF>
+SingleStatement ::= DataverseDeclaration
+                  | SQLPPQuery
+```
+
+For details about the `DataverseDeclaration` statement, please refer to the guide found [here](https://asterixdb.ics.uci.edu/documentation/aql/manual.html).
+
 ## Expressions
 ```python
 Query ::= Expression
@@ -20,11 +30,11 @@ Query ::= Expression
 A SQL++ query can be any legal SQL++ expression.
 
 ```python
-Expression ::=   SFWExpression
-           |     OperatorExpression
+Expression ::=   OperatorExpression
+           |     SFWExpression
 ```
 
-The `QuantifiedExpression` expression specification will be deferred to a later date, given that existential/universal quantification is not fully supported in the SQL++ implementation as of this moment (in particular the `IN, EXISTS, ANY, ALL` keywords from the SQL++ language are not yet supported).
+<!-- The `QuantifiedExpression` expression specification will be deferred to a later date, given that existential/universal quantification is not fully supported in the SQL++ implementation as of this moment (in particular the `IN, EXISTS, ANY, ALL` keywords from the SQL++ language are not yet supported). -->
 
 ### SQL++ Query Expression
 
@@ -159,12 +169,11 @@ FromOuterJoin      ::= ( "LEFT" | "RIGHT" | "FULL" )
 FromFlatten        ::= FromInFlatten # not supported
                    |   FromOutFlatten # not supported
 FromInFlatten      ::= "FLATTEN" "("
-                       OpertorExpression "AS" VariableRef ","
-                       OpertorExpression "AS" VariableRef ")"
+                       OpertorExpression "AS" Variable ","
+                       OpertorExpression "AS" Variable ")"
 FromOutFlatten   ::=   "FLATTEN" "("
-                       OpertorExpression "AS" VariableRef ","
-                       OpertorExpression "AS" VariableRef ")"
-VariableRef        ::= Identifier
+                       OpertorExpression "AS" Variable ","
+                       OpertorExpression "AS" Variable ")"
 FromElement        ::= DatasetExpression
                    |   ParenthesizedExpression # Currently not supported
 ```
@@ -180,16 +189,6 @@ GroupItem        ::= OperatorExpresion [ "AS" VariableRef* ]
 ```python
 OrderByItem    ::= OperatorExpression [ "ASC" | "DESC" ]
 ```
-
-## Statements
-
-```python
-Statement       ::= ( SingleStatement ( ";" )? )* <EOF>
-SingleStatement ::= DataverseDeclaration
-                  | SQLPPQuery
-```
-
-For details about non-query statements, please refer to the guide found [here](https://asterixdb.ics.uci.edu/documentation/aql/manual.html).
 
 ## SQL++ Configuration Parameters
 
