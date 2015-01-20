@@ -1,0 +1,616 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Strict//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>/Users/julestestard/Projects/git/asterixdb-sqlpp/.README.md.html</title>
+
+
+<style type="text/css">
+body {
+	color: #333;
+	font: 13px/1.4 Helvetica,arial,freesans,clean,sans-serif;
+	font-family: sans-serif;
+}
+
+.markdown-body {
+    border: 1px solid #CACACA;
+    padding: 30px;
+    font-size: 15px;
+    line-height: 1.7;
+    word-wrap: break-word;
+}
+.markdown-body > *:first-child {
+    margin-top: 0 !important;
+}
+.markdown-body > *:last-child {
+    margin-bottom: 0 !important;
+}
+.markdown-body a.absent {
+    color: #C00;
+}
+.markdown-body a.anchor {
+    bottom: 0;
+    cursor: pointer;
+    display: block;
+    left: 0;
+    margin-left: -30px;
+    padding-left: 30px;
+    padding-right: 6px;
+    position: absolute;
+    top: 0;
+}
+.markdown-body a.anchor:focus {
+    outline: medium none;
+}
+.markdown-body h1, .markdown-body h2, .markdown-body h3, .markdown-body h4, .markdown-body h5, .markdown-body h6 {
+    cursor: text;
+    font-weight: bold;
+    line-height: 1.7;
+    margin: 1em 0 15px;
+    padding: 0;
+    position: relative;
+}
+
+.markdown-body h1 .octicon-link, .markdown-body h2 .octicon-link, .markdown-body h3 .octicon-link, .markdown-body h4 .octicon-link, .markdown-body h5 .octicon-link, .markdown-body h6 .octicon-link {
+    color: #000;
+    display: none;
+}
+.markdown-body h1:hover a.anchor, .markdown-body h2:hover a.anchor, .markdown-body h3:hover a.anchor, .markdown-body h4:hover a.anchor, .markdown-body h5:hover a.anchor, .markdown-body h6:hover a.anchor {
+    line-height: 1;
+    margin-left: -22px;
+    padding-left: 0;
+    text-decoration: none;
+    top: 15%;
+}
+.markdown-body h1:hover a.anchor .octicon-link, .markdown-body h2:hover a.anchor .octicon-link, .markdown-body h3:hover a.anchor .octicon-link, .markdown-body h4:hover a.anchor .octicon-link, .markdown-body h5:hover a.anchor .octicon-link, .markdown-body h6:hover a.anchor .octicon-link {
+    display: inline-block;
+}
+.markdown-body h1 tt, .markdown-body h1 code, .markdown-body h2 tt, .markdown-body h2 code, .markdown-body h3 tt, .markdown-body h3 code, .markdown-body h4 tt, .markdown-body h4 code, .markdown-body h5 tt, .markdown-body h5 code, .markdown-body h6 tt, .markdown-body h6 code {
+    font-size: inherit;
+}
+.markdown-body h1 {
+    border-bottom: 1px solid #DDD;
+    font-size: 2.5em;
+}
+.markdown-body h2 {
+    border-bottom: 1px solid #EEE;
+    font-size: 2em;
+}
+.markdown-body h3 {
+    font-size: 1.5em;
+}
+.markdown-body h4 {
+    font-size: 1.2em;
+}
+.markdown-body h5 {
+    font-size: 1em;
+}
+.markdown-body h6 {
+    color: #777;
+    font-size: 1em;
+}
+.markdown-body p, .markdown-body blockquote, .markdown-body ul, .markdown-body ol, .markdown-body dl, .markdown-body table, .markdown-body pre {
+    margin: 15px 0;
+}
+.markdown-body hr {
+    background: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAYAAAAECAYAAACtBE5DAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAyJpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMC1jMDYwIDYxLjEzNDc3NywgMjAxMC8wMi8xMi0xNzozMjowMCAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RSZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZVJlZiMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENTNSBNYWNpbnRvc2giIHhtcE1NOkluc3RhbmNlSUQ9InhtcC5paWQ6OENDRjNBN0E2NTZBMTFFMEI3QjRBODM4NzJDMjlGNDgiIHhtcE1NOkRvY3VtZW50SUQ9InhtcC5kaWQ6OENDRjNBN0I2NTZBMTFFMEI3QjRBODM4NzJDMjlGNDgiPiA8eG1wTU06RGVyaXZlZEZyb20gc3RSZWY6aW5zdGFuY2VJRD0ieG1wLmlpZDo4Q0NGM0E3ODY1NkExMUUwQjdCNEE4Mzg3MkMyOUY0OCIgc3RSZWY6ZG9jdW1lbnRJRD0ieG1wLmRpZDo4Q0NGM0E3OTY1NkExMUUwQjdCNEE4Mzg3MkMyOUY0OCIvPiA8L3JkZjpEZXNjcmlwdGlvbj4gPC9yZGY6UkRGPiA8L3g6eG1wbWV0YT4gPD94cGFja2V0IGVuZD0iciI/PqqezsUAAAAfSURBVHjaYmRABcYwBiM2QSA4y4hNEKYDQxAEAAIMAHNGAzhkPOlYAAAAAElFTkSuQmCC") repeat-x;
+    border: 0;
+    color: #CCC;
+    height: 4px;
+    margin: 15px 0;
+    padding: 0;
+}
+.markdown-body ul, .markdown-body ol {
+    padding-left: 30px;
+}
+.markdown-body ul.no-list, .markdown-body ol.no-list {
+    list-style-type: none;
+    padding: 0;
+}
+.markdown-body ul ul, .markdown-body ul ol, .markdown-body ol ol, .markdown-body ol ul {
+    margin-bottom: 0;
+    margin-top: 0;
+}
+.markdown-body dl {
+    padding: 0;
+}
+.markdown-body dl dt {
+    font-size: 14px;
+    font-style: italic;
+    font-weight: bold;
+    margin-top: 15px;
+    padding: 0;
+}
+.markdown-body dl dd {
+    margin-bottom: 15px;
+    padding: 0 15px;
+}
+.markdown-body blockquote {
+    border-left: 4px solid #DDD;
+    color: #777;
+    padding: 0 15px;
+}
+.markdown-body blockquote > *:first-child {
+    margin-top: 0;
+}
+.markdown-body blockquote > *:last-child {
+    margin-bottom: 0;
+}
+.markdown-body table {
+    display: block;
+    overflow: auto;
+    width: 100%;
+    border-collapse: collapse;
+}
+.markdown-body table th {
+    font-weight: bold;
+}
+.markdown-body table th, .markdown-body table td {
+    border: 1px solid #DDD;
+    padding: 6px 13px;
+}
+.markdown-body table tr {
+    background-color: #FFF;
+    border-top: 1px solid #CCC;
+}
+.markdown-body table tr:nth-child(2n) {
+    background-color: #F8F8F8;
+}
+.markdown-body img {
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    -o-box-sizing: border-box;
+    box-sizing: border-box;
+    max-width: 100%;
+    border: 0px;
+}
+.markdown-body span.frame {
+    display: block;
+    overflow: hidden;
+}
+.markdown-body span.frame > span {
+    border: 1px solid #DDD;
+    display: block;
+    float: left;
+    margin: 13px 0 0;
+    overflow: hidden;
+    padding: 7px;
+    width: auto;
+}
+.markdown-body span.frame span img {
+    display: block;
+    float: left;
+}
+.markdown-body span.frame span span {
+    clear: both;
+    color: #333;
+    display: block;
+    padding: 5px 0 0;
+}
+.markdown-body span.align-center {
+    clear: both;
+    display: block;
+    overflow: hidden;
+}
+.markdown-body span.align-center > span {
+    display: block;
+    margin: 13px auto 0;
+    overflow: hidden;
+    text-align: center;
+}
+.markdown-body span.align-center span img {
+    margin: 0 auto;
+    text-align: center;
+}
+.markdown-body span.align-right {
+    clear: both;
+    display: block;
+    overflow: hidden;
+}
+.markdown-body span.align-right > span {
+    display: block;
+    margin: 13px 0 0;
+    overflow: hidden;
+    text-align: right;
+}
+.markdown-body span.align-right span img {
+    margin: 0;
+    text-align: right;
+}
+.markdown-body span.float-left {
+    display: block;
+    float: left;
+    margin-right: 13px;
+    overflow: hidden;
+}
+.markdown-body span.float-left span {
+    margin: 13px 0 0;
+}
+.markdown-body span.float-right {
+    display: block;
+    float: right;
+    margin-left: 13px;
+    overflow: hidden;
+}
+.markdown-body span.float-right > span {
+    display: block;
+    margin: 13px auto 0;
+    overflow: hidden;
+    text-align: right;
+}
+.markdown-body code, .markdown-body tt {
+    background-color: #F8F8F8;
+    border: 1px solid #DDD;
+    border-radius: 3px;
+    margin: 0 2px;
+    padding: 0 5px;
+}
+.markdown-body code {
+    white-space: nowrap;
+}
+.markdown-body pre > code {
+    border: medium none;
+    margin: 0;
+    padding: 0;
+    white-space: pre;
+}
+.markdown-body .highlight pre, .markdown-body pre {
+    background-color: #F8F8F8;
+    border: 1px solid #DDD;
+    border-radius: 3px;
+    font-size: 13px;
+    line-height: 19px;
+    overflow: auto;
+    padding: 6px 10px;
+}
+.markdown-body pre code, .markdown-body pre tt {
+    border: medium none;
+    margin: 0;
+    padding: 0;
+    word-wrap: normal;
+}
+
+pre, code, tt {
+    font-family: Consolas,"Liberation Mono",Courier,monospace;
+    font-size: 12px;
+}
+
+.highlight {
+    background: #FFF;
+}
+.highlight .k,
+.highlight .o,
+.highlight .cp,
+.highlight .cs,
+.highlight .gs,
+.highlight .gu,
+.highlight .kc,
+.highlight .kd,
+.highlight .kn,
+.highlight .kp,
+.highlight .kr,
+.highlight .kt,
+.highlight .nc,
+.highlight .ne,
+.highlight .nf,
+.highlight .ow {
+    font-weight: bold;
+}
+.highlight .gd,
+.highlight .gd .x,
+.highlight .gi,
+.highlight .gi .x,
+.type-csharp .highlight .nf,
+.type-csharp .highlight .nn {
+    color: #000;
+}
+.highlight .c,
+.highlight .cm,
+.highlight .c1 {
+    color: #998;
+    font-style: italic;
+}
+.highlight .err {
+    background-color: #E3D2D2;
+    color: #A61717;
+}
+.highlight .cp,
+.highlight .cs {
+    color: #999;
+}
+.highlight .cs,
+.highlight .ge {
+    font-style: italic;
+}
+.highlight .gd {
+    background-color: #FDD;
+}
+.highlight .gd .x {
+    background-color: #FAA;
+}
+.highlight .gr,
+.highlight .gt {
+    color: #A00;
+}
+.highlight .gh {
+    color: #999;
+}
+.highlight .gi {
+    background-color: #DFD;
+}
+.highlight .gi .x {
+    background-color: #AFA;
+}
+.highlight .go {
+    color: #888;
+}
+.highlight .gp,
+.highlight .nn {
+    color: #555;
+}
+.highlight .gu,
+.highlight .ni {
+    color: #800080;
+}
+.highlight .kt {
+    color: #458;
+}
+.highlight .m {
+    color: #099;
+}
+.highlight .s {
+    color: #D14;
+}
+.highlight .n {
+    color: #333;
+}
+.highlight .na,
+.highlight .no,
+.highlight .nv,
+.highlight .vc,
+.highlight .vg,
+.highlight .vi {
+    color: #008080;
+}
+.highlight .nb {
+    color: #0086B3;
+}
+.highlight .nc {
+    color: #458;
+}
+.highlight .ne,
+.highlight .nf {
+    color: #900;
+}
+.highlight .nt {
+    color: #000080;
+}
+.highlight .w {
+    color: #BBB;
+}
+.highlight .mf,
+.highlight .mh,
+.highlight .mi,
+.highlight .mo {
+    color: #099;
+}
+.highlight .sb,
+.highlight .sc,
+.highlight .sd,
+.highlight .s2,
+.highlight .se,
+.highlight .sh,
+.highlight .si,
+.highlight .sx,
+.highlight .s1 {
+    color: #D14;
+}
+.highlight .sr {
+    color: #009926;
+}
+.highlight .ss {
+    color: #990073;
+}
+.highlight .bp {
+    color: #999;
+}
+.highlight .il {
+    color: #099;
+}
+.highlight .gc {
+    background-color: #EAF2F5;
+    color: #999;
+}
+.type-csharp .highlight .k,
+.type-csharp .highlight .kt {
+    color: #00F;
+}
+.type-csharp .highlight .nf {
+    font-weight: normal;
+}
+.type-csharp .highlight .nc {
+    color: #2B91AF;
+}
+.type-csharp .highlight .s,
+.type-csharp .highlight .sc {
+    color: #A31515;
+}
+
+</style>
+
+
+<script type="text/javascript">
+
+function getDocumentScrollTop() 
+{
+   var res = document.body.scrollTop || document.documentElement.scrollTop || window.pageYOffset || 0;
+   // alert(res);
+   return res;
+}
+
+function setDocumentScrollTop(ypos) 
+{
+	window.scrollTo(0, ypos);
+}
+
+</script>
+
+
+</head>
+<body class="markdown-body">
+<h1> <a id="user-content-the-sql-query-language-for-asterix" class="anchor" href="#the-sql-query-language-for-asterix" aria-hidden="true"><span class="octicon octicon-link"></span></a>The SQL++ query language for Asterix</h1> 
+<p>Notice: this document is using a variant of Markdown called Github Flavored Markdown (GFM), which allows fancy features such as syntax coloring. To be able to view this document properly, please either go to the <a href="https://github.com/jtestard/asterixdb-">github page for the project</a> or use Eclipse's <a href="https://github.com/satyagraha/gfm_viewer">GFM viewer</a>.</p> 
+<h2> <a id="user-content-introduction" class="anchor" href="#introduction" aria-hidden="true"><span class="octicon octicon-link"></span></a>Introduction</h2> 
+<p>This document is intended as a reference guide to the full syntax and semantics of the SQL++ Query Language for Asterix (Asterix SQL++). This document describes how the SQL++ query language is parsed in the context of AsterixDB. Details for the SQL++ query language being developed at UCSD can be found <a href="http://forward.ucsd.edu/.html">here</a>.</p> 
+<p>It is important to note that while we are using the SQL++ query language, we are keeping the Asterix Data Model. As such, there will be some differences between the language presented here and the SQL++ Reference Implementation [1]. These differences will be clearly highlighted when they occur and will be kept at a minimum.</p> 
+<p>Note that the SQL++ interface currently only offers query capabilities. To do any sort of data (or metadata) manipulation, the regular AQL interface must be used. The language is presented using a BNF form.</p> 
+<h2> <a id="user-content-expressions" class="anchor" href="#expressions" aria-hidden="true"><span class="octicon octicon-link"></span></a>Expressions</h2> 
+<div class="highlight highlight-python">
+ <pre>Query ::<span class="pl-k">=</span> Expression</pre>
+</div> 
+<p>A SQL++ query can be any legal SQL++ expression.</p> 
+<div class="highlight highlight-python">
+ <pre>Expression ::<span class="pl-k">=</span>   SFWExpression
+           <span class="pl-k">|</span>     OperatorExpression</pre>
+</div> 
+<p>The <code>QuantifiedExpression</code> expression specification will be deferred to a later date, given that existential/universal quantification is not fully supported in the SQL++ implementation as of this moment (in particular the <code>IN, EXISTS, ANY, ALL</code> keywords from the SQL++ language are not yet supported).</p> 
+<h3> <a id="user-content-sql-operator-expression" class="anchor" href="#sql-operator-expression" aria-hidden="true"><span class="octicon octicon-link"></span></a>SQL++ Operator Expression</h3> 
+<div class="highlight highlight-python">
+ <pre>OperatorExpression   ::<span class="pl-k">=</span> AndExpression ( <span class="pl-s1"><span class="pl-pds">&quot;</span>or<span class="pl-pds">&quot;</span></span> AndExpression )<span class="pl-k">*</span>
+AndExpression        ::<span class="pl-k">=</span> RelExpression ( <span class="pl-s1"><span class="pl-pds">&quot;</span>and<span class="pl-pds">&quot;</span></span> RelExpression )<span class="pl-k">*</span>
+RelExpression        ::<span class="pl-k">=</span> AddExpression ( ( <span class="pl-s1"><span class="pl-pds">&quot;</span>&lt;<span class="pl-pds">&quot;</span></span> <span class="pl-k">|</span> <span class="pl-s1"><span class="pl-pds">&quot;</span>&gt;<span class="pl-pds">&quot;</span></span> <span class="pl-k">|</span> <span class="pl-s1"><span class="pl-pds">&quot;</span>&lt;=<span class="pl-pds">&quot;</span></span> <span class="pl-k">|</span> 
+                         <span class="pl-s1"><span class="pl-pds">&quot;</span>&gt;=<span class="pl-pds">&quot;</span></span> <span class="pl-k">|</span> <span class="pl-s1"><span class="pl-pds">&quot;</span>=<span class="pl-pds">&quot;</span></span> <span class="pl-k">|</span> <span class="pl-s1"><span class="pl-pds">&quot;</span>!=<span class="pl-pds">&quot;</span></span> <span class="pl-k">|</span> <span class="pl-s1"><span class="pl-pds">&quot;</span>~=<span class="pl-pds">&quot;</span></span> ) AddExpression )?
+AddExpression        ::<span class="pl-k">=</span> MultExpression ( ( <span class="pl-s1"><span class="pl-pds">&quot;</span>+<span class="pl-pds">&quot;</span></span> <span class="pl-k">|</span> <span class="pl-s1"><span class="pl-pds">&quot;</span>-<span class="pl-pds">&quot;</span></span> ) MultExpression )<span class="pl-k">*</span>
+MultExpression       ::<span class="pl-k">=</span> UnaryExpression ( ( <span class="pl-s1"><span class="pl-pds">&quot;</span>*<span class="pl-pds">&quot;</span></span> <span class="pl-k">|</span> <span class="pl-s1"><span class="pl-pds">&quot;</span>/<span class="pl-pds">&quot;</span></span> <span class="pl-k">|</span> <span class="pl-s1"><span class="pl-pds">&quot;</span>%<span class="pl-pds">&quot;</span></span> <span class="pl-k">|</span>
+                         <span class="pl-s1"><span class="pl-pds">&quot;</span>^<span class="pl-pds">&quot;</span></span><span class="pl-k">|</span> <span class="pl-s1"><span class="pl-pds">&quot;</span>idiv<span class="pl-pds">&quot;</span></span> ) UnaryExpression )<span class="pl-k">*</span>
+UnaryExpression      ::<span class="pl-k">=</span> ( ( <span class="pl-s1"><span class="pl-pds">&quot;</span>+<span class="pl-pds">&quot;</span></span> <span class="pl-k">|</span> <span class="pl-s1"><span class="pl-pds">&quot;</span>-<span class="pl-pds">&quot;</span></span> ) )? ValueExpression</pre>
+</div> 
+<p>The operator expression structure is inherited from AQL.</p> 
+<h4> <a id="user-content-sql-pathstep" class="anchor" href="#sql-pathstep" aria-hidden="true"><span class="octicon octicon-link"></span></a>SQL++ PathStep</h4> 
+<div class="highlight highlight-python">
+ <pre>ValueExpression  ::<span class="pl-k">=</span> PrimaryExpression (pathstep)<span class="pl-k">*</span>
+Pathstep         ::<span class="pl-k">=</span> <span class="pl-s1"><span class="pl-pds">&quot;</span>.<span class="pl-pds">&quot;</span></span> Identifier
+                 <span class="pl-k">|</span>   <span class="pl-s1"><span class="pl-pds">&quot;</span>[<span class="pl-pds">&quot;</span></span> Expression <span class="pl-s1"><span class="pl-pds">&quot;</span>]<span class="pl-pds">&quot;</span></span>
+                 <span class="pl-k">|</span>   <span class="pl-s1"><span class="pl-pds">&quot;</span>-&gt;(<span class="pl-pds">&quot;</span></span> Expression <span class="pl-s1"><span class="pl-pds">&quot;</span>)<span class="pl-pds">&quot;</span></span></pre>
+</div> 
+<p>Notice that SQL++ does not have the &quot;I am lucky&quot; array navigation AQL has (the &quot;?&quot; in array navigation).</p> 
+<h4> <a id="user-content-sql-value-expression" class="anchor" href="#sql-value-expression" aria-hidden="true"><span class="octicon octicon-link"></span></a>SQL++ Value Expression</h4> 
+<div class="highlight highlight-python">
+ <pre>PrimaryExpression ::<span class="pl-k">=</span>   Value
+                  <span class="pl-k">|</span>     ParenthesizedExpression <span class="pl-c"># Currently not supported</span>
+                  <span class="pl-k">|</span>     Variable</pre>
+</div> 
+<h4> <a id="user-content-sql-literals" class="anchor" href="#sql-literals" aria-hidden="true"><span class="octicon octicon-link"></span></a>SQL++ Literals</h4> 
+<div class="highlight highlight-python">
+ <pre>Value           ::<span class="pl-k">=</span>  DefinedValue
+                <span class="pl-k">|</span>    <span class="pl-s1"><span class="pl-pds">&quot;</span>missing<span class="pl-pds">&quot;</span></span>
+DefinedValue    ::<span class="pl-k">=</span>  ScalarValue
+                <span class="pl-k">|</span>    ComplexValue
+ScalarValue     ::<span class="pl-k">=</span>  PrimitiveValue
+                <span class="pl-k">|</span>    EnrichedValue
+PrimitiveValue   ::<span class="pl-k">=</span>  StringValue
+                <span class="pl-k">|</span>    NumberValue
+                <span class="pl-k">|</span>    <span class="pl-s1"><span class="pl-pds">&quot;</span>true<span class="pl-pds">&quot;</span></span>
+                <span class="pl-k">|</span>    <span class="pl-s1"><span class="pl-pds">&quot;</span>false<span class="pl-pds">&quot;</span></span>
+                <span class="pl-k">|</span>    <span class="pl-s1"><span class="pl-pds">&quot;</span>null<span class="pl-pds">&quot;</span></span>
+NumberValue    ::<span class="pl-k">=</span>   IntegerValue
+                <span class="pl-k">|</span>    FloatValue
+                <span class="pl-k">|</span>    DoubleValue
+EnrichedValue  ::<span class="pl-k">=</span>   Identifier <span class="pl-s1"><span class="pl-pds">&quot;</span>(<span class="pl-pds">&quot;</span></span> PrimitiveValue 
+                     ( <span class="pl-s1"><span class="pl-pds">&quot;</span>,<span class="pl-pds">&quot;</span></span> PrimitiveValue ) ? <span class="pl-s1"><span class="pl-pds">&quot;</span>)<span class="pl-pds">&quot;</span></span></pre>
+</div> 
+<p>This section is inspired by the SQL++ Value BNF presented in [1]. However, some features from the BNF are not included. For example :</p> 
+<ul> 
+ <li>the <code>id::</code> field for defined values is absent from this specification. </li> 
+ <li>In order to map more closely to AQL primitives, the number value is subdivided further to its AQL equivalents.</li> 
+</ul> 
+<h4> <a id="user-content-sql-complex-values" class="anchor" href="#sql-complex-values" aria-hidden="true"><span class="octicon octicon-link"></span></a>SQL++ Complex Values</h4> 
+<div class="highlight highlight-python">
+ <pre>ComplexValue    ::<span class="pl-k">=</span>  TupleValue
+                <span class="pl-k">|</span>    BagValue
+                <span class="pl-k">|</span>    ArrayValue
+                <span class="pl-k">|</span>    MapValue
+TupleValue     ::<span class="pl-k">=</span>   <span class="pl-s1"><span class="pl-pds">&quot;</span>{<span class="pl-pds">&quot;</span></span> ( FieldBinding ( <span class="pl-s1"><span class="pl-pds">&quot;</span>,<span class="pl-pds">&quot;</span></span> FieldBinding )<span class="pl-k">*</span> )?  <span class="pl-s1"><span class="pl-pds">&quot;</span>}<span class="pl-pds">&quot;</span></span>
+BagValue       ::<span class="pl-k">=</span>   <span class="pl-s1"><span class="pl-pds">&quot;</span>{{<span class="pl-pds">&quot;</span></span> ( Expression ( <span class="pl-s1"><span class="pl-pds">&quot;</span>,<span class="pl-pds">&quot;</span></span> Expression )<span class="pl-k">*</span> )?  <span class="pl-s1"><span class="pl-pds">&quot;</span>}}<span class="pl-pds">&quot;</span></span>
+ArrayValue     ::<span class="pl-k">=</span>   <span class="pl-s1"><span class="pl-pds">&quot;</span>[<span class="pl-pds">&quot;</span></span> ( Expression ( <span class="pl-s1"><span class="pl-pds">&quot;</span>,<span class="pl-pds">&quot;</span></span> Expression )<span class="pl-k">*</span> )?  <span class="pl-s1"><span class="pl-pds">&quot;</span>]<span class="pl-pds">&quot;</span></span>
+MapValue       ::<span class="pl-k">=</span>   <span class="pl-s1"><span class="pl-pds">&quot;</span>map<span class="pl-pds">&quot;</span></span> <span class="pl-s1"><span class="pl-pds">&quot;</span>(<span class="pl-pds">&quot;</span></span> (Value <span class="pl-s1"><span class="pl-pds">&quot;</span>:<span class="pl-pds">&quot;</span></span> DefinedValue 
+                     ( <span class="pl-s1"><span class="pl-pds">&quot;</span>,<span class="pl-pds">&quot;</span></span> Value <span class="pl-s1"><span class="pl-pds">&quot;</span>:<span class="pl-pds">&quot;</span></span> DefinedValue )<span class="pl-k">*</span> )? <span class="pl-s1"><span class="pl-pds">&quot;</span>)<span class="pl-pds">&quot;</span></span>
+FieldBinding   ::<span class="pl-k">=</span>   Expression <span class="pl-s1"><span class="pl-pds">&quot;</span>:<span class="pl-pds">&quot;</span></span> Expression</pre>
+</div> 
+<p>Given that the Asterix Data Model does not contain maps, the usage of maps will be identified, but will also reported a &quot;operation not supported&quot; error.</p> 
+<h4> <a id="user-content-sql-parenthesized-expression" class="anchor" href="#sql-parenthesized-expression" aria-hidden="true"><span class="octicon octicon-link"></span></a>SQL++ Parenthesized Expression</h4> 
+<div class="highlight highlight-python">
+ <pre>ParenthesizedExpression ::<span class="pl-k">=</span> <span class="pl-s1"><span class="pl-pds">&quot;</span>(<span class="pl-pds">&quot;</span></span> SFWExpression <span class="pl-s1"><span class="pl-pds">&quot;</span>)<span class="pl-pds">&quot;</span></span></pre>
+</div> 
+<h4> <a id="user-content-sql-named-value-and-variables" class="anchor" href="#sql-named-value-and-variables" aria-hidden="true"><span class="octicon octicon-link"></span></a>SQL++ Named Value and variables</h4> 
+<div class="highlight highlight-python">
+ <pre>NamedValue ::<span class="pl-k">=</span> Identifier
+Variable   ::<span class="pl-k">=</span> Identifier</pre>
+</div> 
+<p>In a SQL++ query, it is not possible to distinguish a variable from a dataset expression without context. <em>Note that the concept of dataset expression replaces the named value expression existing in the SQL++ Reference Implementation.</em> (May need to verify)</p> 
+<h3> <a id="user-content-sql-sfwexpression" class="anchor" href="#sql-sfwexpression" aria-hidden="true"><span class="octicon octicon-link"></span></a>SQL++ SFWExpression</h3> 
+<div class="highlight highlight-python">
+ <pre>SFWExpression ::<span class="pl-k">=</span>    <span class="pl-s1"><span class="pl-pds">&quot;</span><span class="pl-k">SELECT</span><span class="pl-pds">&quot;</span></span> SelectClause
+                    <span class="pl-k">|</span>     <span class="pl-s1"><span class="pl-pds">&quot;</span><span class="pl-k">SELECT</span><span class="pl-pds">&quot;</span></span>  <span class="pl-s1"><span class="pl-pds">&quot;</span>DISTINCT<span class="pl-pds">&quot;</span></span> SelectClause
+                    <span class="pl-k">|</span>    <span class="pl-s1"><span class="pl-pds">&quot;</span>FROM<span class="pl-pds">&quot;</span></span> FromClause
+                    <span class="pl-k">|</span>    <span class="pl-s1"><span class="pl-pds">&quot;</span>WHERE<span class="pl-pds">&quot;</span></span> OperatorExpr
+                    <span class="pl-k">|</span>    <span class="pl-s1"><span class="pl-pds">&quot;</span>GROUPBY<span class="pl-pds">&quot;</span></span> GroupItem <span class="pl-c"># Not supported yet</span>
+                    <span class="pl-k">|</span>    <span class="pl-s1"><span class="pl-pds">&quot;</span>HAVING<span class="pl-pds">&quot;</span></span> OperatorExpr <span class="pl-c"># Not supported yet</span>
+                    <span class="pl-k">|</span>    (<span class="pl-s1"><span class="pl-pds">&quot;</span>UNION<span class="pl-pds">&quot;</span></span> <span class="pl-k">|</span> <span class="pl-s1"><span class="pl-pds">&quot;</span>INTERSECT<span class="pl-pds">&quot;</span></span> <span class="pl-k">|</span> <span class="pl-s1"><span class="pl-pds">&quot;</span>EXCEPT<span class="pl-pds">&quot;</span></span>) [<span class="pl-s1"><span class="pl-pds">&quot;</span>ALL<span class="pl-pds">&quot;</span></span>] SFWExpression <span class="pl-c"># Not supported yet</span>
+                    <span class="pl-k">|</span>    <span class="pl-s1"><span class="pl-pds">&quot;</span>ORDER BY<span class="pl-pds">&quot;</span></span> OrderItem <span class="pl-c"># Not supported yet</span>
+                    <span class="pl-k">|</span>    <span class="pl-s1"><span class="pl-pds">&quot;</span>LIMIT<span class="pl-pds">&quot;</span></span> OperatorExpr <span class="pl-c"># Not supported yet</span>
+                    <span class="pl-k">|</span>    <span class="pl-s1"><span class="pl-pds">&quot;</span>OFFSET<span class="pl-pds">&quot;</span></span> OperatorExpr <span class="pl-c"># Not supported yet</span></pre>
+</div> 
+<h4> <a id="user-content-sql-select-clause" class="anchor" href="#sql-select-clause" aria-hidden="true"><span class="octicon octicon-link"></span></a>SQL++ Select Clause</h4> 
+<div class="highlight highlight-python">
+ <pre>SelectClause   ::<span class="pl-k">=</span> SelectItem (, SelectItem)<span class="pl-k">*</span>
+                    <span class="pl-k">|</span>   <span class="pl-s1"><span class="pl-pds">&quot;</span>TUPLE<span class="pl-pds">&quot;</span></span> SelectItem
+                    <span class="pl-k">|</span>    <span class="pl-s1"><span class="pl-pds">&quot;</span>ELEMENT<span class="pl-pds">&quot;</span></span> OperatorExpr
+SelectItem     ::<span class="pl-k">=</span> ValueExpr [ <span class="pl-s1"><span class="pl-pds">&quot;</span>AS<span class="pl-pds">&quot;</span></span> Variable ]
+                    <span class="pl-k">|</span>   WildCard
+
+WildCard       ::<span class="pl-k">=</span> <span class="pl-s1"><span class="pl-pds">&quot;</span>*<span class="pl-pds">&quot;</span></span> <span class="pl-c"># Not supported yet</span></pre>
+</div> 
+<h4> <a id="user-content-sql-from-clause" class="anchor" href="#sql-from-clause" aria-hidden="true"><span class="octicon octicon-link"></span></a>SQL++ From Clause</h4> 
+<div class="highlight highlight-python">
+ <pre>FromClause         ::<span class="pl-k">=</span> FromItem ( <span class="pl-s1"><span class="pl-pds">&quot;</span>,<span class="pl-pds">&quot;</span></span> FromItem)<span class="pl-k">*</span>
+FromItem           ::<span class="pl-k">=</span> FromSingle
+                        <span class="pl-k">|</span>    FromJoin
+                        <span class="pl-k">|</span>    FromFlatten
+FromSingle         ::<span class="pl-k">=</span>     FromElement <span class="pl-s1"><span class="pl-pds">&quot;</span>AS<span class="pl-pds">&quot;</span></span> VariableRef <span class="pl-c"># [&quot;AT&quot; OperatorExpr ]</span>
+FromJoin           ::<span class="pl-k">=</span>     FromInnerJoin
+                        <span class="pl-k">|</span>       FromOuterJoin
+FromInnerJoin      ::<span class="pl-k">=</span> FromItem <span class="pl-s1"><span class="pl-pds">&quot;</span>JOIN<span class="pl-pds">&quot;</span></span> FromItem <span class="pl-s1"><span class="pl-pds">&quot;</span>ON<span class="pl-pds">&quot;</span></span> OperatorExpr
+FromOuterJoin      ::<span class="pl-k">=</span> ( <span class="pl-s1"><span class="pl-pds">&quot;</span>LEFT<span class="pl-pds">&quot;</span></span> <span class="pl-k">|</span> <span class="pl-s1"><span class="pl-pds">&quot;</span>RIGHT<span class="pl-pds">&quot;</span></span> <span class="pl-k">|</span> <span class="pl-s1"><span class="pl-pds">&quot;</span>FULL<span class="pl-pds">&quot;</span></span> ) 
+                            <span class="pl-s1"><span class="pl-pds">&quot;</span>JOIN<span class="pl-pds">&quot;</span></span> FromItem <span class="pl-s1"><span class="pl-pds">&quot;</span>ON<span class="pl-pds">&quot;</span></span> OperatorExpr
+FromFlatten      ::<span class="pl-k">=</span> FromInFlatten
+                       <span class="pl-k">|</span>   FromOutFlatten
+FromInFlatten    ::<span class="pl-k">=</span> <span class="pl-s1"><span class="pl-pds">&quot;</span>FLATTEN<span class="pl-pds">&quot;</span></span> <span class="pl-s1"><span class="pl-pds">&quot;</span>(<span class="pl-pds">&quot;</span></span>
+                           OpertorExpr <span class="pl-s1"><span class="pl-pds">&quot;</span>AS<span class="pl-pds">&quot;</span></span> VariableRef <span class="pl-s1"><span class="pl-pds">&quot;</span>,<span class="pl-pds">&quot;</span></span>
+                           OpertorExpr <span class="pl-s1"><span class="pl-pds">&quot;</span>AS<span class="pl-pds">&quot;</span></span> VariableRef <span class="pl-s1"><span class="pl-pds">&quot;</span>)<span class="pl-pds">&quot;</span></span>
+FromOutFlatten   ::<span class="pl-k">=</span> <span class="pl-s1"><span class="pl-pds">&quot;</span>FLATTEN<span class="pl-pds">&quot;</span></span> <span class="pl-s1"><span class="pl-pds">&quot;</span>(<span class="pl-pds">&quot;</span></span>
+                           OpertorExpr <span class="pl-s1"><span class="pl-pds">&quot;</span>AS<span class="pl-pds">&quot;</span></span> VariableRef <span class="pl-s1"><span class="pl-pds">&quot;</span>,<span class="pl-pds">&quot;</span></span>
+                           OpertorExpr <span class="pl-s1"><span class="pl-pds">&quot;</span>AS<span class="pl-pds">&quot;</span></span> VariableRef <span class="pl-s1"><span class="pl-pds">&quot;</span>)<span class="pl-pds">&quot;</span></span>
+VariableRef        ::<span class="pl-k">=</span> Identifier
+FromElement        ::<span class="pl-k">=</span> ValueExpression (athstep)<span class="pl-k">*</span>
+                        <span class="pl-k">|</span>   Dataset (athstep)<span class="pl-k">*</span></pre>
+</div> 
+<h4> <a id="user-content-sql-group-by-clause" class="anchor" href="#sql-group-by-clause" aria-hidden="true"><span class="octicon octicon-link"></span></a>SQL++ GROUP BY Clause</h4> 
+<div class="highlight highlight-python">
+ <pre>GroupItem        ::<span class="pl-k">=</span> OperatorExpr [ <span class="pl-s1"><span class="pl-pds">&quot;</span>AS<span class="pl-pds">&quot;</span></span> VariableRef<span class="pl-k">*</span> ]</pre>
+</div> 
+<h4> <a id="user-content-sql-order-by-clause" class="anchor" href="#sql-order-by-clause" aria-hidden="true"><span class="octicon octicon-link"></span></a>SQL++ ORDER BY Clause</h4> 
+<div class="highlight highlight-python">
+ <pre>OrderByItem    ::<span class="pl-k">=</span> OperatorExpr [ <span class="pl-s1"><span class="pl-pds">&quot;</span>ASC<span class="pl-pds">&quot;</span></span> <span class="pl-k">|</span> <span class="pl-s1"><span class="pl-pds">&quot;</span>DESC<span class="pl-pds">&quot;</span></span> ]</pre>
+</div> 
+<h2> <a id="user-content-statements" class="anchor" href="#statements" aria-hidden="true"><span class="octicon octicon-link"></span></a>Statements</h2> 
+<div class="highlight highlight-python">
+ <pre>Statement       ::<span class="pl-k">=</span> ( SingleStatement ( <span class="pl-s1"><span class="pl-pds">&quot;</span>;<span class="pl-pds">&quot;</span></span> )? )<span class="pl-k">*</span> <span class="pl-k">&lt;</span>EOF<span class="pl-k">&gt;</span>
+SingleStatement ::<span class="pl-k">=</span> DataverseDeclaration
+                  <span class="pl-k">|</span> SQLPPQuery</pre>
+</div> 
+<p>For details about non-query statements, please refer to the guide found <a href="https://asterixdb.ics.uci.edu/documentation/aql/manual.html">here</a>.</p> 
+<h2> <a id="user-content-sql-configuration-parameters" class="anchor" href="#sql-configuration-parameters" aria-hidden="true"><span class="octicon octicon-link"></span></a>SQL++ Configuration Parameters</h2> 
+<p>UCSD SQL++ configuration parameters are implicitely defined in Asterix SQL++, and cannot be modified. They have been set to Asterix default behaviour.</p>
+</body>
+</html>
