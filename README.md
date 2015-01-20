@@ -46,8 +46,8 @@ The operator expression structure is inherited from the AQL `OperatorExpression`
 ```python
 ValueExpression  ::= PrimaryExpression (pathstep)*
 Pathstep         ::= "." Identifier
-                 |   "[" Expression "]"
-                 |   "->(" Expression ")"
+                 |   "[" OperatorExpression "]"
+                 |   "->(" OperatorExpression ")"
 ```
 Notice that SQL++ does not have the "I am lucky" array navigation AQL has (the "?" in array navigation).
 
@@ -123,13 +123,13 @@ In a SQL++ query, it is not possible to distinguish a variable from a dataset ex
 SFWExpression ::=   "SELECT" SelectClause
               |     "SELECT"  "DISTINCT" SelectClause
               |    "FROM" FromClause
-              |    "WHERE" OperatorExpr
+              |    "WHERE" OperatorExpression
               |    "GROUPBY" GroupItem # Not supported yet
-              |    "HAVING" OperatorExpr # Not supported yet
+              |    "HAVING" OperatorExpression # Not supported yet
               |    ("UNION" | "INTERSECT" | "EXCEPT") ["ALL"] SFWExpression # Not supported yet
               |    "ORDER BY" OrderItem # Not supported yet
-              |    "LIMIT" OperatorExpr # Not supported yet
-              |    "OFFSET" OperatorExpr # Not supported yet
+              |    "LIMIT" OperatorExpression # Not supported yet
+              |    "OFFSET" OperatorExpression # Not supported yet
 ```
 
 #### SQL++ Select Clause
@@ -137,11 +137,10 @@ SFWExpression ::=   "SELECT" SelectClause
 ```python
 SelectClause   ::= SelectItem (, SelectItem)*
                     |   "TUPLE" SelectItem
-                    |   "ELEMENT" OperatorExpr
+                    |   "ELEMENT" OperatorExpression
 SelectItem     ::= ValueExpr [ "AS" Variable ]
                     |   WildCard
-
-WildCard       ::= "*" # Not supported yet
+WildCard       ::= "*" # Not supported yet (ever)?
 ```
 
 #### SQL++ From Clause
@@ -160,11 +159,11 @@ FromOuterJoin      ::= ( "LEFT" | "RIGHT" | "FULL" )
 FromFlatten        ::= FromInFlatten # not supported
                    |   FromOutFlatten # not supported
 FromInFlatten      ::= "FLATTEN" "("
-                       OpertorExpr "AS" VariableRef ","
-                       OpertorExpr "AS" VariableRef ")"
+                       OpertorExpression "AS" VariableRef ","
+                       OpertorExpression "AS" VariableRef ")"
 FromOutFlatten   ::=   "FLATTEN" "("
-                       OpertorExpr "AS" VariableRef ","
-                       OpertorExpr "AS" VariableRef ")"
+                       OpertorExpression "AS" VariableRef ","
+                       OpertorExpression "AS" VariableRef ")"
 VariableRef        ::= Identifier
 FromElement        ::= DatasetExpression
                    |   ParenthesizedExpression # Currently not supported
